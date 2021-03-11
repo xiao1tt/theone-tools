@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/0-tools.iml" filepath="$PROJECT_DIR$/0-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../common-base/common-base.iml" filepath="$PROJECT_DIR$/../common-base/common-base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../horde/horde.iml" filepath="$PROJECT_DIR$/../horde/horde.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../oa-client/oa-client.iml" filepath="$PROJECT_DIR$/../oa-client/oa-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sso-client/sso-client.iml" filepath="$PROJECT_DIR$/../sso-client/sso-client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../waterfall/waterfall.iml" filepath="$PROJECT_DIR$/../waterfall/waterfall.iml" />
+    </modules>
+  </component>
+</project>

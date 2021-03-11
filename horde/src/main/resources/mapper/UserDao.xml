@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.theone.tools.horde.dao.UserDao">
+
+    <resultMap id="BaseResultMap" type="com.theone.tools.horde.entity.UserEntity">
+        <!--@Table user-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="group" column="user_group"/>
+        <result property="level" column="user_level"/>
+        <result property="realName" column="real_name" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="status" column="user_status"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="query" resultMap="BaseResultMap">
+        select id,
+               username,
+               phone,
+               user_group,
+               user_level,
+               real_name,
+               email,
+               avatar,
+               user_status,
+               update_time,
+               create_time
+        from horde.user
+        where username = #{username}
+    </select>
+
+    <!--查询单个-->
+    <select id="queryByPhone" resultMap="BaseResultMap">
+        select id,
+               username,
+               phone,
+               user_group,
+               user_level,
+               real_name,
+               email,
+               avatar,
+               user_status,
+               update_time,
+               create_time
+        from horde.user
+        where phone = #{phone}
+    </select>
+
+    <select id="list" resultMap="BaseResultMap">
+        select
+        id, username, phone, user_group,user_level , real_name, email, avatar, user_status, update_time, create_time
+        from horde.user
+        <where>
+            <if test="username != null and username != ''">
+                and username LIKE CONCAT('%',#{username},'%')
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone LIKE CONCAT('%',#{phone},'%')
+            </if>
+            <if test="group != null">
+                and user_group = #{group}
+            </if>
+            <if test="level != null">
+                and user_level = #{level}
+            </if>
+            <if test="realName != null and realName != ''">
+                and real_name LIKE CONCAT('%',#{realName},'%')
+            </if>
+            <if test="status != null">
+                and user_status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into horde.user(phone, user_group, user_level, real_name, avatar, user_status)
+        values (#{phone}, #{group},#{level},  #{realName}, #{avatar}, #{status})
+    </insert>
+
+    <update id="update">
+        update horde.user
+        <set>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="group != null">
+                user_group = #{group},
+            </if>
+            <if test="level != null">
+                user_level = #{level},
+            </if>
+            <if test="realName != null and realName != ''">
+                real_name = #{realName},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="avatar != null and avatar != ''">
+                avatar = #{avatar},
+            </if>
+            <if test="status != null">
+                user_status = #{status},
+            </if>
+        </set>
+        where username = #{username}
+    </update>
+
+    <update id="updateByPhone">
+        update horde.user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="group != null">
+                user_group = #{group},
+            </if>
+            <if test="level != null">
+                user_level = #{level},
+            </if>
+            <if test="realName != null and realName != ''">
+                real_name = #{realName},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="avatar != null and avatar != ''">
+                avatar = #{avatar},
+            </if>
+            <if test="status != null">
+                user_status = #{status},
+            </if>
+        </set>
+        where phone = #{phone}
+    </update>
+
+    <delete id="delete">
+        delete
+        from horde.user
+        where username = #{username}
+    </delete>
+</mapper>

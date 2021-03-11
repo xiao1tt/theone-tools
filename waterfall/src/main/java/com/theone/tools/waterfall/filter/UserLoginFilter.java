@@ -1,0 +1,31 @@
+package com.theone.tools.waterfall.filter;
+
+import com.theone.tools.sso.client.BaseSsoFilter;
+import com.theone.tools.sso.client.IUser;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * @author chenxiaotong
+ */
+@WebFilter(filterName = "userLoginFilter", urlPatterns = {"/*"})
+@Component
+public class UserLoginFilter extends BaseSsoFilter {
+    @Override
+    protected void after(IUser user, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+    }
+
+    @Override
+    protected void before(IUser user, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+    }
+
+    @Override
+    protected boolean ignore(String requestURI) {
+        return false;
+    }
+}

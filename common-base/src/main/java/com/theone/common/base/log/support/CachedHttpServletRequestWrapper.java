@@ -1,0 +1,33 @@
+package com.theone.common.base.log.support;
+
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import java.io.IOException;
+
+public class CachedHttpServletRequestWrapper extends HttpServletRequestWrapper implements CachedStreamEntity {
+
+    private final CachedInputStream cachedInputStream;
+
+    public CachedHttpServletRequestWrapper(HttpServletRequest httpServletRequest, int initCacheSize, int maxCacheSize)
+            throws IOException {
+        super(httpServletRequest);
+        this.cachedInputStream = new CachedInputStream(httpServletRequest.getInputStream(), initCacheSize,
+                maxCacheSize);
+    }
+
+    @Override
+    public ServletInputStream getInputStream() throws IOException {
+        return cachedInputStream;
+    }
+
+    @Override
+    public CachedStream getCachedStream() {
+        return cachedInputStream;
+    }
+
+    @Override
+    public void flushStream() {
+        //do nothing
+    }
+}

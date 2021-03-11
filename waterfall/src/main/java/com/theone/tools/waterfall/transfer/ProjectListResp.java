@@ -1,0 +1,10 @@
+package com.theone.tools.waterfall.transfer;
+
+import com.theone.tools.waterfall.model.project.Project;
+
+import java.util.List;
+
+public class ProjectListResp {
+    private int count;
+    private List<Project> list;
+}
