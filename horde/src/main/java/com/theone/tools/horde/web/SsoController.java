@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * @author chenxiaotong
@@ -39,6 +40,11 @@ public class SsoController {
     @GetMapping("/current")
     public User current(HttpServletRequest request) {
         return ssoBiz.current(request);
+    }
+
+    @GetMapping("/list")
+    public List<IUser> current() {
+        return ssoBiz.list();
     }
 
     @GetMapping("/auth")

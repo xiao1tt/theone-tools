@@ -14,7 +14,7 @@ public interface SessionService {
 
     Session queryByToken(String token);
 
-    void clearByToken(String username);
+    void clearByToken(String token);
 
     void clearByUser(String username);
 

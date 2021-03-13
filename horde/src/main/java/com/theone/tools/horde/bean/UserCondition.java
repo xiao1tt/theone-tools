@@ -1,24 +1,19 @@
 package com.theone.tools.horde.bean;
 
 import com.theone.tools.sso.client.UserGroup;
+import com.theone.tools.sso.client.UserLevel;
 import com.theone.tools.sso.client.UserStatus;
 
 public class UserCondition {
     private String username;
     private String realName;
     private String phone;
+
     private UserGroup group;
+    private UserLevel level;
     private UserStatus status;
 
     public UserCondition() {
-    }
-
-    public UserCondition(String username, String realName, String phone, UserGroup group, UserStatus status) {
-        this.username = username;
-        this.realName = realName;
-        this.phone = phone;
-        this.group = group;
-        this.status = status;
     }
 
     public String getUsername() {
@@ -51,6 +46,14 @@ public class UserCondition {
 
     public void setGroup(UserGroup group) {
         this.group = group;
+    }
+
+    public UserLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(UserLevel level) {
+        this.level = level;
     }
 
     public UserStatus getStatus() {

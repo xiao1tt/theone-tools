@@ -3,6 +3,8 @@ package com.theone.tools.horde.web;
 import com.theone.tools.horde.bean.*;
 import com.theone.tools.horde.biz.UserBiz;
 import com.theone.tools.sso.client.UserGroup;
+import com.theone.tools.sso.client.UserLevel;
+import com.theone.tools.sso.client.UserStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -21,8 +23,17 @@ public class UserController {
     public UserListView list(@RequestParam(required = false) String username,
                              @RequestParam(required = false) String realName,
                              @RequestParam(required = false) String phone,
-                             @RequestParam(required = false) UserGroup group) {
-        UserCondition condition = new UserCondition(username, realName, phone, group, null);
+                             @RequestParam(required = false) UserGroup group,
+                             @RequestParam(required = false) UserLevel level,
+                             @RequestParam(required = false) UserStatus status) {
+        UserCondition condition = new UserCondition();
+        condition.setUsername(username);
+        condition.setRealName(realName);
+        condition.setPhone(phone);
+        condition.setGroup(group);
+        condition.setLevel(level);
+        condition.setStatus(status);
+
         return userBiz.list(condition);
     }
 

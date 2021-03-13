@@ -1,7 +1,5 @@
 package com.theone.common.base.lang;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
 /**

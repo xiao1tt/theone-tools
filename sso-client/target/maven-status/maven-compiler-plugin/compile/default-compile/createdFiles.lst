@@ -1,5 +1,7 @@
 com/theone/tools/sso/client/BaseSsoFilter.class
+com/theone/tools/sso/client/IUserView.class
 com/theone/tools/sso/client/IUserContext.class
+com/theone/tools/sso/client/IUserClient$2.class
 com/theone/tools/sso/client/IUser.class
 com/theone/tools/sso/client/SsoHelper.class
 com/theone/tools/sso/client/UserGroup.class

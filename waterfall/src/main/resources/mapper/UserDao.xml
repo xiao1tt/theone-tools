@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.theone.tools.waterfall.dao.UserDao">
+
+    <resultMap id="BaseResultMap" type="com.theone.tools.waterfall.entity.UserEntity">
+        <!--@Table user-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="userRole" column="user_role"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="query" resultMap="BaseResultMap">
+        select id,
+               username,
+               user_role,
+               update_time,
+               create_time
+        from waterfall.user
+        where username = #{username}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="all" resultMap="BaseResultMap">
+        select id,
+               username,
+               user_role,
+               update_time,
+               create_time
+        from waterfall.user
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="list" resultMap="BaseResultMap">
+        select
+        id, username, user_role, update_time, create_time
+        from waterfall.user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="username != null and username != ''">
+                and username = #{username}
+            </if>
+            <if test="userRole != null">
+                and user_role = #{userRole}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into waterfall.user(username, user_role)
+        values (#{username}, #{userRole})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update waterfall.user
+        <set>
+            <if test="role != null">
+                user_role = #{userRole},
+            </if>
+        </set>
+        where username = #{username}
+    </update>
+</mapper>

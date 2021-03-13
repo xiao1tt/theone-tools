@@ -1,4 +1,4 @@
-package com.theone.tools.waterfall.transfer;
+package com.theone.tools.waterfall.vo;
 
 import java.util.List;
 
@@ -6,12 +6,21 @@ import java.util.List;
  * @author chenxiaotong
  */
 public class ProjectAddReq {
+    private int groupId;
 
     private String name;
 
     private String desc;
 
     private List<String> users;
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
 
     public String getName() {
         return name;

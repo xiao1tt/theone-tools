@@ -1,5 +1,7 @@
 package com.theone.tools.horde.bean;
 
+import java.time.LocalDateTime;
+
 /**
  * @author chenxiaotong
  */
@@ -7,6 +9,8 @@ public class Session {
     private String username;
 
     private String token;
+
+    private LocalDateTime createTime;
 
     public String getUsername() {
         return username;
@@ -22,5 +26,13 @@ public class Session {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 }

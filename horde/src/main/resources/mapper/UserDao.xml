@@ -62,14 +62,14 @@
             <if test="phone != null and phone != ''">
                 and phone LIKE CONCAT('%',#{phone},'%')
             </if>
+            <if test="realName != null and realName != ''">
+                and real_name LIKE CONCAT('%',#{realName},'%')
+            </if>
             <if test="group != null">
                 and user_group = #{group}
             </if>
             <if test="level != null">
                 and user_level = #{level}
-            </if>
-            <if test="realName != null and realName != ''">
-                and real_name LIKE CONCAT('%',#{realName},'%')
             </if>
             <if test="status != null">
                 and user_status = #{status}

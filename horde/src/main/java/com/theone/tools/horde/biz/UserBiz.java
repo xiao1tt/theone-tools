@@ -1,7 +1,7 @@
 package com.theone.tools.horde.biz;
 
 import com.theone.common.base.lang.BizException;
-import com.theone.common.base.lang.DateFormatter;
+import com.theone.common.base.utils.DateFormatter;
 import com.theone.tools.horde.bean.User;
 import com.theone.tools.horde.bean.UserCondition;
 import com.theone.tools.horde.bean.UserListView;

@@ -1,4 +1,4 @@
-package com.theone.tools.waterfall.transfer;
+package com.theone.tools.waterfall.vo;
 
 public class ProjectGroupAddReq {
     String name;

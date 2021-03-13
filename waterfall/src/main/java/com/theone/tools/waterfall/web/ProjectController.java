@@ -1,10 +1,9 @@
 package com.theone.tools.waterfall.web;
 
-import com.theone.tools.sso.client.IUserContext;
-import com.theone.tools.waterfall.transfer.ProjectAddReq;
-import com.theone.tools.waterfall.transfer.ProjectGroupAddReq;
-import com.theone.tools.waterfall.transfer.ProjectGroupInfoResp;
-import com.theone.tools.waterfall.transfer.ProjectGroupListResp;
+import com.theone.tools.waterfall.vo.ProjectAddReq;
+import com.theone.tools.waterfall.vo.ProjectGroupAddReq;
+import com.theone.tools.waterfall.vo.ProjectGroupInfoResp;
+import com.theone.tools.waterfall.vo.ProjectGroupListResp;
 import com.theone.tools.waterfall.biz.ProjectBiz;
 import org.springframework.web.bind.annotation.*;
 

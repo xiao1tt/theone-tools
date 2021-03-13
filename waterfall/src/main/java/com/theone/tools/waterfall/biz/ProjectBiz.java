@@ -1,8 +1,8 @@
 package com.theone.tools.waterfall.biz;
 
 import com.theone.tools.waterfall.model.project.ProjectGroup;
-import com.theone.tools.waterfall.transfer.ProjectGroupInfoResp;
-import com.theone.tools.waterfall.transfer.ProjectGroupListResp;
+import com.theone.tools.waterfall.vo.ProjectGroupInfoResp;
+import com.theone.tools.waterfall.vo.ProjectGroupListResp;
 import com.theone.tools.waterfall.service.ProjectService;
 import org.springframework.stereotype.Service;
 

@@ -1,13 +1,13 @@
 
 package com.theone.tools.oa.client.bean;
 
-import com.google.gson.annotations.SerializedName;
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class OaTokenResp extends OaBaseResp {
 
-    @SerializedName("access_token")
+    @JSONField(name = "access_token")
     private String accessToken;
-    @SerializedName("expires_in")
+    @JSONField(name = "expires_in")
     private Long expiresIn;
 
     public String getAccessToken() {

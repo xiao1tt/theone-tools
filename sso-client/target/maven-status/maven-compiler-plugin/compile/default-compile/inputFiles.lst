@@ -1,6 +1,7 @@
 /Users/chenxiaotong/Work/tools/sso-client/src/main/java/com/theone/tools/sso/client/BaseSsoFilter.java
 /Users/chenxiaotong/Work/tools/sso-client/src/main/java/com/theone/tools/sso/client/SsoConstant.java
 /Users/chenxiaotong/Work/tools/sso-client/src/main/java/com/theone/tools/sso/client/UserLevel.java
+/Users/chenxiaotong/Work/tools/sso-client/src/main/java/com/theone/tools/sso/client/IUserView.java
 /Users/chenxiaotong/Work/tools/sso-client/src/main/java/com/theone/tools/sso/client/IUserContext.java
 /Users/chenxiaotong/Work/tools/sso-client/src/main/java/com/theone/tools/sso/client/UserStatus.java
 /Users/chenxiaotong/Work/tools/sso-client/src/main/java/com/theone/tools/sso/client/IUser.java

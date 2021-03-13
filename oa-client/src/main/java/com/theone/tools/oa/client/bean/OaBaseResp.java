@@ -1,12 +1,12 @@
 package com.theone.tools.oa.client.bean;
 
-import com.google.gson.annotations.SerializedName;
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class OaBaseResp {
 
-    @SerializedName("errcode")
+    @JSONField(name = "errcode")
     private Long errCode;
-    @SerializedName("errmsg")
+    @JSONField(name = "errmsg")
     private String errMsg;
 
     public Long getErrCode() {

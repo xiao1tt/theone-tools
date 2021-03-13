@@ -1,7 +1,5 @@
 package com.theone.tools.sso.client;
 
-import java.time.LocalDateTime;
-
 public class IUser {
 
     private String username;
@@ -19,8 +17,6 @@ public class IUser {
     private String avatar;
 
     private UserStatus status;
-
-    private LocalDateTime createTime;
 
     public String getUsername() {
         return username;
@@ -84,13 +80,5 @@ public class IUser {
 
     public void setStatus(UserStatus status) {
         this.status = status;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
     }
 }

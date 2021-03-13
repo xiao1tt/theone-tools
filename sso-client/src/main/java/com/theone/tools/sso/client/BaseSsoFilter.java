@@ -1,7 +1,7 @@
 package com.theone.tools.sso.client;
 
 
-import com.theone.common.base.json.JSON;
+import com.alibaba.fastjson.JSON;
 import com.theone.common.base.lang.APIResponse;
 import org.apache.commons.lang3.StringUtils;
 
@@ -77,7 +77,7 @@ public abstract class BaseSsoFilter implements Filter {
         httpServletResponse.setContentType("application/json; charset=utf-8");
         PrintWriter out = response.getWriter();
 
-        out.print(JSON.toJson(APIResponse.error(SsoConstant.USER_STATUS_EXCEPTION, "该用户未初始化或状态异常，请联系管理员")));
+        out.print(JSON.toJSONString(APIResponse.error(SsoConstant.USER_STATUS_EXCEPTION, "该用户未初始化或状态异常，请联系管理员")));
         out.flush();
         out.close();
     }

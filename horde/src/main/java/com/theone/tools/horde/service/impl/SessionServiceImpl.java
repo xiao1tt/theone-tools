@@ -33,6 +33,7 @@ public class SessionServiceImpl implements SessionService {
         Session session = new Session();
         session.setUsername(entity.getUsername());
         session.setToken(entity.getToken());
+        session.setCreateTime(entity.getCreateTime());
         return session;
     }
 

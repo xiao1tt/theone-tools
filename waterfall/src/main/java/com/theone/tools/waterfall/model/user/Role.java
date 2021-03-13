@@ -5,6 +5,9 @@ package com.theone.tools.waterfall.model.user;
  */
 
 public enum Role {
+    /**
+     *
+     */
     WORKER,
     MANAGER,
     ADMIN;

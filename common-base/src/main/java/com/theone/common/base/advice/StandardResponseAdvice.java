@@ -1,6 +1,6 @@
 package com.theone.common.base.advice;
 
-import com.theone.common.base.json.JSON;
+import com.alibaba.fastjson.JSON;
 import com.theone.common.base.lang.APIResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.EnvironmentAware;
@@ -46,8 +46,9 @@ public class StandardResponseAdvice implements ResponseBodyAdvice<Object>, Envir
         }
         // String特殊处理，否则会抛异常
         if (o instanceof String || StringHttpMessageConverter.class.isAssignableFrom(aClass)) {
-            return JSON.toJson(APIResponse.success(o));
+            return JSON.toJSONString(APIResponse.success(o));
         }
+
         // 判断为null构建ResponseData对象进行返回
         if (Objects.isNull(o)) {
             return APIResponse.success();

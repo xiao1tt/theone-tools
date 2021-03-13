@@ -1,7 +1,7 @@
 
 package com.theone.tools.horde.bean.Im;
 
-import com.google.gson.annotations.SerializedName;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.theone.tools.oa.client.bean.OaBaseResp;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class DingUserListResp extends OaBaseResp {
 
-    @SerializedName("userlist")
+    @JSONField(name = "userlist")
     private List<DingUserSimple> userList;
 
     public List<DingUserSimple> getUserList() {

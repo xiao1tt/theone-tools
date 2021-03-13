@@ -4,43 +4,70 @@ import com.theone.common.base.lang.BizException;
 import com.theone.tools.sso.client.IUser;
 import com.theone.tools.sso.client.IUserClient;
 import com.theone.tools.sso.client.UserStatus;
+import com.theone.tools.waterfall.dao.UserDao;
+import com.theone.tools.waterfall.entity.UserEntity;
+import com.theone.tools.waterfall.model.user.Role;
 import com.theone.tools.waterfall.model.user.User;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author chenxiaotong
  */
 @Service
 public class UserService {
+    @Resource
+    private UserDao userDao;
+
     private final IUserClient userClient = new IUserClient();
 
-    public User queryByToken(String token) {
+    public void syncSsoUser() {
+        List<IUser> all = userClient.all();
+        for (IUser iUser : all) {
+            if (this.exist(iUser.getUsername())) {
+                continue;
+            }
+
+            UserEntity entity = new UserEntity();
+            entity.setUsername(iUser.getUsername());
+            entity.setUserRole(Role.WORKER);
+            userDao.insert(entity);
+        }
+    }
+
+    private boolean exist(String username) {
+        return userDao.query(username) != null;
+    }
+
+    public IUser ssoUser(String token) {
         IUser iUser = userClient.query(token);
         if (iUser != null && iUser.getStatus() == UserStatus.AVAILABLE) {
-            return adapt(iUser);
+            return iUser;
         }
         throw new BizException("无法获取用户信息，用户不存在或状态异常");
     }
 
-    private User adapt(IUser iUser) {
-        User user = new User();
-        user.setUsername(iUser.getUsername());
-        user.setPhone(iUser.getPhone());
-        user.setGroup(iUser.getGroup());
-        user.setGroup(iUser.getGroup());
-        user.setGroupView(iUser.getGroup().getDesc());
-        user.setLevel(iUser.getLevel());
-        user.setRealName(iUser.getRealName());
-        user.setEmail(iUser.getEmail());
-        user.setAvatar(iUser.getAvatar());
-        user.setStatus(iUser.getStatus());
-        user.setStatusView(iUser.getStatus().getDesc());
+    private User adapt(UserEntity entity) {
+        if (entity == null) {
+            return null;
+        }
 
+        User user = new User();
+        user.setUsername(entity.getUsername());
+        user.setUserRole(entity.getUserRole());
         return user;
     }
 
-    public User list(String username) {
+    public List<User> list() {
+        List<UserEntity> entities = userDao.all();
+        return entities.stream().map(this::adapt).collect(Collectors.toList());
+    }
 
-        return null;
+    public User info(String username) {
+        UserEntity entity = userDao.query(username);
+        return adapt(entity);
     }
 }

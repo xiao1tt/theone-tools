@@ -1,4 +1,4 @@
-package com.theone.tools.waterfall.transfer;
+package com.theone.tools.waterfall.vo;
 
 import com.theone.tools.waterfall.model.project.Project;
 
