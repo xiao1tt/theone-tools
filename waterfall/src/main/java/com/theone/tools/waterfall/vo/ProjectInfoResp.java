@@ -5,6 +5,8 @@ package com.theone.tools.waterfall.vo;
  */
 public class ProjectInfoResp {
     private int id;
+    private int groupId;
+    private String groupName;
     private String name;
     private String desc;
 
@@ -22,6 +24,22 @@ public class ProjectInfoResp {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public String getDesc() {

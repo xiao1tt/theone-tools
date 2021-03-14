@@ -18,7 +18,7 @@ public class ProjectEntity implements Serializable {
     
     private String name;
     
-    private String desc;
+    private String projectDesc;
     
     private LocalDateTime updateTime;
     
@@ -49,12 +49,12 @@ public class ProjectEntity implements Serializable {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getProjectDesc() {
+        return projectDesc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setProjectDesc(String projectDesc) {
+        this.projectDesc = projectDesc;
     }
 
     public LocalDateTime getUpdateTime() {

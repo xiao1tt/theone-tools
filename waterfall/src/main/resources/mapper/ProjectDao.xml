@@ -7,7 +7,7 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="groupId" column="group_id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
-        <result property="desc" column="desc" jdbcType="VARCHAR"/>
+        <result property="projectDesc" column="project_desc" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -15,7 +15,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
         select
-          id, group_id, name, desc, update_time, create_time
+          id, group_id, name, project_desc, update_time, create_time
         from waterfall.project
         where id = #{id}
     </select>
@@ -23,7 +23,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select
-          id, group_id, name, desc, update_time, create_time
+          id, group_id, name, project_desc, update_time, create_time
         from waterfall.project
         limit #{offset}, #{limit}
     </select>
@@ -31,7 +31,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, group_id, name, desc, update_time, create_time
+          id, group_id, name, project_desc, update_time, create_time
         from waterfall.project
         <where>
             <if test="id != null">
@@ -43,8 +43,8 @@
             <if test="name != null and name != ''">
                 and name = #{name}
             </if>
-            <if test="desc != null and desc != ''">
-                and desc = #{desc}
+            <if test="projectDesc != null and projectDesc != ''">
+                and project_desc = #{projectDesc}
             </if>
             <if test="updateTime != null">
                 and update_time = #{updateTime}
@@ -57,8 +57,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into waterfall.project(group_id, name, desc)
-        values (#{groupId}, #{name}, #{desc})
+        insert into waterfall.project(group_id, name, project_desc)
+        values (#{groupId}, #{name}, #{projectDesc})
     </insert>
 
     <!--通过主键修改数据-->
@@ -71,8 +71,8 @@
             <if test="name != null and name != ''">
                 name = #{name},
             </if>
-            <if test="desc != null and desc != ''">
-                desc = #{desc},
+            <if test="projectDesc != null and projectDesc != ''">
+                project_desc = #{projectDesc},
             </if>
         </set>
         where id = #{id}

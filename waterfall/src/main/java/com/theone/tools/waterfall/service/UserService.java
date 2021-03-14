@@ -70,4 +70,9 @@ public class UserService {
         UserEntity entity = userDao.query(username);
         return adapt(entity);
     }
+
+    public List<User> listByUsername(List<String> users) {
+        List<UserEntity> userEntities = userDao.listByUsername(users);
+        return userEntities.stream().map(this::adapt).collect(Collectors.toList());
+    }
 }

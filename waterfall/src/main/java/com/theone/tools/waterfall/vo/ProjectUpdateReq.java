@@ -1,12 +1,13 @@
-package com.theone.tools.waterfall.model.project;
+package com.theone.tools.waterfall.vo;
 
 /**
  * @author chenxiaotong
  */
-public class Project {
+public class ProjectUpdateReq {
     private int id;
-    private int groupId;
+
     private String name;
+
     private String desc;
 
     public int getId() {
@@ -15,14 +16,6 @@ public class Project {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
     }
 
     public String getName() {

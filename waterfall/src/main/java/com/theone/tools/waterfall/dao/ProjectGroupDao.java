@@ -20,38 +20,10 @@ public interface ProjectGroupDao {
      */
     ProjectGroupEntity queryById(Integer id);
 
-    /**
-     * 查询指定行数据
-     *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
-     * @return 对象列表
-     */
-    List<ProjectGroupEntity> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<ProjectGroupEntity> list();
 
-
-    /**
-     * 通过实体作为筛选条件查询
-     *
-     * @param projectGroup 实例对象
-     * @return 对象列表
-     */
-    List<ProjectGroupEntity> queryAll(ProjectGroupEntity projectGroup);
-
-    /**
-     * 新增数据
-     *
-     * @param projectGroup 实例对象
-     * @return 影响行数
-     */
     int insert(ProjectGroupEntity projectGroup);
 
-    /**
-     * 修改数据
-     *
-     * @param projectGroup 实例对象
-     * @return 影响行数
-     */
     int update(ProjectGroupEntity projectGroup);
 
     /**
