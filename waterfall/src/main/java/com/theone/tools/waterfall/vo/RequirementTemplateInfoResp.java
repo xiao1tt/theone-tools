@@ -1,4 +1,4 @@
-package com.theone.tools.waterfall.model.requirement;
+package com.theone.tools.waterfall.vo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * @author chenxiaotong
  */
-public class RequirementTemplate implements Serializable {
+public class RequirementTemplateInfoResp implements Serializable {
     private int id;
     private String name;
     private String desc;
-    private List<TemplateStage> stages;
+    private List<TemplateStageInfoResp> stages;
 
     public int getId() {
         return id;
@@ -36,11 +36,11 @@ public class RequirementTemplate implements Serializable {
         this.desc = desc;
     }
 
-    public List<TemplateStage> getStages() {
+    public List<TemplateStageInfoResp> getStages() {
         return stages;
     }
 
-    public void setStages(List<TemplateStage> stages) {
+    public void setStages(List<TemplateStageInfoResp> stages) {
         this.stages = stages;
     }
 }

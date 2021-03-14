@@ -3,10 +3,10 @@ package com.theone.tools.waterfall.biz;
 import com.theone.common.base.lang.BizException;
 import com.theone.tools.waterfall.model.project.Project;
 import com.theone.tools.waterfall.model.project.ProjectGroup;
+import com.theone.tools.waterfall.model.project.ProjectUser;
+import com.theone.tools.waterfall.model.user.Role;
 import com.theone.tools.waterfall.service.ProjectService;
-import com.theone.tools.waterfall.vo.ProjectGroupInfoResp;
-import com.theone.tools.waterfall.vo.ProjectGroupListResp;
-import com.theone.tools.waterfall.vo.ProjectInfoResp;
+import com.theone.tools.waterfall.vo.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -120,5 +120,52 @@ public class ProjectBiz {
 
     public void delete(int id) {
         projectService.delete(id);
+    }
+
+    public ProjectUserListResp userList(int projectId) {
+        List<ProjectUser> projectUsers = projectService.userList(projectId);
+        return new ProjectUserListResp(projectUsers.size(), projectUsers.stream().map(this::adapt).collect(Collectors.toList()));
+    }
+
+    private ProjectUserInfoResp adapt(ProjectUser user) {
+        if (user == null) {
+            return null;
+        }
+
+        ProjectUserInfoResp resp = new ProjectUserInfoResp();
+        resp.setProjectId(user.getProjectId());
+        resp.setUsername(user.getUsername());
+        resp.setRole(user.getUserRole());
+
+        return resp;
+    }
+
+    public ProjectUserListResp userAdd(int projectId, String username, Role role) {
+        ProjectUser user = new ProjectUser();
+        user.setProjectId(projectId);
+        user.setUsername(username);
+        user.setUserRole(role);
+
+        projectService.userAdd(user);
+        return this.userList(projectId);
+    }
+
+    public void userDelete(int projectId, String username) {
+        projectService.userDelete(projectId, username);
+    }
+
+    public ProjectUserListResp userUpdate(int projectId, String username, Role role) {
+        ProjectUser user = new ProjectUser();
+        user.setProjectId(projectId);
+        user.setUsername(username);
+        user.setUserRole(role);
+
+        projectService.userUpdate(user);
+        return null;
+    }
+
+    public ProjectUserInfoResp userInfo(int projectId, String username) {
+        ProjectUser user = projectService.userInfo(projectId, username);
+        return adapt(user);
     }
 }

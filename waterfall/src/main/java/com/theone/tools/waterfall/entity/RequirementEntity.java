@@ -1,29 +1,33 @@
-package com.theone.tools.waterfall.model.assignment;
+package com.theone.tools.waterfall.entity;
 
 import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
- * @author chenxiaotong
+ * (Requirement)实体类
+ *
+ * @author makejava
+ * @since 2021-03-14 18:36:30
  */
-public class Assignment {
-
+public class RequirementEntity implements Serializable {
+    private static final long serialVersionUID = -69957765904367413L;
+    
     private Integer id;
-
+    
     private Integer projectId;
-
-    private Integer requirementId;
-
-    private Integer stageId;
-
+    
+    private Integer templateId;
+    
     private String name;
-
-    private String assignmentDesc;
-
-    private AssignmentStatus assignmentStatus;
-
+    
+    private String requirementDesc;
+    
+    private String requirementOwner;
+    
     private LocalDateTime updateTime;
-
+    
     private LocalDateTime createTime;
+
 
     public Integer getId() {
         return id;
@@ -41,20 +45,12 @@ public class Assignment {
         this.projectId = projectId;
     }
 
-    public Integer getRequirementId() {
-        return requirementId;
+    public Integer getTemplateId() {
+        return templateId;
     }
 
-    public void setRequirementId(Integer requirementId) {
-        this.requirementId = requirementId;
-    }
-
-    public Integer getStageId() {
-        return stageId;
-    }
-
-    public void setStageId(Integer stageId) {
-        this.stageId = stageId;
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
     }
 
     public String getName() {
@@ -65,20 +61,20 @@ public class Assignment {
         this.name = name;
     }
 
-    public String getAssignmentDesc() {
-        return assignmentDesc;
+    public String getRequirementDesc() {
+        return requirementDesc;
     }
 
-    public void setAssignmentDesc(String assignmentDesc) {
-        this.assignmentDesc = assignmentDesc;
+    public void setRequirementDesc(String requirementDesc) {
+        this.requirementDesc = requirementDesc;
     }
 
-    public AssignmentStatus getAssignmentStatus() {
-        return assignmentStatus;
+    public String getRequirementOwner() {
+        return requirementOwner;
     }
 
-    public void setAssignmentStatus(AssignmentStatus assignmentStatus) {
-        this.assignmentStatus = assignmentStatus;
+    public void setRequirementOwner(String requirementOwner) {
+        this.requirementOwner = requirementOwner;
     }
 
     public LocalDateTime getUpdateTime() {
@@ -96,4 +92,5 @@ public class Assignment {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
 }

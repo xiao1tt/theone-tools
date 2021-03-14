@@ -1,29 +1,33 @@
-package com.theone.tools.waterfall.model.assignment;
+package com.theone.tools.waterfall.entity;
+
+import com.theone.tools.waterfall.model.requirement.AttachType;
 
 import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
- * @author chenxiaotong
+ * (RequirementAttach)实体类
+ *
+ * @author makejava
+ * @since 2021-03-14 19:32:37
  */
-public class Assignment {
-
+public class RequirementAttachEntity implements Serializable {
+    private static final long serialVersionUID = 468118672552457400L;
+    
     private Integer id;
-
-    private Integer projectId;
-
+    
     private Integer requirementId;
-
-    private Integer stageId;
-
+    
     private String name;
-
-    private String assignmentDesc;
-
-    private AssignmentStatus assignmentStatus;
-
+    
+    private String locate;
+    
+    private AttachType attachType;
+    
     private LocalDateTime updateTime;
-
+    
     private LocalDateTime createTime;
+
 
     public Integer getId() {
         return id;
@@ -31,14 +35,6 @@ public class Assignment {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Integer projectId) {
-        this.projectId = projectId;
     }
 
     public Integer getRequirementId() {
@@ -49,14 +45,6 @@ public class Assignment {
         this.requirementId = requirementId;
     }
 
-    public Integer getStageId() {
-        return stageId;
-    }
-
-    public void setStageId(Integer stageId) {
-        this.stageId = stageId;
-    }
-
     public String getName() {
         return name;
     }
@@ -65,20 +53,20 @@ public class Assignment {
         this.name = name;
     }
 
-    public String getAssignmentDesc() {
-        return assignmentDesc;
+    public String getLocate() {
+        return locate;
     }
 
-    public void setAssignmentDesc(String assignmentDesc) {
-        this.assignmentDesc = assignmentDesc;
+    public void setLocate(String locate) {
+        this.locate = locate;
     }
 
-    public AssignmentStatus getAssignmentStatus() {
-        return assignmentStatus;
+    public AttachType getAttachType() {
+        return attachType;
     }
 
-    public void setAssignmentStatus(AssignmentStatus assignmentStatus) {
-        this.assignmentStatus = assignmentStatus;
+    public void setAttachType(AttachType attachType) {
+        this.attachType = attachType;
     }
 
     public LocalDateTime getUpdateTime() {
@@ -96,4 +84,5 @@ public class Assignment {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
 }

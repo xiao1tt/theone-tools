@@ -13,7 +13,7 @@
     </resultMap>
 
     <!--查询单个-->
-    <select id="queryById" resultMap="BaseResultMap">
+    <select id="query" resultMap="BaseResultMap">
         select id,
                project_id,
                username,
@@ -21,7 +21,8 @@
                update_time,
                create_time
         from waterfall.project_user
-        where id = #{id}
+        where project_id = #{projectId}
+          and username = #{username}
     </select>
 
     <!--查询指定行数据-->
@@ -63,16 +64,18 @@
         </where>
     </select>
 
-    <!--新增所有列-->
     <insert id="insert">
         insert into waterfall.project_user(project_id, username, user_role)
+        values (#{projectId}, #{username}, #{userRole})
+    </insert>
+
+    <insert id="insertList">
+        insert into waterfall.project_user(project_id, username, user_role)
         values
-        <foreach collection="users" item="user" index= "index" separator =",">
-            (
+        <foreach open="(" close=")" collection="users" item="user" index="index" separator=",">
             #{projectId},
             #{user.username},
             #{user.userRole}
-            )
         </foreach>
     </insert>
 
@@ -86,11 +89,16 @@
         where projectId = #{projectId} and username = #{username}
     </update>
 
-    <!--通过主键删除-->
     <delete id="deleteByProject">
         delete
         from waterfall.project_user
         where project_id = #{projectId}
     </delete>
 
+    <delete id="delete">
+        delete
+        from waterfall.project_user
+        where project_id = #{projectId}
+          and username = #{username}
+    </delete>
 </mapper>

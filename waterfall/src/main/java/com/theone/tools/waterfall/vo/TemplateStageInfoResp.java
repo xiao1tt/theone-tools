@@ -1,11 +1,11 @@
-package com.theone.tools.waterfall.model.requirement;
+package com.theone.tools.waterfall.vo;
 
 import com.theone.tools.sso.client.UserGroup;
 
 /**
  * @author chenxiaotong
  */
-public class TemplateStage {
+public class TemplateStageInfoResp {
     private int id;
 
     private int templateId;
@@ -16,7 +16,7 @@ public class TemplateStage {
 
     private UserGroup requiredGroup;
 
-    private String director;
+    private String requiredGroupView;
 
     private int order;
 
@@ -60,12 +60,12 @@ public class TemplateStage {
         this.requiredGroup = requiredGroup;
     }
 
-    public String getDirector() {
-        return director;
+    public String getRequiredGroupView() {
+        return requiredGroupView;
     }
 
-    public void setDirector(String director) {
-        this.director = director;
+    public void setRequiredGroupView(String requiredGroupView) {
+        this.requiredGroupView = requiredGroupView;
     }
 
     public int getOrder() {

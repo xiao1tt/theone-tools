@@ -1,29 +1,37 @@
-package com.theone.tools.waterfall.model.assignment;
+package com.theone.tools.waterfall.entity;
+
+import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 
 import java.time.LocalDateTime;
+import java.io.Serializable;
 
 /**
- * @author chenxiaotong
+ * (Assignment)实体类
+ *
+ * @author makejava
+ * @since 2021-03-14 20:32:12
  */
-public class Assignment {
-
+public class AssignmentEntity implements Serializable {
+    private static final long serialVersionUID = -49193335213165076L;
+    
     private Integer id;
-
+    
     private Integer projectId;
-
+    
     private Integer requirementId;
-
+    
     private Integer stageId;
-
+    
     private String name;
-
+    
     private String assignmentDesc;
-
+    
     private AssignmentStatus assignmentStatus;
-
+    
     private LocalDateTime updateTime;
-
+    
     private LocalDateTime createTime;
+
 
     public Integer getId() {
         return id;
@@ -96,4 +104,5 @@ public class Assignment {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
 }

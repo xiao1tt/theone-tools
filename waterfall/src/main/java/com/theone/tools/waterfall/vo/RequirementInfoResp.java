@@ -1,25 +1,20 @@
-package com.theone.tools.waterfall.model.assignment;
+package com.theone.tools.waterfall.vo;
 
 import java.time.LocalDateTime;
 
-/**
- * @author chenxiaotong
- */
-public class Assignment {
+public class RequirementInfoResp {
 
     private Integer id;
 
     private Integer projectId;
 
-    private Integer requirementId;
-
-    private Integer stageId;
+    private Integer templateId;
 
     private String name;
 
-    private String assignmentDesc;
+    private String desc;
 
-    private AssignmentStatus assignmentStatus;
+    private String owner;
 
     private LocalDateTime updateTime;
 
@@ -41,20 +36,12 @@ public class Assignment {
         this.projectId = projectId;
     }
 
-    public Integer getRequirementId() {
-        return requirementId;
+    public Integer getTemplateId() {
+        return templateId;
     }
 
-    public void setRequirementId(Integer requirementId) {
-        this.requirementId = requirementId;
-    }
-
-    public Integer getStageId() {
-        return stageId;
-    }
-
-    public void setStageId(Integer stageId) {
-        this.stageId = stageId;
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
     }
 
     public String getName() {
@@ -65,20 +52,20 @@ public class Assignment {
         this.name = name;
     }
 
-    public String getAssignmentDesc() {
-        return assignmentDesc;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setAssignmentDesc(String assignmentDesc) {
-        this.assignmentDesc = assignmentDesc;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public AssignmentStatus getAssignmentStatus() {
-        return assignmentStatus;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setAssignmentStatus(AssignmentStatus assignmentStatus) {
-        this.assignmentStatus = assignmentStatus;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     public LocalDateTime getUpdateTime() {

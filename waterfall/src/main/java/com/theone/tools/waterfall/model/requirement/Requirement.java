@@ -1,17 +1,47 @@
 package com.theone.tools.waterfall.model.requirement;
 
-public class Requirement {
-    private int id;
-    private String name;
-    private String desc;
-    private String owner;
+import java.time.LocalDateTime;
 
-    public int getId() {
+public class Requirement {
+
+    private Integer id;
+
+    private Integer projectId;
+
+    private Integer templateId;
+
+    private String name;
+
+    private String requirementDesc;
+
+    private String requirementOwner;
+
+    private LocalDateTime updateTime;
+
+    private LocalDateTime createTime;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
+
+    public Integer getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Integer templateId) {
+        this.templateId = templateId;
     }
 
     public String getName() {
@@ -22,19 +52,35 @@ public class Requirement {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getRequirementDesc() {
+        return requirementDesc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setRequirementDesc(String requirementDesc) {
+        this.requirementDesc = requirementDesc;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getRequirementOwner() {
+        return requirementOwner;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setRequirementOwner(String requirementOwner) {
+        this.requirementOwner = requirementOwner;
+    }
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 }

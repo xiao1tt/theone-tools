@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.theone.tools.waterfall.dao.RequirementStageDao">
+
+    <resultMap id="BaseResultMap" type="com.theone.tools.waterfall.entity.RequirementStageEntity">
+        <!--@Table requirement_stage-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="projectId" column="project_id" jdbcType="INTEGER"/>
+        <result property="requirementId" column="requirement_id" jdbcType="INTEGER"/>
+        <result property="templateId" column="template_id" jdbcType="INTEGER"/>
+        <result property="templateStageId" column="template_stage_id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="stageDesc" column="stage_desc" jdbcType="VARCHAR"/>
+        <result property="stageOrder" column="stage_order" jdbcType="INTEGER"/>
+        <result property="requiredGroup" column="required_group"/>
+        <result property="director" column="template" jdbcType="VARCHAR"/>
+        <result property="template" column="template" jdbcType="VARCHAR"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, project_id, requirement_id, template_id, template_stage_id, name, stage_desc, stage_order, required_group,director, template, update_time, create_time
+        from waterfall.requirement_stage
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, project_id, requirement_id, template_id, template_stage_id, name, stage_desc, stage_order, required_group, director,template, update_time, create_time
+        from waterfall.requirement_stage
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, project_id, requirement_id, template_id, template_stage_id, name, stage_desc, stage_order, required_group,director, template, update_time, create_time
+        from waterfall.requirement_stage
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="requirementId != null">
+                and requirement_id = #{requirementId}
+            </if>
+            <if test="templateId != null">
+                and template_id = #{templateId}
+            </if>
+            <if test="templateStageId != null">
+                and template_stage_id = #{templateStageId}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="stageDesc != null and stageDesc != ''">
+                and stage_desc = #{stageDesc}
+            </if>
+            <if test="stageOrder != null">
+                and stage_order = #{stageOrder}
+            </if>
+            <if test="requiredGroup != null and requiredGroup != ''">
+                and required_group = #{requiredGroup}
+            </if>
+            <if test="director != null and director != ''">
+                and director = #{director}
+            </if>
+            <if test="template != null and template != ''">
+                and template = #{template}
+            </if>
+            <if test="updateTime != null">
+                and update_time = #{updateTime}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into waterfall.requirement_stage(project_id, requirement_id, template_id, template_stage_id, name, stage_desc, stage_order, required_group,director, template)
+        values (#{projectId}, #{requirementId}, #{templateId}, #{templateStageId}, #{name}, #{stageDesc}, #{stageOrder}, #{requiredGroup}, #{director},#{template})
+    </insert>
+
+    <insert id="insertList">
+        insert into waterfall.requirement_stage(project_id, requirement_id, template_id, template_stage_id, name, stage_desc, stage_order, required_group, director,template)
+        values
+        <foreach open="(" close=")" collection="stages" item="stage" index="index" separator=",">
+            #{stage.projectId},
+            #{stage.requirementId},
+            #{stage.templateId},
+            #{stage.templateStageId},
+            #{stage.name},
+            #{stage.stageDesc},
+            #{stage.stageOrder},
+            #{stage.requiredGroup},
+            #{stage.director},
+            #{stage.template}
+        </foreach>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update waterfall.requirement_stage
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="requirementId != null">
+                requirement_id = #{requirementId},
+            </if>
+            <if test="templateId != null">
+                template_id = #{templateId},
+            </if>
+            <if test="templateStageId != null">
+                template_stage_id = #{templateStageId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="stageDesc != null and stageDesc != ''">
+                stage_desc = #{stageDesc},
+            </if>
+            <if test="stageOrder != null">
+                stage_order = #{stageOrder},
+            </if>
+            <if test="requiredGroup != null and requiredGroup != ''">
+                required_group = #{requiredGroup},
+            </if>
+            <if test="director != null and director != ''">
+                director = #{director},
+            </if>
+
+            <if test="template != null and template != ''">
+                template = #{template},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from waterfall.requirement_stage where id = #{id}
+    </delete>
+
+    <delete id="deleteByRequirement">
+        delete from waterfall.requirement_stage where requirement_id = #{requirementId}
+    </delete>
+
+</mapper>

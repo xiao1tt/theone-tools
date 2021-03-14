@@ -2,11 +2,24 @@ package com.theone.tools.waterfall.vo;
 
 import com.theone.tools.waterfall.model.user.Role;
 
-public class UserInfoResp {
+/**
+ * @author chenxiaotong
+ */
+public class ProjectUserInfoResp {
+
+    private Integer projectId;
 
     private String username;
 
     private Role role;
+
+    public Integer getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Integer projectId) {
+        this.projectId = projectId;
+    }
 
     public String getUsername() {
         return username;

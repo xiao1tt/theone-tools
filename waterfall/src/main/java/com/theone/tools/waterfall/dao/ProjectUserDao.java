@@ -14,13 +14,7 @@ import java.util.List;
  */
 public interface ProjectUserDao {
 
-    /**
-     * 通过ID查询单条数据
-     *
-     * @param id 主键
-     * @return 实例对象
-     */
-    ProjectUserEntity queryById(Integer id);
+    ProjectUserEntity query(@Param("projectId") Integer projectId, @Param("username") String username);
 
     /**
      * 查询指定行数据
@@ -40,10 +34,13 @@ public interface ProjectUserDao {
      */
     List<ProjectUserEntity> queryAll(ProjectUserEntity projectUser);
 
-    int insert(@Param("projectId") int projectId, @Param("users") List<User> users);
+    int insertList(@Param("projectId") int projectId, @Param("users") List<ProjectUserEntity> users);
 
-    int update(@Param("projectId") int projectId, @Param("username") String username);
+    int update(ProjectUserEntity entity);
 
     int deleteByProject(Integer projectId);
 
+    int delete(@Param("projectId") Integer projectId, @Param("username") String username);
+
+    void insert(ProjectUserEntity entity);
 }

@@ -2,19 +2,8 @@ package com.theone.tools.waterfall.vo;
 
 import com.theone.tools.waterfall.model.user.Role;
 
-public class UserInfoResp {
-
-    private String username;
-
+public class ProjectUserUpdateReq {
     private Role role;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public Role getRole() {
         return role;

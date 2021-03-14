@@ -1,24 +1,17 @@
-package com.theone.tools.waterfall.model.requirement;
+package com.theone.tools.waterfall.vo;
 
-import java.io.Serializable;
+
+import com.theone.tools.waterfall.model.requirement.TemplateStage;
+
 import java.util.List;
 
 /**
  * @author chenxiaotong
  */
-public class RequirementTemplate implements Serializable {
-    private int id;
+public class RequirementTemplateAddReq {
     private String name;
     private String desc;
     private List<TemplateStage> stages;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

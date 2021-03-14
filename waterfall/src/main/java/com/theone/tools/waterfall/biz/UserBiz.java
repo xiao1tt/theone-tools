@@ -28,7 +28,7 @@ public class UserBiz {
     public UserInfoResp adapt(User user) {
         UserInfoResp resp = new UserInfoResp();
         resp.setUsername(user.getUsername());
-        resp.setUserRole(user.getUserRole());
+        resp.setRole(user.getUserRole());
         return resp;
     }
 

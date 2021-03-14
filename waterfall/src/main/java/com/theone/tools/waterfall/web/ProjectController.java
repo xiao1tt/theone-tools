@@ -65,4 +65,30 @@ public class ProjectController {
     public ProjectGroupListResp list(int groupId) {
         return projectBiz.list(groupId);
     }
+
+
+    @PostMapping("/user/add")
+    public ProjectUserListResp userAdd(int projectId, @RequestBody ProjectUserAddReq req) {
+        return projectBiz.userAdd(projectId, req.getUsername(), req.getRole());
+    }
+
+    @GetMapping("/user/delete")
+    public void userDelete(int projectId, String username) {
+        projectBiz.userDelete(projectId, username);
+    }
+
+    @PostMapping("/user/update")
+    public ProjectUserListResp userUpdate(int projectId, String username, @RequestBody ProjectUserUpdateReq req) {
+        return projectBiz.userUpdate(projectId, username, req.getRole());
+    }
+
+    @GetMapping("/user/info")
+    public ProjectUserInfoResp userInfo(int projectId, String username) {
+        return projectBiz.userInfo(projectId, username);
+    }
+
+    @GetMapping("/user/list")
+    public ProjectUserListResp userList(int projectId) {
+        return projectBiz.userList(projectId);
+    }
 }
