@@ -1,11 +1,8 @@
 package com.theone.tools.waterfall.biz;
 
 import com.alibaba.fastjson.JSON;
-import com.theone.tools.sso.client.IUserContext;
-import com.theone.tools.waterfall.model.requirement.Requirement;
-import com.theone.tools.waterfall.model.requirement.RequirementStage;
-import com.theone.tools.waterfall.model.requirement.RequirementTemplate;
-import com.theone.tools.waterfall.model.requirement.TemplateStage;
+import com.theone.common.base.utils.DateFormatter;
+import com.theone.tools.waterfall.model.requirement.*;
 import com.theone.tools.waterfall.service.RequirementService;
 import com.theone.tools.waterfall.vo.*;
 import org.apache.commons.compress.utils.Lists;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -89,25 +87,27 @@ public class RequirementBiz {
                 requirementTemplates.stream().map(this::adapt).collect(Collectors.toList()));
     }
 
-    public void add(Integer projectId, Integer templateId, String name, String desc) {
+    public void add(RequirementAddReq req) {
         Requirement add = new Requirement();
-        add.setProjectId(projectId);
-        add.setTemplateId(templateId);
-        add.setName(name);
-        add.setRequirementDesc(desc);
-        add.setRequirementOwner(IUserContext.current().getUsername());
+        add.setProjectId(req.getProjectId());
+        add.setTemplateId(req.getTemplateId());
+        add.setName(req.getName());
+        add.setRequirementDesc(req.getDesc());
+        add.setRequirementOwner(req.getOwner());
+        add.setExpectDate(DateFormatter.parseDate(req.getExpectDate()));
+        add.setPriority(req.getPriority());
 
         Requirement requirement = requirementService.add(add);
-        RequirementTemplate template = requirementService.templateInfo(templateId);
+        RequirementTemplate template = requirementService.templateInfo(req.getTemplateId());
         List<TemplateStage> templateStages = template.getStages();
 
         List<RequirementStage> stages = Lists.newArrayList();
 
         for (TemplateStage templateStage : templateStages) {
             RequirementStage stage = new RequirementStage();
-            stage.setProjectId(projectId);
+            stage.setProjectId(req.getProjectId());
             stage.setRequirementId(requirement.getId());
-            stage.setTemplateId(templateId);
+            stage.setTemplateId(req.getTemplateId());
             stage.setTemplateStageId(templateStage.getId());
             stage.setName(templateStage.getName());
             stage.setStageDesc(templateStage.getDesc());
@@ -134,7 +134,37 @@ public class RequirementBiz {
     }
 
     public RequirementInfoResp info(int id) {
-        requirementService.info(id);
+        return adapt(requirementService.info(id));
+    }
+
+    private RequirementInfoResp adapt(Requirement requirement) {
+        if (requirement == null) {
+            return null;
+        }
+        RequirementInfoResp resp = new RequirementInfoResp();
+        resp.setId(requirement.getId());
+        resp.setProjectId(requirement.getProjectId());
+        resp.setTemplateId(requirement.getTemplateId());
+        resp.setName(requirement.getName());
+        resp.setDesc(requirement.getRequirementDesc());
+        resp.setOwner(requirement.getRequirementOwner());
+        resp.setUpdateTime(requirement.getUpdateTime());
+        resp.setCreateTime(requirement.getCreateTime());
+
+        return resp;
+    }
+
+    public RequirementListResp list(Integer projectId, String username, RequirementStatus status) {
+        List<RequirementAssignments> assignmentsList = requirementService.list(projectId, username, status);
+
+        List<RequirementInfoResp> list = assignmentsList.stream().map(RequirementAssignments::getRequirement).map(this::adapt).collect(Collectors.toList());
+
+        return new RequirementListResp(list.size(), list);
+
+    }
+
+    public RequirementDashboardResp dashboard(String username, RequirementStatus status) {
+        Map<StageType, List<RequirementDashBoardProject>> dashboardProjects = requirementService.dashboard(username, status);
         return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.theone.tools.waterfall.model.requirement;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Requirement {
@@ -15,6 +16,10 @@ public class Requirement {
     private String requirementDesc;
 
     private String requirementOwner;
+
+    private LocalDate expectDate;
+
+    private int priority;
 
     private LocalDateTime updateTime;
 
@@ -66,6 +71,22 @@ public class Requirement {
 
     public void setRequirementOwner(String requirementOwner) {
         this.requirementOwner = requirementOwner;
+    }
+
+    public LocalDate getExpectDate() {
+        return expectDate;
+    }
+
+    public void setExpectDate(LocalDate expectDate) {
+        this.expectDate = expectDate;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 
     public LocalDateTime getUpdateTime() {

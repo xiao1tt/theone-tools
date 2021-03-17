@@ -1,6 +1,7 @@
 package com.theone.tools.waterfall.entity;
 
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
+import com.theone.tools.waterfall.model.requirement.StageType;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -21,6 +22,8 @@ public class AssignmentEntity implements Serializable {
     private Integer requirementId;
     
     private Integer stageId;
+
+    private StageType stageType;
     
     private String name;
     
@@ -63,6 +66,14 @@ public class AssignmentEntity implements Serializable {
 
     public void setStageId(Integer stageId) {
         this.stageId = stageId;
+    }
+
+    public StageType getStageType() {
+        return stageType;
+    }
+
+    public void setStageType(StageType stageType) {
+        this.stageType = stageType;
     }
 
     public String getName() {

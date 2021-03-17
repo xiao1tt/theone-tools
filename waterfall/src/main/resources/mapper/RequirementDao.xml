@@ -9,6 +9,9 @@
         <result property="templateId" column="template_id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="requirementDesc" column="requirement_desc" jdbcType="VARCHAR"/>
+        <result property="expectDate" column="expect_date" jdbcType="TIMESTAMP"/>
+        <result property="priority" column="priority" jdbcType="INTEGER"/>
+        <result property="requirementStatus" column="requirement_status"/>
         <result property="requirementOwner" column="requirement_owner" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
@@ -16,16 +19,54 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
-        select
-          id, project_id, template_id, name, requirement_desc, requirement_owner, update_time, create_time
+        select id,
+               project_id,
+               template_id,
+               name,
+               requirement_desc,
+               expect_date,
+               priority,
+               requirement_status,
+               requirement_owner,
+               update_time,
+               create_time
         from waterfall.requirement
         where id = #{id}
     </select>
 
+    <select id="queryByIds" resultMap="BaseResultMap">
+        select id,
+        project_id,
+        template_id,
+        name,
+        requirement_desc,
+        expect_date,
+        priority,
+        requirement_status,
+        requirement_owner,
+        update_time,
+        create_time
+        from waterfall.requirement
+        where id in
+        <foreach collection="ids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and requirement_status = #{status}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
-        select
-          id, project_id, template_id, name, requirement_desc, requirement_owner, update_time, create_time
+        select id,
+               project_id,
+               template_id,
+               name,
+               requirement_desc,
+               expect_date,
+               priority,
+               requirement_status,
+               requirement_owner,
+               update_time,
+               create_time
         from waterfall.requirement
         limit #{offset}, #{limit}
     </select>
@@ -33,7 +74,9 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, project_id, template_id, name, requirement_desc, requirement_owner, update_time, create_time
+        id, project_id, template_id, name, requirement_desc, expect_date,priority,requirement_status,requirement_owner,
+        update_time,
+        create_time
         from waterfall.requirement
         <where>
             <if test="id != null">
@@ -51,6 +94,15 @@
             <if test="requirementDesc != null and requirementDesc != ''">
                 and requirement_desc = #{requirementDesc}
             </if>
+            <if test="expectDate != null and expectDate != ''">
+                and expect_date = #{expectDate}
+            </if>
+            <if test="priority != null and priority != ''">
+                and priority = #{priority}
+            </if>
+            <if test="requirementStatus != null">
+                and requirement_status = #{requirementStatus}
+            </if>
             <if test="requirementOwner != null and requirementOwner != ''">
                 and requirement_owner = #{requirementOwner}
             </if>
@@ -65,8 +117,11 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into waterfall.requirement(project_id, template_id, name, requirement_desc, requirement_owner)
-        values (#{projectId}, #{templateId}, #{name}, #{requirementDesc}, #{requirementOwner})
+        insert into waterfall.requirement(project_id, template_id, name, requirement_desc, expect_date, priority,
+                                          requirement_status,
+                                          requirement_owner)
+        values (#{projectId}, #{templateId}, #{name}, #{requirementDesc}, #{expectDate},
+                #{priority},#{requirementStatus}, #{requirementOwner})
     </insert>
 
     <!--通过主键修改数据-->
@@ -85,6 +140,15 @@
             <if test="requirementDesc != null and requirementDesc != ''">
                 requirement_desc = #{requirementDesc},
             </if>
+            <if test="expectDate != null and expectDate != ''">
+                expect_date = #{expectDate},
+            </if>
+            <if test="priority != null and priority != ''">
+                priority = #{priority},
+            </if>
+            <if test="requirementStatus != null and requirementStatus != ''">
+                requirement_status = #{requirementStatus},
+            </if>
             <if test="requirementOwner != null and requirementOwner != ''">
                 requirement_owner = #{requirementOwner},
             </if>
@@ -94,7 +158,9 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from waterfall.requirement where id = #{id}
+        delete
+        from waterfall.requirement
+        where id = #{id}
     </delete>
 
 </mapper>

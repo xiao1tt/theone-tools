@@ -1,9 +1,6 @@
 package com.theone.tools.waterfall.service;
 
-import com.theone.tools.sso.client.UserGroup;
-
-import java.time.LocalDateTime;
-
+import com.google.common.collect.Lists;
 import com.theone.tools.waterfall.dao.*;
 import com.theone.tools.waterfall.entity.RequirementEntity;
 import com.theone.tools.waterfall.entity.RequirementStageEntity;
@@ -11,15 +8,14 @@ import com.theone.tools.waterfall.entity.RequirementTemplateEntity;
 import com.theone.tools.waterfall.entity.RequirementTemplateStageEntity;
 import com.theone.tools.waterfall.model.assignment.Assignment;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
-import com.theone.tools.waterfall.model.requirement.Requirement;
-import com.theone.tools.waterfall.model.requirement.RequirementStage;
-import com.theone.tools.waterfall.model.requirement.RequirementTemplate;
-import com.theone.tools.waterfall.model.requirement.TemplateStage;
-import org.apache.commons.compress.utils.Lists;
+import com.theone.tools.waterfall.model.requirement.*;
+import com.theone.tools.waterfall.vo.RequirementDashBoardProject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +25,10 @@ import java.util.stream.Collectors;
 public class RequirementService {
     @Resource
     private AssignmentService assignmentService;
+    @Resource
+    private UserService userService;
+    @Resource
+    private ProjectService projectService;
     @Resource
     private RequirementDao requirementDao;
     @Resource
@@ -159,6 +159,8 @@ public class RequirementService {
         requirement.setName(entity.getName());
         requirement.setRequirementDesc(entity.getRequirementDesc());
         requirement.setRequirementOwner(entity.getRequirementOwner());
+        requirement.setPriority(entity.getPriority());
+        requirement.setExpectDate(entity.getExpectDate());
         requirement.setUpdateTime(entity.getUpdateTime());
         requirement.setCreateTime(entity.getCreateTime());
 
@@ -173,6 +175,8 @@ public class RequirementService {
         entity.setProjectId(requirement.getProjectId());
         entity.setTemplateId(requirement.getTemplateId());
         entity.setName(requirement.getName());
+        entity.setPriority(requirement.getPriority());
+        entity.setExpectDate(requirement.getExpectDate());
         entity.setRequirementDesc(requirement.getRequirementDesc());
         entity.setRequirementOwner(requirement.getRequirementOwner());
 
@@ -188,6 +192,7 @@ public class RequirementService {
             assignment.setProjectId(entity.getProjectId());
             assignment.setRequirementId(entity.getRequirementId());
             assignment.setStageId(entity.getId());
+            assignment.setStageType(entity.getType());
             assignment.setName(entity.getName());
             assignment.setAssignmentDesc("默认任务");
             assignment.setAssignmentStatus(AssignmentStatus.INIT);
@@ -226,6 +231,45 @@ public class RequirementService {
 
     public Requirement info(int id) {
         RequirementEntity entity = requirementDao.queryById(id);
-        return null;
+        return adapt(entity);
+    }
+
+    public List<RequirementAssignments> list(Integer projectId, String username, RequirementStatus status) {
+        List<Assignment> assignments = assignmentService.list(projectId, username);
+
+        Map<Integer, List<Assignment>> requirementAssignmentMap = assignments.stream()
+                .collect(Collectors.groupingBy(Assignment::getProjectId, HashMap::new, Collectors.toCollection(ArrayList::new)));
+
+        List<Requirement> requirements = this.listByIds(requirementAssignmentMap.keySet(), status);
+
+        Map<Integer, Requirement> requirementMap = requirements.stream()
+                .collect(Collectors.toMap(Requirement::getId, Function.identity()));
+
+        List<RequirementAssignments> result = new ArrayList<>();
+
+        for (Integer id : requirementMap.keySet()) {
+            RequirementAssignments item = new RequirementAssignments();
+            item.setRequirement(requirementMap.get(id));
+            item.setAssignments(requirementAssignmentMap.get(id));
+            result.add(item);
+        }
+
+        return result;
+    }
+
+    private List<Requirement> listByIds(Collection<Integer> requirementIds, RequirementStatus status) {
+        return requirementDao.queryByIds(requirementIds, status).stream().map(this::adapt).collect(Collectors.toList());
+    }
+
+    public Map<StageType, List<RequirementDashBoardProject>> dashboard(String username, RequirementStatus status) {
+        RequirementEntity query = new RequirementEntity();
+        query.setRequirementStatus(status);
+
+        List<RequirementEntity> requirementEntities = requirementDao.queryAll(query);
+        if (StringUtils.isNotEmpty(username)) {
+            List<Assignment> assignments = assignmentService.list(username);
+
+
+        }
     }
 }

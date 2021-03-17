@@ -1,5 +1,7 @@
 package com.theone.tools.waterfall.model.assignment;
 
+import com.theone.tools.waterfall.model.requirement.StageType;
+
 import java.time.LocalDateTime;
 
 /**
@@ -14,6 +16,8 @@ public class Assignment {
     private Integer requirementId;
 
     private Integer stageId;
+
+    private StageType stageType;
 
     private String name;
 
@@ -55,6 +59,14 @@ public class Assignment {
 
     public void setStageId(Integer stageId) {
         this.stageId = stageId;
+    }
+
+    public StageType getStageType() {
+        return stageType;
+    }
+
+    public void setStageType(StageType stageType) {
+        this.stageType = stageType;
     }
 
     public String getName() {

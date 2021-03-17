@@ -195,4 +195,12 @@ public class ProjectService {
     public void userAdd(ProjectUser user) {
         projectUserDao.insert(adapt(user));
     }
+
+    public List<ProjectUser> projectByUser(String username) {
+        ProjectUserEntity query = new ProjectUserEntity();
+        query.setUsername(username);
+
+        List<ProjectUserEntity> projectUsers = projectUserDao.queryAll(query);
+        return projectUsers.stream().map(this::adapt).collect(Collectors.toList());
+    }
 }

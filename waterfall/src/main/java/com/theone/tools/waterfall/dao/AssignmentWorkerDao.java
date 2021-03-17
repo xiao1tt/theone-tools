@@ -1,17 +1,16 @@
 package com.theone.tools.waterfall.dao;
 
-import com.theone.tools.waterfall.entity.AssignmentEntity;
-import com.theone.tools.waterfall.model.assignment.Assignment;
+import com.theone.tools.waterfall.entity.AssignmentWorkerEntity;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * (Assignment)表数据库访问层
+ * (AssignmentWorker)表数据库访问层
  *
  * @author makejava
- * @since 2021-03-14 20:32:12
+ * @since 2021-03-17 13:55:49
  */
-public interface AssignmentDao {
+public interface AssignmentWorkerDao {
 
     /**
      * 通过ID查询单条数据
@@ -19,7 +18,7 @@ public interface AssignmentDao {
      * @param id 主键
      * @return 实例对象
      */
-    AssignmentEntity queryById(Integer id);
+    AssignmentWorkerEntity queryById(Integer id);
 
     /**
      * 查询指定行数据
@@ -28,32 +27,32 @@ public interface AssignmentDao {
      * @param limit 查询条数
      * @return 对象列表
      */
-    List<AssignmentEntity> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<AssignmentWorkerEntity> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
 
 
     /**
      * 通过实体作为筛选条件查询
      *
-     * @param assignment 实例对象
+     * @param assignmentWorker 实例对象
      * @return 对象列表
      */
-    List<AssignmentEntity> queryAll(AssignmentEntity assignment);
+    List<AssignmentWorkerEntity> queryAll(AssignmentWorkerEntity assignmentWorker);
 
     /**
      * 新增数据
      *
-     * @param assignment 实例对象
+     * @param assignmentWorker 实例对象
      * @return 影响行数
      */
-    int insert(AssignmentEntity assignment);
+    int insert(AssignmentWorkerEntity assignmentWorker);
 
     /**
      * 修改数据
      *
-     * @param assignment 实例对象
+     * @param assignmentWorker 实例对象
      * @return 影响行数
      */
-    int update(AssignmentEntity assignment);
+    int update(AssignmentWorkerEntity assignmentWorker);
 
     /**
      * 通过主键删除数据
@@ -63,5 +62,4 @@ public interface AssignmentDao {
      */
     int deleteById(Integer id);
 
-    List<AssignmentEntity> queryByIds(List<Integer> ids);
 }

@@ -25,4 +25,16 @@ public class DateFormatter {
     public static String format(LocalTime time) {
         return TIME_FORMATTER.format(time);
     }
+
+    public static LocalDate parseDate(String text) {
+        return LocalDate.parse(text, DATE_FORMATTER);
+    }
+
+    public static LocalDate parseDateTime(String text) {
+        return LocalDate.parse(text, DATE_TIME_FORMATTER);
+    }
+
+    public static LocalDate parseTime(String text) {
+        return LocalDate.parse(text, TIME_FORMATTER);
+    }
 }

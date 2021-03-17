@@ -14,6 +14,8 @@ public class TemplateStage {
 
     private String desc;
 
+    private StageType type;
+
     private UserGroup requiredGroup;
 
     private String director;
@@ -58,6 +60,14 @@ public class TemplateStage {
 
     public void setRequiredGroup(UserGroup requiredGroup) {
         this.requiredGroup = requiredGroup;
+    }
+
+    public StageType getType() {
+        return type;
+    }
+
+    public void setType(StageType type) {
+        this.type = type;
     }
 
     public String getDirector() {
