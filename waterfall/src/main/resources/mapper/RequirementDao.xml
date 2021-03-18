@@ -13,6 +13,8 @@
         <result property="priority" column="priority" jdbcType="INTEGER"/>
         <result property="requirementStatus" column="requirement_status"/>
         <result property="requirementOwner" column="requirement_owner" jdbcType="VARCHAR"/>
+        <result property="currentStage" column="current_stage" jdbcType="VARCHAR"/>
+        <result property="currentAssignment" column="current_assignment" jdbcType="VARCHAR"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -28,6 +30,8 @@
                priority,
                requirement_status,
                requirement_owner,
+               current_stage,
+               current_assignment,
                update_time,
                create_time
         from waterfall.requirement
@@ -44,6 +48,8 @@
         priority,
         requirement_status,
         requirement_owner,
+        current_stage,
+        current_assignment,
         update_time,
         create_time
         from waterfall.requirement
@@ -65,6 +71,8 @@
                priority,
                requirement_status,
                requirement_owner,
+               current_stage,
+               current_assignment,
                update_time,
                create_time
         from waterfall.requirement
@@ -74,7 +82,8 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, project_id, template_id, name, requirement_desc, expect_date,priority,requirement_status,requirement_owner,
+        id, project_id, template_id, name, requirement_desc, expect_date,priority,requirement_status,requirement_owner,current_stage,
+        current_assignment,
         update_time,
         create_time
         from waterfall.requirement
@@ -151,6 +160,12 @@
             </if>
             <if test="requirementOwner != null and requirementOwner != ''">
                 requirement_owner = #{requirementOwner},
+            </if>
+            <if test="currentStage != null and currentStage != ''">
+                current_stage = #{currentStage},
+            </if>
+            <if test="currentAssignment != null and currentAssignment != ''">
+                current_assignment = #{currentAssignment},
             </if>
         </set>
         where id = #{id}

@@ -4,6 +4,7 @@ import com.theone.tools.waterfall.entity.ProjectUserEntity;
 import com.theone.tools.waterfall.model.user.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 /**

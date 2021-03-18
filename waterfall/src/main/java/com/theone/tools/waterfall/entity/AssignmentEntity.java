@@ -3,8 +3,8 @@ package com.theone.tools.waterfall.entity;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import com.theone.tools.waterfall.model.requirement.StageType;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * (Assignment)实体类
@@ -14,25 +14,25 @@ import java.io.Serializable;
  */
 public class AssignmentEntity implements Serializable {
     private static final long serialVersionUID = -49193335213165076L;
-    
+
     private Integer id;
-    
+
     private Integer projectId;
-    
+
     private Integer requirementId;
-    
+
     private Integer stageId;
 
     private StageType stageType;
-    
+
     private String name;
-    
+
     private String assignmentDesc;
-    
+
     private AssignmentStatus assignmentStatus;
     
     private LocalDateTime updateTime;
-    
+
     private LocalDateTime createTime;
 
 

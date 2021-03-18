@@ -3,8 +3,8 @@ package com.theone.tools.waterfall.entity;
 import com.theone.tools.sso.client.UserGroup;
 import com.theone.tools.waterfall.model.requirement.StageType;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * (RequirementStage)实体类
@@ -14,33 +14,35 @@ import java.io.Serializable;
  */
 public class RequirementStageEntity implements Serializable {
     private static final long serialVersionUID = -66558812526794796L;
-    
+
     private Integer id;
-    
+
     private Integer projectId;
-    
+
     private Integer requirementId;
-    
+
     private Integer templateId;
-    
+
     private Integer templateStageId;
-    
+
     private String name;
-    
+
     private String stageDesc;
 
     private StageType type;
 
     private Integer stageOrder;
-    
+
     private UserGroup requiredGroup;
 
     private String director;
 
+    private Boolean inProcess;
+
     private String template;
-    
+
     private LocalDateTime updateTime;
-    
+
     private LocalDateTime createTime;
 
 
@@ -130,6 +132,14 @@ public class RequirementStageEntity implements Serializable {
 
     public void setDirector(String director) {
         this.director = director;
+    }
+
+    public Boolean isInProcess() {
+        return inProcess;
+    }
+
+    public void setInProcess(Boolean inProcess) {
+        this.inProcess = inProcess;
     }
 
     public String getTemplate() {

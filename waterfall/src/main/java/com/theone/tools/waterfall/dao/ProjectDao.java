@@ -2,6 +2,8 @@ package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.ProjectEntity;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -62,4 +64,5 @@ public interface ProjectDao {
      */
     int deleteById(Integer id);
 
+    List<ProjectEntity> queryByIds(Collection<Integer> ids);
 }

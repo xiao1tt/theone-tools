@@ -33,6 +33,10 @@ public class RequirementEntity implements Serializable {
 
     private RequirementStatus requirementStatus;
 
+    private String currentStage;
+
+    private String currentAssignment;
+
     private LocalDateTime updateTime;
 
     private LocalDateTime createTime;
@@ -108,6 +112,22 @@ public class RequirementEntity implements Serializable {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public String getCurrentStage() {
+        return currentStage;
+    }
+
+    public void setCurrentStage(String currentStage) {
+        this.currentStage = currentStage;
+    }
+
+    public String getCurrentAssignment() {
+        return currentAssignment;
+    }
+
+    public void setCurrentAssignment(String currentAssignment) {
+        this.currentAssignment = currentAssignment;
     }
 
     public LocalDateTime getUpdateTime() {

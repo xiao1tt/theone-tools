@@ -26,6 +26,8 @@ public class RequirementStage implements Serializable {
 
     private String name;
 
+    private StageType type;
+
     private String stageDesc;
 
     private Integer stageOrder;
@@ -33,6 +35,8 @@ public class RequirementStage implements Serializable {
     private UserGroup requiredGroup;
 
     private String director;
+
+    private Boolean inProcess;
 
     private String template;
 
@@ -89,6 +93,14 @@ public class RequirementStage implements Serializable {
         this.name = name;
     }
 
+    public StageType getType() {
+        return type;
+    }
+
+    public void setType(StageType type) {
+        this.type = type;
+    }
+
     public String getStageDesc() {
         return stageDesc;
     }
@@ -119,6 +131,14 @@ public class RequirementStage implements Serializable {
 
     public void setRequiredGroup(UserGroup requiredGroup) {
         this.requiredGroup = requiredGroup;
+    }
+
+    public Boolean getInProcess() {
+        return inProcess;
+    }
+
+    public void setInProcess(Boolean inProcess) {
+        this.inProcess = inProcess;
     }
 
     public String getTemplate() {

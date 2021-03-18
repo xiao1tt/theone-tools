@@ -160,7 +160,6 @@ public class RequirementBiz {
         List<RequirementInfoResp> list = assignmentsList.stream().map(RequirementAssignments::getRequirement).map(this::adapt).collect(Collectors.toList());
 
         return new RequirementListResp(list.size(), list);
-
     }
 
     public RequirementDashboardResp dashboard(String username, RequirementStatus status) {

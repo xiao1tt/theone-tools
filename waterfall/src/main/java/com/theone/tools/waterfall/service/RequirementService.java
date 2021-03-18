@@ -1,6 +1,11 @@
 package com.theone.tools.waterfall.service;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
+import com.theone.common.base.utils.DateFormatter;
 import com.theone.tools.waterfall.dao.*;
 import com.theone.tools.waterfall.entity.RequirementEntity;
 import com.theone.tools.waterfall.entity.RequirementStageEntity;
@@ -8,9 +13,10 @@ import com.theone.tools.waterfall.entity.RequirementTemplateEntity;
 import com.theone.tools.waterfall.entity.RequirementTemplateStageEntity;
 import com.theone.tools.waterfall.model.assignment.Assignment;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
+import com.theone.tools.waterfall.model.project.Project;
 import com.theone.tools.waterfall.model.requirement.*;
 import com.theone.tools.waterfall.vo.RequirementDashBoardProject;
-import org.apache.commons.lang3.StringUtils;
+import com.theone.tools.waterfall.vo.RequirementDashBoardRequirement;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -161,6 +167,9 @@ public class RequirementService {
         requirement.setRequirementOwner(entity.getRequirementOwner());
         requirement.setPriority(entity.getPriority());
         requirement.setExpectDate(entity.getExpectDate());
+        requirement.setCurrentStage(JSON.parseObject(entity.getCurrentStage(), RequirementStage.class));
+        requirement.setCurrentAssignment(JSON.parseObject(entity.getCurrentAssignment(), Assignment.class));
+        requirement.setRequirementStatus(entity.getRequirementStatus());
         requirement.setUpdateTime(entity.getUpdateTime());
         requirement.setCreateTime(entity.getCreateTime());
 
@@ -179,7 +188,8 @@ public class RequirementService {
         entity.setExpectDate(requirement.getExpectDate());
         entity.setRequirementDesc(requirement.getRequirementDesc());
         entity.setRequirementOwner(requirement.getRequirementOwner());
-
+        entity.setCurrentStage(JSON.toJSONString(requirement.getCurrentStage()));
+        entity.setCurrentAssignment(JSON.toJSONString(requirement.getCurrentAssignment()));
         return entity;
     }
 
@@ -206,15 +216,17 @@ public class RequirementService {
         }
 
         RequirementStageEntity entity = new RequirementStageEntity();
+        entity.setId(stage.getId());
         entity.setProjectId(stage.getProjectId());
         entity.setRequirementId(stage.getRequirementId());
-        entity.setTemplateId(stage.getTemplateId());
-        entity.setTemplateStageId(stage.getTemplateStageId());
-        entity.setName(stage.getName());
-        entity.setStageDesc(stage.getStageDesc());
+        entity.setType(stage.getType());
         entity.setStageOrder(stage.getStageOrder());
         entity.setRequiredGroup(stage.getRequiredGroup());
+        entity.setDirector(stage.getDirector());
+        entity.setInProcess(stage.getInProcess());
         entity.setTemplate(stage.getTemplate());
+        entity.setUpdateTime(stage.getUpdateTime());
+        entity.setCreateTime(stage.getCreateTime());
 
         return entity;
     }
@@ -238,7 +250,7 @@ public class RequirementService {
         List<Assignment> assignments = assignmentService.list(projectId, username);
 
         Map<Integer, List<Assignment>> requirementAssignmentMap = assignments.stream()
-                .collect(Collectors.groupingBy(Assignment::getProjectId, HashMap::new, Collectors.toCollection(ArrayList::new)));
+                .collect(Collectors.groupingBy(Assignment::getProjectId));
 
         List<Requirement> requirements = this.listByIds(requirementAssignmentMap.keySet(), status);
 
@@ -262,14 +274,59 @@ public class RequirementService {
     }
 
     public Map<StageType, List<RequirementDashBoardProject>> dashboard(String username, RequirementStatus status) {
-        RequirementEntity query = new RequirementEntity();
-        query.setRequirementStatus(status);
+        List<RequirementAssignments> requirementAssignmentsList = this.list(null, username, status);
 
-        List<RequirementEntity> requirementEntities = requirementDao.queryAll(query);
-        if (StringUtils.isNotEmpty(username)) {
-            List<Assignment> assignments = assignmentService.list(username);
+        Set<Integer> projectIds = Sets.newHashSet();
 
+        Map<StageType, List<RequirementAssignments>> stageMap = requirementAssignmentsList.stream()
+                .peek(item -> projectIds.add(item.getRequirement().getProjectId()))
+                .collect(Collectors.groupingBy(item -> item.getRequirement().getCurrentStage().getType()));
 
-        }
+        Map<Integer, Project> projectIdMap = projectService.listByIds(projectIds).stream()
+                .collect(Collectors.toMap(Project::getId, Function.identity()));
+
+        Map<StageType, List<RequirementDashBoardProject>> result = new HashMap<>(StageType.values().length);
+
+        stageMap.forEach((stageType, requirements) -> {
+            List<RequirementDashBoardProject> dashBoardProjects = new ArrayList<>();
+
+            Multimap<Integer, RequirementDashBoardRequirement> dashboardRequirementMap = HashMultimap.create();
+
+            for (RequirementAssignments requirement : requirements) {
+                Requirement requirement1 = requirement.getRequirement();
+                RequirementDashBoardRequirement item = new RequirementDashBoardRequirement();
+                item.setName(requirement1.getName());
+                item.setDesc(requirement1.getRequirementDesc());
+                item.setPriority(requirement1.getPriority());
+                item.setOwner(requirement1.getRequirementOwner());
+                item.setExpectDate(DateFormatter.format(requirement1.getExpectDate()));
+                item.setStatus(requirement1.getRequirementStatus());
+                item.setStatusView(requirement1.getRequirementStatus().getDesc());
+
+                RequirementStage currentStage = requirement1.getCurrentStage();
+                if (currentStage != null) {
+                    item.setCurrentStage(currentStage.getType());
+                    item.setCurrentStageView(currentStage.getName());
+                    item.setCurrentWorker(assignmentService.currentWorker(currentStage.getId()));
+                }
+
+                dashboardRequirementMap.put(requirement1.getProjectId(), item);
+            }
+
+            for (Integer projectId : dashboardRequirementMap.keySet()) {
+                Project project = projectIdMap.get(projectId);
+                Collection<RequirementDashBoardRequirement> boardRequirements = dashboardRequirementMap.get(projectId);
+                RequirementDashBoardProject dashBoardProject = new RequirementDashBoardProject();
+                dashBoardProject.setProjectId(project.getId());
+                dashBoardProject.setProjectName(project.getName());
+                dashBoardProject.setRequirements(Lists.newArrayList(boardRequirements));
+
+                dashBoardProjects.add(dashBoardProject);
+            }
+
+            result.put(stageType, dashBoardProjects);
+        });
+
+        return result;
     }
 }

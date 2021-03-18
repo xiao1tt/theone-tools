@@ -1,5 +1,7 @@
 package com.theone.tools.waterfall.model.requirement;
 
+import com.theone.tools.waterfall.model.assignment.Assignment;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -20,6 +22,12 @@ public class Requirement {
     private LocalDate expectDate;
 
     private int priority;
+
+    private RequirementStatus requirementStatus;
+
+    private RequirementStage currentStage;
+
+    private Assignment currentAssignment;
 
     private LocalDateTime updateTime;
 
@@ -87,6 +95,30 @@ public class Requirement {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    public RequirementStatus getRequirementStatus() {
+        return requirementStatus;
+    }
+
+    public void setRequirementStatus(RequirementStatus requirementStatus) {
+        this.requirementStatus = requirementStatus;
+    }
+
+    public RequirementStage getCurrentStage() {
+        return currentStage;
+    }
+
+    public void setCurrentStage(RequirementStage currentStage) {
+        this.currentStage = currentStage;
+    }
+
+    public Assignment getCurrentAssignment() {
+        return currentAssignment;
+    }
+
+    public void setCurrentAssignment(Assignment currentAssignment) {
+        this.currentAssignment = currentAssignment;
     }
 
     public LocalDateTime getUpdateTime() {

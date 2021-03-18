@@ -14,16 +14,34 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
-        select
-          id, group_id, name, project_desc, update_time, create_time
+        select id,
+               group_id,
+               name,
+               project_desc,
+               update_time,
+               create_time
         from waterfall.project
         where id = #{id}
     </select>
 
+    <select id="queryByIds" resultMap="BaseResultMap">
+        select
+        id, group_id, name, project_desc, update_time, create_time
+        from waterfall.project
+        where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="item">
+            #{item}
+        </foreach>
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
-        select
-          id, group_id, name, project_desc, update_time, create_time
+        select id,
+               group_id,
+               name,
+               project_desc,
+               update_time,
+               create_time
         from waterfall.project
         limit #{offset}, #{limit}
     </select>
@@ -31,7 +49,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, group_id, name, project_desc, update_time, create_time
+        id, group_id, name, project_desc, update_time, create_time
         from waterfall.project
         <where>
             <if test="id != null">
@@ -80,7 +98,9 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from waterfall.project where id = #{id}
+        delete
+        from waterfall.project
+        where id = #{id}
     </delete>
 
 </mapper>

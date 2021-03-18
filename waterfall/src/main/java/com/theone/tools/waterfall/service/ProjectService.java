@@ -15,7 +15,9 @@ import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -202,5 +204,10 @@ public class ProjectService {
 
         List<ProjectUserEntity> projectUsers = projectUserDao.queryAll(query);
         return projectUsers.stream().map(this::adapt).collect(Collectors.toList());
+    }
+
+    public List<Project> listByIds(Collection<Integer> ids) {
+        List<ProjectEntity> projectEntities = projectDao.queryByIds(ids);
+        return projectEntities.stream().map(this::adapt).collect(Collectors.toList());
     }
 }

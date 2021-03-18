@@ -5,6 +5,9 @@ import com.theone.tools.waterfall.model.requirement.StageType;
 
 import java.util.List;
 
+/**
+ * @author chenxiaotong
+ */
 public class RequirementDashBoardRequirement {
     private String name;
     private String desc;
