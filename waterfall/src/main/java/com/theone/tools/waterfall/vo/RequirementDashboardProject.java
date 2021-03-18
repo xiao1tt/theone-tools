@@ -5,11 +5,11 @@ import java.util.List;
 /**
  * @author chenxiaotong
  */
-public class RequirementDashBoardProject {
+public class RequirementDashboardProject {
     private int projectId;
     private String projectName;
 
-    private List<RequirementDashBoardRequirement> requirements;
+    private List<RequirementDashboardRequirement> requirements;
 
     public int getProjectId() {
         return projectId;
@@ -27,11 +27,11 @@ public class RequirementDashBoardProject {
         this.projectName = projectName;
     }
 
-    public List<RequirementDashBoardRequirement> getRequirements() {
+    public List<RequirementDashboardRequirement> getRequirements() {
         return requirements;
     }
 
-    public void setRequirements(List<RequirementDashBoardRequirement> requirements) {
+    public void setRequirements(List<RequirementDashboardRequirement> requirements) {
         this.requirements = requirements;
     }
 }

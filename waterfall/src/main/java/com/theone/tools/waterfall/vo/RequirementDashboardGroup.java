@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class RequirementDashboardGroup {
     private String groupName;
-    private List<RequirementDashBoardProject> projects;
+    private List<RequirementDashboardProject> projects;
 
     public String getGroupName() {
         return groupName;
@@ -17,11 +17,11 @@ public class RequirementDashboardGroup {
         this.groupName = groupName;
     }
 
-    public List<RequirementDashBoardProject> getProjects() {
+    public List<RequirementDashboardProject> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<RequirementDashBoardProject> projects) {
+    public void setProjects(List<RequirementDashboardProject> projects) {
         this.projects = projects;
     }
 }

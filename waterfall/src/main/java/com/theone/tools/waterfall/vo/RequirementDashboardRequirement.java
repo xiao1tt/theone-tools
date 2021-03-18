@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author chenxiaotong
  */
-public class RequirementDashBoardRequirement {
+public class RequirementDashboardRequirement {
     private String name;
     private String desc;
 

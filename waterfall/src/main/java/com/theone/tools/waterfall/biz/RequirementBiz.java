@@ -163,7 +163,7 @@ public class RequirementBiz {
     }
 
     public RequirementDashboardResp dashboard(String username, RequirementStatus status) {
-        Map<StageType, List<RequirementDashBoardProject>> dashboardProjects = requirementService.dashboard(username, status);
+        Map<StageType, List<RequirementDashboardProject>> dashboardProjects = requirementService.dashboard(username, status);
         return null;
     }
 }
