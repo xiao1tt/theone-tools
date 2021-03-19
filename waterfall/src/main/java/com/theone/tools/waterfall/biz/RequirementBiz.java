@@ -1,4 +1,11 @@
 package com.theone.tools.waterfall.biz;
+import com.theone.tools.waterfall.model.requirement.StageType;
+import com.theone.tools.sso.client.UserGroup;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import com.theone.tools.waterfall.model.requirement.RequirementStage;
+import com.theone.tools.waterfall.model.requirement.RequirementStatus;
+import com.theone.tools.waterfall.model.assignment.Assignment;
 
 import com.alibaba.fastjson.JSON;
 import com.theone.common.base.utils.DateFormatter;
@@ -96,6 +103,7 @@ public class RequirementBiz {
         add.setRequirementOwner(req.getOwner());
         add.setExpectDate(DateFormatter.parseDate(req.getExpectDate()));
         add.setPriority(req.getPriority());
+        add.setRequirementStatus(RequirementStatus.NOT_ACTIVE);
 
         Requirement requirement = requirementService.add(add);
         RequirementTemplate template = requirementService.templateInfo(req.getTemplateId());
@@ -114,6 +122,8 @@ public class RequirementBiz {
             stage.setStageOrder(templateStage.getOrder());
             stage.setDirector(templateStage.getDirector());
             stage.setRequiredGroup(templateStage.getRequiredGroup());
+            stage.setType(templateStage.getType());
+            stage.setInProcess(false);
             stage.setTemplate(JSON.toJSONString(templateStage));
             stages.add(stage);
         }

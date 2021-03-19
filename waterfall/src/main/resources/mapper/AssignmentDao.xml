@@ -78,7 +78,7 @@
             <if test="stageId != null">
                 and stage_id = #{stageId}
             </if>
-            <if test="stage_type != null">
+            <if test="stageType != null">
                 and stage_type = #{stageType}
             </if>
             <if test="name != null and name != ''">
@@ -87,14 +87,8 @@
             <if test="assignmentDesc != null and assignmentDesc != ''">
                 and assignment_desc = #{assignmentDesc}
             </if>
-            <if test="assignmentStatus != null and assignmentStatus != ''">
+            <if test="assignmentStatus != null">
                 and assignment_status = #{assignmentStatus}
-            </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
             </if>
         </where>
     </select>
@@ -102,11 +96,9 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into waterfall.assignment(project_id, requirement_id, stage_id, stage_type, name, assignment_desc,
-                                         assignment_status,
-                                         update_time, create_time)
+                                         assignment_status)
         values (#{projectId}, #{requirementId}, #{stageId}, #{stageType}, #{name}, #{assignmentDesc},
-                #{assignmentStatus},
-                #{updateTime}, #{createTime})
+                #{assignmentStatus})
     </insert>
 
     <!--通过主键修改数据-->
@@ -133,12 +125,6 @@
             </if>
             <if test="assignmentStatus != null and assignmentStatus != ''">
                 assignment_status = #{assignmentStatus},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
             </if>
         </set>
         where id = #{id}

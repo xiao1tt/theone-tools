@@ -1,6 +1,7 @@
 package com.theone.tools.waterfall.entity;
 
 import com.theone.tools.sso.client.UserGroup;
+import com.theone.tools.waterfall.model.requirement.StageType;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
@@ -23,7 +24,9 @@ public class RequirementTemplateStageEntity implements Serializable {
     private String stageDesc;
     
     private Integer stageOrder;
-    
+
+    private StageType stageType;
+
     private UserGroup requiredGroup;
 
     private String director;
@@ -79,6 +82,14 @@ public class RequirementTemplateStageEntity implements Serializable {
 
     public void setRequiredGroup(UserGroup requiredGroup) {
         this.requiredGroup = requiredGroup;
+    }
+
+    public StageType getStageType() {
+        return stageType;
+    }
+
+    public void setStageType(StageType stageType) {
+        this.stageType = stageType;
     }
 
     public String getDirector() {

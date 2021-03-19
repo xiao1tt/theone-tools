@@ -55,12 +55,6 @@
             <if test="role != null and role != ''">
                 and role = #{role}
             </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
-            </if>
         </where>
     </select>
 

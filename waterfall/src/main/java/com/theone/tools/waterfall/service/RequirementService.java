@@ -132,11 +132,13 @@ public class RequirementService {
         }
 
         TemplateStage stage = new TemplateStage();
+
         stage.setId(entity.getId());
         stage.setTemplateId(entity.getTemplateId());
         stage.setName(entity.getName());
         stage.setDesc(entity.getStageDesc());
         stage.setRequiredGroup(entity.getRequiredGroup());
+        stage.setType(entity.getStageType());
         stage.setDirector(entity.getDirector());
         stage.setOrder(entity.getStageOrder());
 
@@ -181,6 +183,7 @@ public class RequirementService {
             return null;
         }
         RequirementEntity entity = new RequirementEntity();
+        entity.setId(requirement.getId());
         entity.setProjectId(requirement.getProjectId());
         entity.setTemplateId(requirement.getTemplateId());
         entity.setName(requirement.getName());
@@ -190,6 +193,9 @@ public class RequirementService {
         entity.setRequirementOwner(requirement.getRequirementOwner());
         entity.setCurrentStage(JSON.toJSONString(requirement.getCurrentStage()));
         entity.setCurrentAssignment(JSON.toJSONString(requirement.getCurrentAssignment()));
+        entity.setRequirementStatus(requirement.getRequirementStatus());
+        entity.setUpdateTime(requirement.getUpdateTime());
+        entity.setCreateTime(requirement.getCreateTime());
         return entity;
     }
 
@@ -216,9 +222,14 @@ public class RequirementService {
         }
 
         RequirementStageEntity entity = new RequirementStageEntity();
+
         entity.setId(stage.getId());
         entity.setProjectId(stage.getProjectId());
         entity.setRequirementId(stage.getRequirementId());
+        entity.setTemplateId(stage.getTemplateId());
+        entity.setTemplateStageId(stage.getTemplateStageId());
+        entity.setName(stage.getName());
+        entity.setStageDesc(stage.getStageDesc());
         entity.setType(stage.getType());
         entity.setStageOrder(stage.getStageOrder());
         entity.setRequiredGroup(stage.getRequiredGroup());
@@ -250,7 +261,7 @@ public class RequirementService {
         List<Assignment> assignments = assignmentService.list(projectId, username);
 
         Map<Integer, List<Assignment>> requirementAssignmentMap = assignments.stream()
-                .collect(Collectors.groupingBy(Assignment::getProjectId));
+                .collect(Collectors.groupingBy(Assignment::getRequirementId));
 
         List<Requirement> requirements = this.listByIds(requirementAssignmentMap.keySet(), status);
 
@@ -278,9 +289,21 @@ public class RequirementService {
 
         Set<Integer> projectIds = Sets.newHashSet();
 
-        Map<StageType, List<RequirementAssignments>> stageMap = requirementAssignmentsList.stream()
-                .peek(item -> projectIds.add(item.getRequirement().getProjectId()))
-                .collect(Collectors.groupingBy(item -> item.getRequirement().getCurrentStage().getType()));
+        List<RequirementAssignments> noStageRequirements = new ArrayList<>();
+
+        Multimap<StageType, RequirementAssignments> stageMultiMap = HashMultimap.create();
+        for (RequirementAssignments requirementAssignments : requirementAssignmentsList) {
+            Requirement requirementItem = requirementAssignments.getRequirement();
+            projectIds.add(requirementItem.getProjectId());
+
+            if (requirementItem.getCurrentStage() == null) {
+                noStageRequirements.add(requirementAssignments);
+            } else {
+                stageMultiMap.put(requirementItem.getCurrentStage().getType(), requirementAssignments);
+            }
+        }
+
+        Map<StageType, Collection<RequirementAssignments>> stageMap = stageMultiMap.asMap();
 
         Map<Integer, Project> projectIdMap = projectService.listByIds(projectIds).stream()
                 .collect(Collectors.toMap(Project::getId, Function.identity()));
@@ -290,32 +313,12 @@ public class RequirementService {
         stageMap.forEach((stageType, stageRequirementsList) -> {
             List<RequirementDashboardProject> dashBoardProjects = new ArrayList<>();
 
-            Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = HashMultimap.create();
-
-            for (RequirementAssignments stageRequirement : stageRequirementsList) {
-                Requirement requirement = stageRequirement.getRequirement();
-                RequirementDashboardRequirement item = new RequirementDashboardRequirement();
-                item.setName(requirement.getName());
-                item.setDesc(requirement.getRequirementDesc());
-                item.setPriority(requirement.getPriority());
-                item.setOwner(requirement.getRequirementOwner());
-                item.setExpectDate(DateFormatter.format(requirement.getExpectDate()));
-                item.setStatus(requirement.getRequirementStatus());
-                item.setStatusView(requirement.getRequirementStatus().getDesc());
-
-                RequirementStage currentStage = requirement.getCurrentStage();
-                if (currentStage != null) {
-                    item.setCurrentStage(currentStage.getType());
-                    item.setCurrentStageView(currentStage.getName());
-                    item.setCurrentWorker(assignmentService.currentWorker(currentStage.getId()));
-                }
-
-                dashboardRequirementMap.put(requirement.getProjectId(), item);
-            }
+            Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = convertToDashboardRequirementMap(stageRequirementsList);
 
             for (Integer projectId : dashboardRequirementMap.keySet()) {
                 Project project = projectIdMap.get(projectId);
                 Collection<RequirementDashboardRequirement> boardRequirements = dashboardRequirementMap.get(projectId);
+
                 RequirementDashboardProject dashBoardProject = new RequirementDashboardProject();
                 dashBoardProject.setProjectId(project.getId());
                 dashBoardProject.setProjectName(project.getName());
@@ -327,6 +330,49 @@ public class RequirementService {
             result.put(stageType, dashBoardProjects);
         });
 
+        List<RequirementDashboardProject> dashBoardProjects = new ArrayList<>();
+        Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = convertToDashboardRequirementMap(noStageRequirements);
+
+        for (Integer projectId : dashboardRequirementMap.keySet()) {
+            Project project = projectIdMap.get(projectId);
+            Collection<RequirementDashboardRequirement> boardRequirements = dashboardRequirementMap.get(projectId);
+
+            RequirementDashboardProject dashBoardProject = new RequirementDashboardProject();
+            dashBoardProject.setProjectId(project.getId());
+            dashBoardProject.setProjectName(project.getName());
+            dashBoardProject.setRequirements(Lists.newArrayList(boardRequirements));
+
+            dashBoardProjects.add(dashBoardProject);
+        }
+
+        result.put(null, dashBoardProjects);
+
         return result;
+    }
+
+    private Multimap<Integer, RequirementDashboardRequirement> convertToDashboardRequirementMap(Collection<RequirementAssignments> stageRequirementsList) {
+        Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = HashMultimap.create();
+
+        for (RequirementAssignments stageRequirement : stageRequirementsList) {
+            Requirement requirement = stageRequirement.getRequirement();
+            RequirementDashboardRequirement item = new RequirementDashboardRequirement();
+            item.setName(requirement.getName());
+            item.setDesc(requirement.getRequirementDesc());
+            item.setPriority(requirement.getPriority());
+            item.setOwner(requirement.getRequirementOwner());
+            item.setExpectDate(DateFormatter.format(requirement.getExpectDate()));
+            item.setStatus(requirement.getRequirementStatus());
+            item.setStatusView(requirement.getRequirementStatus().getDesc());
+
+            RequirementStage currentStage = requirement.getCurrentStage();
+            if (currentStage != null) {
+                item.setCurrentStage(currentStage.getType());
+                item.setCurrentStageView(currentStage.getName());
+                item.setCurrentWorker(assignmentService.currentWorker(currentStage.getId()));
+            }
+
+            dashboardRequirementMap.put(requirement.getProjectId(), item);
+        }
+        return dashboardRequirementMap;
     }
 }

@@ -66,19 +66,13 @@
             <if test="completeTime != null">
                 and complete_time = #{completeTime}
             </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
-            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into waterfall.assignment_worker(assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time, update_time, create_time)
-        values (#{assignmentId}, #{stageId}, #{requirementId}, #{projectId}, #{worker}, #{workStatus}, #{startTime}, #{completeTime}, #{updateTime}, #{createTime})
+        insert into waterfall.assignment_worker(assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time)
+        values (#{assignmentId}, #{stageId}, #{requirementId}, #{projectId}, #{worker}, #{workStatus}, #{startTime}, #{completeTime})
     </insert>
 
     <!--通过主键修改数据-->
@@ -108,12 +102,6 @@
             </if>
             <if test="completeTime != null">
                 complete_time = #{completeTime},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime},
             </if>
         </set>
         where id = #{id}

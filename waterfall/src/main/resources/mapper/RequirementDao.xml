@@ -57,7 +57,9 @@
         <foreach collection="ids" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
-        and requirement_status = #{status}
+        <if test="status != null">
+            and requirement_status = #{status}
+        </if>
     </select>
 
     <!--查询指定行数据-->
@@ -115,20 +117,13 @@
             <if test="requirementOwner != null and requirementOwner != ''">
                 and requirement_owner = #{requirementOwner}
             </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
-            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into waterfall.requirement(project_id, template_id, name, requirement_desc, expect_date, priority,
-                                          requirement_status,
-                                          requirement_owner)
+                                          requirement_status,requirement_owner)
         values (#{projectId}, #{templateId}, #{name}, #{requirementDesc}, #{expectDate},
                 #{priority},#{requirementStatus}, #{requirementOwner})
     </insert>

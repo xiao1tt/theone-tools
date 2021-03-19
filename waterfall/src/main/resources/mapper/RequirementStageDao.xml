@@ -91,13 +91,13 @@
             <if test="stageDesc != null and stageDesc != ''">
                 and stage_desc = #{stageDesc}
             </if>
-            <if test="type != null and type != ''">
+            <if test="type != null">
                 and type = #{type}
             </if>
             <if test="stageOrder != null">
                 and stage_order = #{stageOrder}
             </if>
-            <if test="requiredGroup != null and requiredGroup != ''">
+            <if test="requiredGroup != null">
                 and required_group = #{requiredGroup}
             </if>
             <if test="director != null and director != ''">
@@ -108,12 +108,6 @@
             </if>
             <if test="template != null and template != ''">
                 and template = #{template}
-            </if>
-            <if test="updateTime != null">
-                and update_time = #{updateTime}
-            </if>
-            <if test="createTime != null">
-                and create_time = #{createTime}
             </if>
         </where>
     </select>
@@ -137,7 +131,7 @@
             #{stage.templateStageId},
             #{stage.name},
             #{stage.stageDesc},
-            #{type},
+            #{stage.type},
             #{stage.stageOrder},
             #{stage.requiredGroup},
             #{stage.director},
