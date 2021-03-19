@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 用户
  * @author chenxiaotong
  */
 @RestController
@@ -23,6 +24,9 @@ public class UserController {
     @Resource
     private UserBiz userBiz;
 
+    /**
+     * 当前用户
+     */
     @GetMapping("/current")
     private IUserView current(HttpServletRequest request) {
         String token = SsoHelper.findToken(request);
@@ -32,11 +36,17 @@ public class UserController {
         return userBiz.queryByToken(token);
     }
 
+    /**
+     * 用户列表
+     */
     @GetMapping("/list")
     private UserListResp list() {
         return userBiz.list();
     }
 
+    /**
+     * 用户信息
+     */
     @GetMapping("/info")
     private UserInfoResp info(String username) {
         return userBiz.info(username);

@@ -1,23 +1,18 @@
 package com.theone.tools.waterfall.biz;
-import com.theone.tools.waterfall.model.requirement.StageType;
-import com.theone.tools.sso.client.UserGroup;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import com.theone.tools.waterfall.model.requirement.RequirementStage;
-import com.theone.tools.waterfall.model.requirement.RequirementStatus;
-import com.theone.tools.waterfall.model.assignment.Assignment;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.theone.common.base.utils.DateFormatter;
 import com.theone.tools.waterfall.model.requirement.*;
 import com.theone.tools.waterfall.service.RequirementService;
 import com.theone.tools.waterfall.vo.*;
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -174,6 +169,17 @@ public class RequirementBiz {
 
     public RequirementDashboardResp dashboard(String username, RequirementStatus status) {
         Map<StageType, List<RequirementDashboardProject>> dashboardProjects = requirementService.dashboard(username, status);
-        return null;
+        List<RequirementDashboardGroup> groups = new ArrayList<>();
+
+        dashboardProjects.forEach((stageType, requirementDashboardProjects) -> {
+            RequirementDashboardGroup group = new RequirementDashboardGroup();
+            group.setGroupName(stageType == null ? "未开始" : stageType.getDesc());
+            group.setProjects(requirementDashboardProjects);
+            groups.add(group);
+        });
+        RequirementDashboardResp resp = new RequirementDashboardResp();
+        resp.setGroups(groups);
+
+        return resp;
     }
 }

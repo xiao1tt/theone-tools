@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ApiGeneratorConfig2">
+    <option name="yApiServerUrl" value="http://null:8001/sso/login" />
+    <option name="projectToken" value="http://null:8001/sso/login" />
+  </component>
+  <component name="site.forgus.plugins.apigenerator.setting.CURLSettingState">
+    <option name="moduleInfoList">
+      <list>
+        <CURLModuleInfo>
+          <option name="headers" />
+          <option name="id" value="26331452853508" />
+          <option name="moduleName" value="0-tools" />
+        </CURLModuleInfo>
+        <CURLModuleInfo>
+          <option name="headers" />
+          <option name="id" value="26331454169582" />
+          <option name="moduleName" value="waterfall" />
+          <option name="port" value="8002" />
+        </CURLModuleInfo>
+        <CURLModuleInfo>
+          <option name="headers" />
+          <option name="id" value="26331454880227" />
+          <option name="moduleName" value="sso-client" />
+        </CURLModuleInfo>
+        <CURLModuleInfo>
+          <option name="headers" />
+          <option name="id" value="26331455384568" />
+          <option name="moduleName" value="common-base" />
+        </CURLModuleInfo>
+        <CURLModuleInfo>
+          <option name="headers" />
+          <option name="id" value="26331455732943" />
+          <option name="moduleName" value="oa-client" />
+        </CURLModuleInfo>
+        <CURLModuleInfo>
+          <option name="headers" />
+          <option name="id" value="26331456066629" />
+          <option name="moduleName" value="horde" />
+          <option name="port" value="8001" />
+        </CURLModuleInfo>
+      </list>
+    </option>
+  </component>
+</project>

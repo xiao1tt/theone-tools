@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
+ * 需求管理
  * @author chenxiaotong
  */
 @RestController
@@ -17,51 +18,81 @@ public class RequirementController {
     @Resource
     private RequirementBiz requirementBiz;
 
+    /**
+     * 新增需求模版
+     */
     @PostMapping("/template/add")
     public void templateAdd(@RequestBody RequirementTemplateAddReq req) {
         requirementBiz.templateAdd(req.getName(), req.getDesc(), req.getStages());
     }
 
+    /**
+     * 删除需求模版
+     */
     @GetMapping("/template/delete")
     public void templateDelete(Integer templateId) {
         requirementBiz.templateDelete(templateId);
     }
 
+    /**
+     * 更新需求模版
+     */
     @PostMapping("/template/update")
     public void templateUpdate(Integer templateId, @RequestBody RequirementTemplateUpdateReq req) {
         requirementBiz.templateUpdate(templateId, req);
     }
 
+    /**
+     * 查询需求模版信息
+     */
     @GetMapping("/template/info")
     public RequirementTemplateInfoResp templateInfo(Integer id) {
         return requirementBiz.templateInfo(id);
     }
 
+    /**
+     * 查询需求模版列表
+     */
     @GetMapping("/template/list")
     public RequirementTemplateListResp templateList() {
         return requirementBiz.templateList();
     }
 
+    /**
+     * 新建需求
+     */
     @PostMapping("/add")
     public void add(@RequestBody RequirementAddReq req) {
         requirementBiz.add(req);
     }
 
+    /**
+     * 删除需求
+     */
     @GetMapping("/delete")
     public void delete(Integer id) {
         requirementBiz.delete(id);
     }
 
+    /**
+     * 更新需求信息
+     */
     @PostMapping("/update")
     public void update(Integer id, @RequestBody RequirementUpdateReq req) {
         requirementBiz.update(id, req.getName(), req.getDesc());
     }
 
+    /**
+     * 查询需求信息
+     */
     @GetMapping("/info")
     public RequirementInfoResp info(Integer id) {
         return requirementBiz.info(id);
     }
 
+    /**
+     * 查询需求列表
+     */
     @GetMapping("/list")
     public RequirementListResp list(@RequestParam(required = false) Integer projectId,
                                     @RequestParam(required = false) String username,
@@ -69,6 +100,9 @@ public class RequirementController {
         return requirementBiz.list(projectId, username, status);
     }
 
+    /**
+     * 查询需求看板
+     */
     @GetMapping("/dashboard")
     public RequirementDashboardResp dashboard(@RequestParam(required = false) String username,
                                               @RequestParam(required = false) RequirementStatus status) {

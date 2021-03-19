@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 
 /**
+ * 用户管理
  * @author chenxiaotong
  */
 @RestController
@@ -19,6 +20,15 @@ public class UserController {
     @Resource
     private UserBiz userBiz;
 
+    /**
+     * 用户列表
+     * @param username 查询参数，用户名
+     * @param realName 查询参数，真实姓名
+     * @param phone 查询参数，手机号
+     * @param group 查询参数，用户分组
+     * @param level 查询参数，用户级别
+     * @param status 查询参数，用户状态
+     */
     @GetMapping("/list")
     public UserListView list(@RequestParam(required = false) String username,
                              @RequestParam(required = false) String realName,
@@ -37,11 +47,19 @@ public class UserController {
         return userBiz.list(condition);
     }
 
+    /**
+     * 用户详情
+     * @param username 用户名
+     */
     @GetMapping("/info")
     public UserView query(String username) {
         return userBiz.query(username);
     }
 
+    /**
+     * 更新用户信息
+     * @param username 用户名
+     */
     @PostMapping("/update")
     public UserView update(String username, @RequestBody UserUpdateReq req) {
         User user = new User();
@@ -56,6 +74,10 @@ public class UserController {
         return userBiz.update(user);
     }
 
+    /**
+     * 用户初始化，根据手机号绑定用户，初始化用户名
+     * @param phone 手机号
+     */
     @PostMapping("/init")
     public UserView init(String phone, @RequestBody UserCompleteReq req) {
         User user = new User();
@@ -68,11 +90,17 @@ public class UserController {
         return userBiz.init(user);
     }
 
+    /**
+     * 删除用户
+     */
     @GetMapping("/delete")
     public void delete(String username) {
         userBiz.delete(username);
     }
 
+    /**
+     * 从 OA 工具同步用户
+     */
     @GetMapping("/sync")
     public UserListView sync() {
         return userBiz.sync();
