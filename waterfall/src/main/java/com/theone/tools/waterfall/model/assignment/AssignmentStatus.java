@@ -13,7 +13,7 @@ public enum AssignmentStatus {
     WAITING("等待开始"),
     DOING("进行中"),
     DONE("已完成"),
-    PENDING("暂停中¬");
+    PENDING("暂停中");
 
 
     String desc;

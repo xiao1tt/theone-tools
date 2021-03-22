@@ -75,6 +75,11 @@
         values (#{assignmentId}, #{stageId}, #{requirementId}, #{projectId}, #{worker}, #{workStatus}, #{startTime}, #{completeTime})
     </insert>
 
+    <insert id="insertUsers">
+        insert into waterfall.assignment_worker(assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time)
+        values (#{assignmentId}, #{stageId}, #{requirementId}, #{projectId}, #{worker}, #{workStatus}, #{startTime}, #{completeTime})
+    </insert>
+
     <!--通过主键修改数据-->
     <update id="update">
         update waterfall.assignment_worker

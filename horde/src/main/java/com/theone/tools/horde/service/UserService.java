@@ -21,8 +21,6 @@ public interface UserService {
 
     User update(User user);
 
-    boolean available(String username);
-
     void delete(String username);
 
     User queryByPhone(String mobile);

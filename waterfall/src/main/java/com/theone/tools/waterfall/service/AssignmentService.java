@@ -5,6 +5,7 @@ import com.theone.tools.waterfall.dao.AssignmentWorkerDao;
 import com.theone.tools.waterfall.entity.AssignmentEntity;
 import com.theone.tools.waterfall.entity.AssignmentWorkerEntity;
 import com.theone.tools.waterfall.model.assignment.Assignment;
+import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -97,5 +98,20 @@ public class AssignmentService {
         query.setAssignmentId(assignmentId);
 
         return assignmentWorkerDao.queryAll(query).stream().map(AssignmentWorkerEntity::getWorker).collect(Collectors.toList());
+    }
+
+    public void addWorker(Integer assignmentId, List<String> users) {
+        Assignment assignment = this.assignment(assignmentId);
+        List<String> current = this.currentWorker(assignmentId);
+        users.removeAll(current);
+        assignmentWorkerDao.insertUsers(assignmentId, users);
+    }
+
+    private Assignment assignment(Integer assignmentId) {
+        return adapt(assignmentDao.queryById(assignmentId));
+    }
+
+    public void updateStatus(Integer assignmentId, AssignmentStatus status) {
+
     }
 }

@@ -62,4 +62,5 @@ public interface AssignmentWorkerDao {
      */
     int deleteById(Integer id);
 
+    void insertUsers(Integer assignmentId, List<String> users);
 }

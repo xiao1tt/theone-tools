@@ -17,10 +17,11 @@
     <modules>
         <module>../common-base</module>
 
-        <module>../horde</module>
-        <module>../waterfall</module>
+
         <module>../sso-client</module>
         <module>../oa-client</module>
 
+        <module>../horde</module>
+        <module>../waterfall</module>
     </modules>
 </project>

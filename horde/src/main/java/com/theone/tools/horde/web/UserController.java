@@ -67,6 +67,7 @@ public class UserController {
         user.setUsername(username);
         user.setPhone(req.getPhone());
         user.setGroup(req.getGroup());
+        user.setLevel(req.getLevel());
         user.setRealName(req.getRealName());
         user.setEmail(req.getEmail());
         user.setStatus(req.getStatus());

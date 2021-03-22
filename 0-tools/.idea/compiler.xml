@@ -8,18 +8,18 @@
         <outputRelativeToContentRoot value="true" />
         <module name="sso-client" />
         <module name="horde" />
-        <module name="waterfall" />
         <module name="common-base" />
+        <module name="waterfall" />
         <module name="oa-client" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
-      <module name="0-tools" target="8" />
-      <module name="common-base" target="8" />
-      <module name="horde" target="8" />
+      <module name="0-tools" target="1.8" />
+      <module name="common-base" target="1.8" />
+      <module name="horde" target="1.8" />
       <module name="oa-client" target="8" />
       <module name="sso-client" target="8" />
-      <module name="waterfall" target="8" />
+      <module name="waterfall" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

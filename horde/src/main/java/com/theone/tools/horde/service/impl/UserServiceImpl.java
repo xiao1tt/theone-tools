@@ -6,12 +6,11 @@ import com.theone.tools.horde.dao.UserDao;
 import com.theone.tools.horde.entity.UserEntity;
 import com.theone.tools.horde.service.UserService;
 import com.theone.tools.sso.client.UserStatus;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * (User)表服务实现类
@@ -104,13 +103,6 @@ public class UserServiceImpl implements UserService {
         entity.setAvatar(user.getAvatar());
         entity.setStatus(user.getStatus());
         return entity;
-    }
-
-    @Override
-    public boolean available(String username) {
-        UserEntity entity = userDao.query(username);
-
-        return entity != null && UserStatus.AVAILABLE == entity.getStatus();
     }
 
     @Override

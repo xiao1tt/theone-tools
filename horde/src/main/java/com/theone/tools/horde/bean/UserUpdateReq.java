@@ -33,6 +33,14 @@ public class UserUpdateReq {
         this.group = group;
     }
 
+    public UserLevel getLevel() {
+        return level;
+    }
+
+    public void setLevel(UserLevel level) {
+        this.level = level;
+    }
+
     public String getRealName() {
         return realName;
     }
