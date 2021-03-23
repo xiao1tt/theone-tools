@@ -69,4 +69,9 @@ public class ProjectService {
         List<ProjectEntity> projectEntities = projectDao.queryByIds(ids);
         return projectEntities.stream().map(this::adapt).collect(Collectors.toList());
     }
+
+    public List<Project> list() {
+        List<ProjectEntity> entities = projectDao.queryAll(new ProjectEntity());
+        return entities.stream().map(this::adapt).collect(Collectors.toList());
+    }
 }

@@ -11,9 +11,13 @@ import com.theone.tools.waterfall.service.ProjectUserService;
 import com.theone.tools.waterfall.vo.ProjectGroupInfoResp;
 import com.theone.tools.waterfall.vo.ProjectGroupListResp;
 import com.theone.tools.waterfall.vo.ProjectInfoResp;
+import com.theone.tools.waterfall.vo.ProjectListItem;
+import com.theone.tools.waterfall.vo.ProjectListResp;
 import com.theone.tools.waterfall.vo.ProjectUserInfoResp;
 import com.theone.tools.waterfall.vo.ProjectUserListResp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -49,8 +53,27 @@ public class ProjectBiz {
         return resp;
     }
 
-    public ProjectGroupListResp list(int groupId) {
-        return null;
+    public ProjectListResp list() {
+        List<ProjectGroup> projectGroups = projectGroupService.groupList();
+        List<Project> list = projectService.list();
+        Map<Integer, List<Project>> groupProjectMap = list.stream().collect(Collectors.groupingBy(Project::getGroupId));
+
+        List<ProjectListItem> itemList = new ArrayList<>();
+        for (ProjectGroup projectGroup : projectGroups) {
+            List<Project> projects = groupProjectMap.get(projectGroup.getId());
+            ProjectListItem item = new ProjectListItem();
+            item.setGroupId(projectGroup.getId());
+            item.setGroupName(projectGroup.getName());
+            List<ProjectInfoResp> projectList = projects.stream()
+                    .map(project -> adapt(project, projectGroup))
+                    .collect(Collectors.toList());
+            item.setProjectList(projectList);
+            itemList.add(item);
+        }
+
+        ProjectListResp resp = new ProjectListResp();
+        resp.setList(itemList);
+        return resp;
     }
 
     public ProjectInfoResp add(int groupId, String name, String desc, List<String> users) {

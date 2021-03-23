@@ -7,6 +7,7 @@ import com.theone.tools.waterfall.vo.ProjectGroupInfoResp;
 import com.theone.tools.waterfall.vo.ProjectGroupListResp;
 import com.theone.tools.waterfall.vo.ProjectGroupUpdateReq;
 import com.theone.tools.waterfall.vo.ProjectInfoResp;
+import com.theone.tools.waterfall.vo.ProjectListResp;
 import com.theone.tools.waterfall.vo.ProjectUpdateReq;
 import com.theone.tools.waterfall.vo.ProjectUserAddReq;
 import com.theone.tools.waterfall.vo.ProjectUserInfoResp;
@@ -107,8 +108,8 @@ public class ProjectController {
      * 查询项目列表
      */
     @GetMapping("/list")
-    public ProjectGroupListResp list(int groupId) {
-        return projectBiz.list(groupId);
+    public ProjectListResp list() {
+        return projectBiz.list();
     }
 
     /**

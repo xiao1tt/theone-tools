@@ -78,7 +78,7 @@ public class UserController {
     @PostMapping("/update")
     public UserView update(String username, @RequestBody UserUpdateReq req) {
         if (IUserContext.current().getLevel() != UserLevel.DIRECTOR
-                || IUserContext.current().getLevel() != UserLevel.MANAGER) {
+                && IUserContext.current().getLevel() != UserLevel.MANAGER) {
             throw new BizException("用户没有操作权限");
         }
 
