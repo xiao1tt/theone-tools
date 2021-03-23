@@ -10,7 +10,7 @@
         <result property="requirementId" column="requirement_id" jdbcType="INTEGER"/>
         <result property="projectId" column="project_id" jdbcType="INTEGER"/>
         <result property="worker" column="worker" jdbcType="VARCHAR"/>
-        <result property="workStatus" column="work_status" jdbcType="VARCHAR"/>
+        <result property="workStatus" column="work_status"/>
         <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
         <result property="completeTime" column="complete_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -19,24 +19,54 @@
 
     <!--查询单个-->
     <select id="queryById" resultMap="BaseResultMap">
-        select
-          id, assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time, update_time, create_time
+        select id,
+               assignment_id,
+               stage_id,
+               requirement_id,
+               project_id,
+               worker,
+               work_status,
+               start_time,
+               complete_time,
+               update_time,
+               create_time
         from waterfall.assignment_worker
         where id = #{id}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
-        select
-          id, assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time, update_time, create_time
+        select id,
+               assignment_id,
+               stage_id,
+               requirement_id,
+               project_id,
+               worker,
+               work_status,
+               start_time,
+               complete_time,
+               update_time,
+               create_time
         from waterfall.assignment_worker
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
+    <insert id="insertList">
+        insert into waterfall.assignment_worker(assignment_id, stage_id, requirement_id, project_id, worker,
+        work_status, start_time, complete_time)
+        values
+        <foreach collection="workers" separator="," item="item">
+            (#{item.assignmentId}, #{item.stageId}, #{item.requirementId}, #{item.projectId}, #{item.worker},
+            #{item.workStatus}, #{item.startTime}, #{item.completeTime})
+        </foreach>
+    </insert>
+
+    <!--新增所有列-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-          id, assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time, update_time, create_time
+        id, assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time,
+        update_time, create_time
         from waterfall.assignment_worker
         <where>
             <if test="id != null">
@@ -69,15 +99,11 @@
         </where>
     </select>
 
-    <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into waterfall.assignment_worker(assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time)
-        values (#{assignmentId}, #{stageId}, #{requirementId}, #{projectId}, #{worker}, #{workStatus}, #{startTime}, #{completeTime})
-    </insert>
-
-    <insert id="insertUsers">
-        insert into waterfall.assignment_worker(assignment_id, stage_id, requirement_id, project_id, worker, work_status, start_time, complete_time)
-        values (#{assignmentId}, #{stageId}, #{requirementId}, #{projectId}, #{worker}, #{workStatus}, #{startTime}, #{completeTime})
+        insert into waterfall.assignment_worker(assignment_id, stage_id, requirement_id, project_id, worker,
+                                                work_status, start_time, complete_time)
+        values (#{assignmentId}, #{stageId}, #{requirementId}, #{projectId}, #{worker}, #{workStatus}, #{startTime},
+                #{completeTime})
     </insert>
 
     <!--通过主键修改数据-->
@@ -114,7 +140,9 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from waterfall.assignment_worker where id = #{id}
+        delete
+        from waterfall.assignment_worker
+        where id = #{id}
     </delete>
 
 </mapper>

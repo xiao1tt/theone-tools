@@ -1,5 +1,6 @@
 package com.theone.tools.waterfall.entity;
 
+import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
@@ -24,7 +25,7 @@ public class AssignmentWorkerEntity implements Serializable {
     
     private String worker;
     
-    private String workStatus;
+    private AssignmentStatus workStatus;
     
     private LocalDateTime startTime;
     
@@ -83,11 +84,11 @@ public class AssignmentWorkerEntity implements Serializable {
         this.worker = worker;
     }
 
-    public String getWorkStatus() {
+    public AssignmentStatus getWorkStatus() {
         return workStatus;
     }
 
-    public void setWorkStatus(String workStatus) {
+    public void setWorkStatus(AssignmentStatus workStatus) {
         this.workStatus = workStatus;
     }
 

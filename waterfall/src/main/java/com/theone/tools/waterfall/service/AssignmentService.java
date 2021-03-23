@@ -6,15 +6,15 @@ import com.theone.tools.waterfall.entity.AssignmentEntity;
 import com.theone.tools.waterfall.entity.AssignmentWorkerEntity;
 import com.theone.tools.waterfall.model.assignment.Assignment;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class AssignmentService {
+
     @Resource
     private AssignmentDao assignmentDao;
     @Resource
@@ -82,7 +82,8 @@ public class AssignmentService {
 
             List<AssignmentWorkerEntity> workerEntities = assignmentWorkerDao.queryAll(workerQuery);
 
-            List<Integer> assignmentIds = workerEntities.stream().map(AssignmentWorkerEntity::getAssignmentId).collect(Collectors.toList());
+            List<Integer> assignmentIds = workerEntities.stream().map(AssignmentWorkerEntity::getAssignmentId)
+                    .collect(Collectors.toList());
             assignmentEntities.removeIf(entity -> !assignmentIds.contains(entity.getId()));
         }
 
@@ -97,14 +98,30 @@ public class AssignmentService {
         AssignmentWorkerEntity query = new AssignmentWorkerEntity();
         query.setAssignmentId(assignmentId);
 
-        return assignmentWorkerDao.queryAll(query).stream().map(AssignmentWorkerEntity::getWorker).collect(Collectors.toList());
+        return assignmentWorkerDao.queryAll(query).stream().map(AssignmentWorkerEntity::getWorker)
+                .collect(Collectors.toList());
     }
 
     public void addWorker(Integer assignmentId, List<String> users) {
         Assignment assignment = this.assignment(assignmentId);
+
         List<String> current = this.currentWorker(assignmentId);
+
         users.removeAll(current);
-        assignmentWorkerDao.insertUsers(assignmentId, users);
+
+        List<AssignmentWorkerEntity> workerList = users.stream().map(username -> {
+            AssignmentWorkerEntity entity = new AssignmentWorkerEntity();
+            entity.setAssignmentId(assignmentId);
+            entity.setStageId(assignment.getStageId());
+            entity.setRequirementId(assignment.getRequirementId());
+            entity.setProjectId(assignment.getProjectId());
+            entity.setWorker(username);
+            entity.setWorkStatus(AssignmentStatus.WAITING);
+            return entity;
+        }).collect(Collectors.toList());
+
+        assignmentWorkerDao.insertList(workerList);
+
     }
 
     private Assignment assignment(Integer assignmentId) {
@@ -113,5 +130,17 @@ public class AssignmentService {
 
     public void updateStatus(Integer assignmentId, AssignmentStatus status) {
 
+    }
+
+    public void updateWorkerStatus(Integer assignmentId, String username, AssignmentStatus status) {
+        AssignmentWorkerEntity query = new AssignmentWorkerEntity();
+        query.setAssignmentId(assignmentId);
+        query.setWorker(username);
+
+        List<AssignmentWorkerEntity> list = assignmentWorkerDao.queryAll(query);
+        for (AssignmentWorkerEntity entity : list) {
+            entity.setWorkStatus(status);
+            assignmentWorkerDao.update(entity);
+        }
     }
 }

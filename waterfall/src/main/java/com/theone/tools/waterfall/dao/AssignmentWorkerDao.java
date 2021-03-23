@@ -1,8 +1,8 @@
 package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.AssignmentWorkerEntity;
-import org.apache.ibatis.annotations.Param;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * (AssignmentWorker)表数据库访问层
@@ -62,5 +62,5 @@ public interface AssignmentWorkerDao {
      */
     int deleteById(Integer id);
 
-    void insertUsers(Integer assignmentId, List<String> users);
+    void insertList(List<AssignmentWorkerEntity> workers);
 }
