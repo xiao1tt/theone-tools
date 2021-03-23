@@ -1,11 +1,10 @@
 package com.theone.common.base.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author chenxiaotong
@@ -44,17 +43,17 @@ public class DateFormatter {
         return LocalDate.parse(text, DATE_FORMATTER);
     }
 
-    public static LocalDate parseDateTime(String text) {
+    public static LocalDateTime parseDateTime(String text) {
         if (StringUtils.isBlank(text)) {
             return null;
         }
-        return LocalDate.parse(text, DATE_TIME_FORMATTER);
+        return LocalDateTime.parse(text, DATE_TIME_FORMATTER);
     }
 
-    public static LocalDate parseTime(String text) {
+    public static LocalTime parseTime(String text) {
         if (StringUtils.isBlank(text)) {
             return null;
         }
-        return LocalDate.parse(text, TIME_FORMATTER);
+        return LocalTime.parse(text, TIME_FORMATTER);
     }
 }

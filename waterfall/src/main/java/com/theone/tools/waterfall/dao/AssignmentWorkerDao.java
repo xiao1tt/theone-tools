@@ -63,4 +63,6 @@ public interface AssignmentWorkerDao {
     int deleteById(Integer id);
 
     void insertList(List<AssignmentWorkerEntity> workers);
+
+    void deleteByAssignment(Integer assignmentId);
 }

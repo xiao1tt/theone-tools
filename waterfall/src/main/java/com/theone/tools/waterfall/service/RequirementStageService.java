@@ -89,4 +89,8 @@ public class RequirementStageService {
     public void deleteByRequirement(int requirementId) {
         stageDao.deleteByRequirement(requirementId);
     }
+
+    public RequirementStage info(Integer id) {
+        return adapt(stageDao.queryById(id));
+    }
 }

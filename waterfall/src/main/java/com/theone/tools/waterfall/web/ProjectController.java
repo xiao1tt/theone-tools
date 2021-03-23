@@ -82,7 +82,7 @@ public class ProjectController {
     /**
      * 删除项目
      */
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public void delete(int id) {
         projectBiz.delete(id);
     }

@@ -4,20 +4,13 @@ import java.util.List;
 
 public class AssignmentWorkersResp {
 
-    private List<String> workers;
+    private List<AssignmentWorkerInfoResp> workerList;
 
-    public AssignmentWorkersResp() {
+    public List<AssignmentWorkerInfoResp> getWorkerList() {
+        return workerList;
     }
 
-    public AssignmentWorkersResp(List<String> workers) {
-        this.workers = workers;
-    }
-
-    public List<String> getWorkers() {
-        return workers;
-    }
-
-    public void setWorkers(List<String> workers) {
-        this.workers = workers;
+    public void setWorkerList(List<AssignmentWorkerInfoResp> workerList) {
+        this.workerList = workerList;
     }
 }

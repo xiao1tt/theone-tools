@@ -38,7 +38,7 @@ public class AssignmentService {
         assignment.setStageType(stageEntity.getType());
         assignment.setName(stageEntity.getName());
         assignment.setAssignmentDesc("默认任务");
-        assignment.setAssignmentStatus(AssignmentStatus.INIT);
+        assignment.setAssignmentStatus(AssignmentStatus.WAIT_ALLOCATE);
         assignmentDao.insert(adapt(assignment));
     }
 
@@ -113,7 +113,7 @@ public class AssignmentService {
         return assignmentDao.queryByIds(ids).stream().map(this::adapt).collect(Collectors.toList());
     }
 
-    public List<String> currentWorker(Integer assignmentId) {
+    public List<String> simpleWorkers(Integer assignmentId) {
         AssignmentWorkerEntity query = new AssignmentWorkerEntity();
         query.setAssignmentId(assignmentId);
 
@@ -121,10 +121,17 @@ public class AssignmentService {
                 .collect(Collectors.toList());
     }
 
-    public void addWorker(Integer assignmentId, List<String> users) {
-        Assignment assignment = this.assignment(assignmentId);
+    public List<AssignmentWorker> workers(Integer assignmentId) {
+        AssignmentWorkerEntity query = new AssignmentWorkerEntity();
+        query.setAssignmentId(assignmentId);
 
-        List<String> current = this.currentWorker(assignmentId);
+        return assignmentWorkerDao.queryAll(query).stream().map(this::adapt).collect(Collectors.toList());
+    }
+
+    public void addWorker(Integer assignmentId, List<String> users) {
+        Assignment assignment = this.info(assignmentId);
+
+        List<String> current = this.simpleWorkers(assignmentId);
 
         users.removeAll(current);
 
@@ -143,7 +150,7 @@ public class AssignmentService {
 
     }
 
-    private Assignment assignment(Integer assignmentId) {
+    private Assignment info(Integer assignmentId) {
         return adapt(assignmentDao.queryById(assignmentId));
     }
 
@@ -179,13 +186,52 @@ public class AssignmentService {
         List<AssignmentStruct> result = new ArrayList<>();
 
         for (AssignmentEntity assignmentEntity : assignmentEntities) {
-            AssignmentStruct struct = new AssignmentStruct();
-            struct.setAssignment(adapt(assignmentEntity));
-            struct.setWorkers(assignmentWorkerMap.get(assignmentEntity.getId()).stream().map(this::adapt)
-                    .collect(Collectors.toList()));
+            List<AssignmentWorkerEntity> workerEntities = assignmentWorkerMap.get(assignmentEntity.getId());
+            AssignmentStruct struct = assembleStruct(assignmentEntity, workerEntities);
+            result.add(struct);
         }
 
         return result;
+    }
+
+    public List<AssignmentStruct> listStructByStage(Integer stageId) {
+        AssignmentEntity assignmentQuery = new AssignmentEntity();
+        assignmentQuery.setStageId(stageId);
+
+        List<AssignmentEntity> assignmentEntities = assignmentDao.queryAll(assignmentQuery);
+
+        AssignmentWorkerEntity workerQuery = new AssignmentWorkerEntity();
+        workerQuery.setStageId(stageId);
+
+        List<AssignmentWorkerEntity> assignmentWorkerEntities = assignmentWorkerDao.queryAll(workerQuery);
+        Map<Integer, List<AssignmentWorkerEntity>> assignmentWorkerMap = assignmentWorkerEntities.stream()
+                .collect(Collectors.groupingBy(AssignmentWorkerEntity::getAssignmentId));
+
+        List<AssignmentStruct> result = new ArrayList<>();
+
+        for (AssignmentEntity assignmentEntity : assignmentEntities) {
+            List<AssignmentWorkerEntity> workerEntities = assignmentWorkerMap.get(assignmentEntity.getId());
+            AssignmentStruct struct = assembleStruct(assignmentEntity, workerEntities);
+            result.add(struct);
+        }
+
+        return result;
+    }
+
+    private AssignmentStruct assembleStruct(AssignmentEntity assignmentEntity,
+            List<AssignmentWorkerEntity> workerEntities) {
+        AssignmentStruct struct = new AssignmentStruct();
+        struct.setAssignment(adapt(assignmentEntity));
+        struct.setWorkers(workerEntities.stream().map(this::adapt).collect(Collectors.toList()));
+        return struct;
+    }
+
+    public AssignmentStruct struct(Integer id) {
+        AssignmentEntity assignmentEntity = assignmentDao.queryById(id);
+        AssignmentWorkerEntity query = new AssignmentWorkerEntity();
+        query.setAssignmentId(id);
+        List<AssignmentWorkerEntity> workerEntities = assignmentWorkerDao.queryAll(query);
+        return assembleStruct(assignmentEntity, workerEntities);
     }
 
     private AssignmentWorker adapt(AssignmentWorkerEntity entity) {
@@ -207,6 +253,15 @@ public class AssignmentService {
         worker.setCreateTime(entity.getCreateTime());
 
         return worker;
+    }
+
+    public void delete(Integer id) {
+        assignmentDao.deleteById(id);
+        assignmentWorkerDao.deleteByAssignment(id);
+    }
+
+    public void updateInfo(Assignment assignment) {
+        assignmentDao.update(adapt(assignment));
     }
 
 }

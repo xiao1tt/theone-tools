@@ -46,6 +46,8 @@ import org.springframework.stereotype.Service;
 public class RequirementBiz {
 
     @Resource
+    private AssignmentBiz assignmentBiz;
+    @Resource
     private RequirementService requirementService;
     @Resource
     private RequirementTemplateService requirementTemplateService;
@@ -238,7 +240,7 @@ public class RequirementBiz {
         return resp;
     }
 
-    private RequirementStageInfoResp assembleResp(RequirementStage requirementStage,
+    public RequirementStageInfoResp assembleResp(RequirementStage requirementStage,
             List<AssignmentStruct> assignmentStructs) {
         RequirementStageInfoResp infoResp = new RequirementStageInfoResp();
         infoResp.setId(requirementStage.getId());
@@ -260,46 +262,11 @@ public class RequirementBiz {
         List<AssignmentInfoResp> assignmentInfoRespList = Lists.newArrayList();
 
         for (AssignmentStruct assignmentStruct : assignmentStructs) {
-            AssignmentInfoResp assignmentInfoResp = assembleResp(assignmentStruct);
+            AssignmentInfoResp assignmentInfoResp = assignmentBiz.assembleResp(assignmentStruct);
             assignmentInfoRespList.add(assignmentInfoResp);
         }
 
         infoResp.setAssignmentList(assignmentInfoRespList);
         return infoResp;
     }
-
-    private AssignmentInfoResp assembleResp(AssignmentStruct assignmentStruct) {
-        Assignment assignment = assignmentStruct.getAssignment();
-        List<AssignmentWorker> structWorkers = assignmentStruct.getWorkers();
-        AssignmentInfoResp assignmentInfoResp = new AssignmentInfoResp();
-        assignmentInfoResp.setId(assignment.getId());
-        assignmentInfoResp.setProjectId(assignment.getProjectId());
-        assignmentInfoResp.setRequirementId(assignment.getRequirementId());
-        assignmentInfoResp.setStageId(assignment.getStageId());
-        assignmentInfoResp.setName(assignment.getName());
-        assignmentInfoResp.setAssignmentDesc(assignment.getAssignmentDesc());
-        assignmentInfoResp.setAssignmentStatus(assignment.getAssignmentStatus());
-        assignmentInfoResp.setAssignmentStatusView(assignment.getAssignmentStatus().getDesc());
-        assignmentInfoResp.setExpectTime(DateFormatter.format(assignment.getExpectTime()));
-
-        List<AssignmentWorkerInfoResp> workerList = new ArrayList<>();
-        for (AssignmentWorker structWorker : structWorkers) {
-            AssignmentWorkerInfoResp workerInfoResp = assembleResp(structWorker);
-
-            workerList.add(workerInfoResp);
-        }
-        assignmentInfoResp.setWorkerList(workerList);
-        return assignmentInfoResp;
-    }
-
-    private AssignmentWorkerInfoResp assembleResp(AssignmentWorker structWorker) {
-        AssignmentWorkerInfoResp workerInfoResp = new AssignmentWorkerInfoResp();
-        workerInfoResp.setWorker(structWorker.getWorker());
-        workerInfoResp.setWorkStatus(structWorker.getWorkStatus());
-        workerInfoResp.setWorkStatusView(structWorker.getWorkStatus().getDesc());
-        workerInfoResp.setStartTime(DateFormatter.format(structWorker.getStartTime()));
-        workerInfoResp.setCompleteTime(DateFormatter.format(structWorker.getCompleteTime()));
-        return workerInfoResp;
-    }
-
 }

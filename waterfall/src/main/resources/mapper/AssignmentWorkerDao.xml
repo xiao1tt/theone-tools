@@ -144,5 +144,10 @@
         from waterfall.assignment_worker
         where id = #{id}
     </delete>
+    <delete id="deleteByAssignment">
+        delete
+        from waterfall.assignment_worker
+        where assignment_id = #{assignmentId}
+    </delete>
 
 </mapper>

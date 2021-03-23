@@ -83,7 +83,7 @@ public class RequirementController {
     /**
      * 删除需求
      */
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public void delete(Integer id) {
         requirementBiz.delete(id);
     }

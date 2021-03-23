@@ -224,7 +224,7 @@ public class RequirementService {
             if (currentStage != null) {
                 item.setCurrentStage(currentStage.getType());
                 item.setCurrentStageView(currentStage.getName());
-                item.setCurrentWorker(assignmentService.currentWorker(currentStage.getId()));
+                item.setCurrentWorker(assignmentService.simpleWorkers(currentStage.getId()));
             }
 
             dashboardRequirementMap.put(requirement.getProjectId(), item);

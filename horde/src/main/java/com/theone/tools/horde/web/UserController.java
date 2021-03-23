@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户管理
+ *
  * @author chenxiaotong
  */
 @RestController
@@ -33,6 +34,7 @@ public class UserController {
 
     /**
      * 用户列表
+     *
      * @param username 查询参数，用户名
      * @param realName 查询参数，真实姓名
      * @param phone 查询参数，手机号
@@ -42,11 +44,11 @@ public class UserController {
      */
     @GetMapping("/list")
     public UserListView list(@RequestParam(required = false) String username,
-                             @RequestParam(required = false) String realName,
-                             @RequestParam(required = false) String phone,
-                             @RequestParam(required = false) UserGroup group,
-                             @RequestParam(required = false) UserLevel level,
-                             @RequestParam(required = false) UserStatus status) {
+            @RequestParam(required = false) String realName,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) UserGroup group,
+            @RequestParam(required = false) UserLevel level,
+            @RequestParam(required = false) UserStatus status) {
         UserCondition condition = new UserCondition();
         condition.setUsername(username);
         condition.setRealName(realName);
@@ -60,6 +62,7 @@ public class UserController {
 
     /**
      * 用户详情
+     *
      * @param username 用户名
      */
     @GetMapping("/info")
@@ -69,6 +72,7 @@ public class UserController {
 
     /**
      * 更新用户信息
+     *
      * @param username 用户名
      */
     @PostMapping("/update")
@@ -93,6 +97,7 @@ public class UserController {
 
     /**
      * 用户初始化，根据手机号绑定用户，初始化用户名
+     *
      * @param phone 手机号
      */
     @PostMapping("/init")
@@ -114,7 +119,7 @@ public class UserController {
     /**
      * 删除用户
      */
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     public void delete(String username) {
         if (IUserContext.current().getLevel() != UserLevel.DIRECTOR
                 || IUserContext.current().getLevel() != UserLevel.MANAGER) {
