@@ -18,8 +18,6 @@ public class PasswordEntity implements Serializable {
     
     private String password;
     
-    private String status;
-    
     private LocalDateTime createTime;
     
     private LocalDateTime updateTime;
@@ -47,14 +45,6 @@ public class PasswordEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public LocalDateTime getCreateTime() {

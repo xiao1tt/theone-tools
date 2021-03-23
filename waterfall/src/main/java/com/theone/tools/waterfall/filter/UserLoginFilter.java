@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @author chenxiaotong
  */
 @WebFilter(filterName = "userLoginFilter", urlPatterns = {"/*"})
-@Component
 public class UserLoginFilter extends BaseSsoFilter {
 
     @Override

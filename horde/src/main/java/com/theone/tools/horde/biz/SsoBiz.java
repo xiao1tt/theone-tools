@@ -4,7 +4,6 @@ import com.theone.common.base.lang.BizException;
 import com.theone.tools.horde.bean.Session;
 import com.theone.tools.horde.bean.User;
 import com.theone.tools.horde.bean.UserCondition;
-import com.theone.tools.horde.bean.UserView;
 import com.theone.tools.horde.entity.PasswordEntity;
 import com.theone.tools.horde.service.PasswordService;
 import com.theone.tools.horde.service.SessionService;
@@ -22,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author chenxiaotong
@@ -128,6 +128,7 @@ public class SsoBiz {
                 .map(this::adapt).collect(Collectors.toList());
     }
 
+    @Transactional(rollbackFor = Throwable.class)
     public void passwordUpdate(String username, String currentPassword, String newPassword, String confirmPassword) {
         if (StringUtils.isBlank(newPassword) || !StringUtils.equals(newPassword, confirmPassword)) {
             throw new BizException("新密码为空，或两次密码不相同");
@@ -146,15 +147,16 @@ public class SsoBiz {
         sessionService.clearByUser(username);
     }
 
+    @Transactional(rollbackFor = Throwable.class)
     public void init(String phone, String username, String password) {
         User exist = userService.queryByPhone(phone);
         exist.setUsername(username);
-
+        exist.setStatus(UserStatus.AVAILABLE);
         userService.updateByPhone(exist);
+
         PasswordEntity passwordEntity = new PasswordEntity();
         passwordEntity.setUsername(username);
         passwordEntity.setPassword(password);
-
         passwordService.insert(passwordEntity);
     }
 }

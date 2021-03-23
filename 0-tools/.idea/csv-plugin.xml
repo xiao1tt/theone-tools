@@ -3,6 +3,27 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="$PROJECT_DIR$/../horde/src/main/java/com/theone/tools/horde/bean/PasswordStatus.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../horde/src/main/java/com/theone/tools/horde/bean/UserInitReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../horde/src/main/java/com/theone/tools/horde/bean/UserUpdateReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/model/requirement/RequirementStruct.java">
           <value>
             <Attribute>
