@@ -2,3 +2,4 @@
 [TID: N/A][2021-03-23 10:27:54.391] [process_time=7 ms][uri=/sso/list?][request=][response={"code":0,"msg":"SUCCESS","data":[]}]
 [TID: N/A][2021-03-23 10:30:54.394] [process_time=8 ms][uri=/sso/list?][request=][response={"code":0,"msg":"SUCCESS","data":[]}]
 [TID: N/A][2021-03-23 10:33:54.393] [process_time=7 ms][uri=/sso/list?][request=][response={"code":0,"msg":"SUCCESS","data":[]}]
+[TID: N/A][2021-03-23 10:36:54.382] [process_time=7 ms][uri=/sso/list?][request=][response={"code":0,"msg":"SUCCESS","data":[]}]

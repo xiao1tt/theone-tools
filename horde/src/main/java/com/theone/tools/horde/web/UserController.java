@@ -1,13 +1,24 @@
 package com.theone.tools.horde.web;
 
-import com.theone.tools.horde.bean.*;
+import com.theone.common.base.lang.BizException;
+import com.theone.tools.horde.bean.User;
+import com.theone.tools.horde.bean.UserCompleteReq;
+import com.theone.tools.horde.bean.UserCondition;
+import com.theone.tools.horde.bean.UserListView;
+import com.theone.tools.horde.bean.UserUpdateReq;
+import com.theone.tools.horde.bean.UserView;
 import com.theone.tools.horde.biz.UserBiz;
+import com.theone.tools.sso.client.IUserContext;
 import com.theone.tools.sso.client.UserGroup;
 import com.theone.tools.sso.client.UserLevel;
 import com.theone.tools.sso.client.UserStatus;
-import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 用户管理
@@ -62,6 +73,11 @@ public class UserController {
      */
     @PostMapping("/update")
     public UserView update(String username, @RequestBody UserUpdateReq req) {
+        if (IUserContext.current().getLevel() != UserLevel.DIRECTOR
+                || IUserContext.current().getLevel() != UserLevel.MANAGER) {
+            throw new BizException("用户没有操作权限");
+        }
+
         User user = new User();
 
         user.setUsername(username);
@@ -81,6 +97,10 @@ public class UserController {
      */
     @PostMapping("/init")
     public UserView init(String phone, @RequestBody UserCompleteReq req) {
+        if (IUserContext.current().getLevel() != UserLevel.DIRECTOR
+                || IUserContext.current().getLevel() != UserLevel.MANAGER) {
+            throw new BizException("用户没有操作权限");
+        }
         User user = new User();
 
         user.setUsername(req.getUsername());
@@ -96,6 +116,10 @@ public class UserController {
      */
     @GetMapping("/delete")
     public void delete(String username) {
+        if (IUserContext.current().getLevel() != UserLevel.DIRECTOR
+                || IUserContext.current().getLevel() != UserLevel.MANAGER) {
+            throw new BizException("用户没有操作权限");
+        }
         userBiz.delete(username);
     }
 
@@ -104,6 +128,10 @@ public class UserController {
      */
     @GetMapping("/sync")
     public UserListView sync() {
+        if (IUserContext.current().getLevel() != UserLevel.DIRECTOR
+                || IUserContext.current().getLevel() != UserLevel.MANAGER) {
+            throw new BizException("用户没有操作权限");
+        }
         return userBiz.sync();
     }
 }
