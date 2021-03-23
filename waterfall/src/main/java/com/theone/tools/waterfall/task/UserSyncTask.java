@@ -1,15 +1,15 @@
 package com.theone.tools.waterfall.task;
 
-import com.theone.tools.waterfall.service.UserService;
+import com.theone.tools.waterfall.service.GlobalUserService;
+import javax.annotation.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
-
 @Component
 public class UserSyncTask {
+
     @Resource
-    private UserService userService;
+    private GlobalUserService userService;
 
     /**
      * 固定速率执行。每 3 分钟秒执行一次。

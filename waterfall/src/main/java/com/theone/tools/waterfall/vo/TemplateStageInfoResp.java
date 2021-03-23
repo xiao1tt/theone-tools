@@ -6,6 +6,7 @@ import com.theone.tools.sso.client.UserGroup;
  * @author chenxiaotong
  */
 public class TemplateStageInfoResp {
+
     private int id;
 
     private int templateId;

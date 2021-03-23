@@ -6,6 +6,7 @@ import java.util.List;
  * @author chenxiaotong
  */
 public class RequirementDashboardProject {
+
     private int projectId;
     private String projectName;
 

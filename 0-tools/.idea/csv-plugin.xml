@@ -3,6 +3,20 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/model/requirement/RequirementStruct.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/service/AssignmentService.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/web/AssignmentController.java">
           <value>
             <Attribute>

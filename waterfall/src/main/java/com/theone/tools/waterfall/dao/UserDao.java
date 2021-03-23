@@ -1,7 +1,6 @@
 package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.UserEntity;
-
 import java.util.List;
 
 /**

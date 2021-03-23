@@ -4,6 +4,7 @@ package com.theone.tools.waterfall.vo;
  * @author chenxiaotong
  */
 public class ProjectInfoResp {
+
     private int id;
     private int groupId;
     private String groupName;

@@ -1,18 +1,12 @@
-package com.theone.tools.waterfall.entity;
+package com.theone.tools.waterfall.model.assignment;
 
-import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * (AssignmentWorker)实体类
- *
- * @author makejava
- * @since 2021-03-17 13:55:49
+ * @author chenxiaotong
  */
-public class AssignmentWorkerEntity implements Serializable {
-
-    private static final long serialVersionUID = 551094327404594046L;
+public class AssignmentWorker implements Serializable {
 
     private Integer id;
 

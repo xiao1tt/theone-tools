@@ -2,13 +2,27 @@ package com.theone.tools.waterfall.web;
 
 import com.theone.tools.waterfall.biz.RequirementBiz;
 import com.theone.tools.waterfall.model.requirement.RequirementStatus;
-import com.theone.tools.waterfall.vo.*;
-import org.springframework.web.bind.annotation.*;
-
+import com.theone.tools.waterfall.vo.RequirementAddReq;
+import com.theone.tools.waterfall.vo.RequirementDashboardResp;
+import com.theone.tools.waterfall.vo.RequirementInfoResp;
+import com.theone.tools.waterfall.vo.RequirementListResp;
+import com.theone.tools.waterfall.vo.RequirementStagesResp;
+import com.theone.tools.waterfall.vo.RequirementTemplateAddReq;
+import com.theone.tools.waterfall.vo.RequirementTemplateInfoResp;
+import com.theone.tools.waterfall.vo.RequirementTemplateListResp;
+import com.theone.tools.waterfall.vo.RequirementTemplateUpdateReq;
+import com.theone.tools.waterfall.vo.RequirementUpdateReq;
 import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 需求管理
+ *
  * @author chenxiaotong
  */
 @RestController
@@ -95,8 +109,8 @@ public class RequirementController {
      */
     @GetMapping("/list")
     public RequirementListResp list(@RequestParam(required = false) Integer projectId,
-                                    @RequestParam(required = false) String username,
-                                    @RequestParam(required = false) RequirementStatus status) {
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) RequirementStatus status) {
         return requirementBiz.list(projectId, username, status);
     }
 
@@ -105,7 +119,12 @@ public class RequirementController {
      */
     @GetMapping("/dashboard")
     public RequirementDashboardResp dashboard(@RequestParam(required = false) String username,
-                                              @RequestParam(required = false) RequirementStatus status) {
+            @RequestParam(required = false) RequirementStatus status) {
         return requirementBiz.dashboard(username, status);
+    }
+
+    @GetMapping("/stages")
+    public RequirementStagesResp stages(Integer requirementId) {
+        return requirementBiz.stages(requirementId);
     }
 }

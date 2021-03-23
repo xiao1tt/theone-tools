@@ -3,6 +3,7 @@ package com.theone.tools.waterfall.vo;
 import com.theone.tools.waterfall.model.user.Role;
 
 public class ProjectUserAddReq {
+
     private String username;
 
     private Role role;

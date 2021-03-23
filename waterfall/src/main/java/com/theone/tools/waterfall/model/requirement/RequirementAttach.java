@@ -10,20 +10,21 @@ import java.time.LocalDateTime;
  * @since 2021-03-14 19:32:37
  */
 public class RequirementAttach implements Serializable {
+
     private static final long serialVersionUID = 468118672552457400L;
-    
+
     private Integer id;
-    
+
     private Integer requirementId;
-    
+
     private String name;
-    
+
     private String locate;
-    
+
     private String attachType;
-    
+
     private LocalDateTime updateTime;
-    
+
     private LocalDateTime createTime;
 
 

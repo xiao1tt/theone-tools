@@ -1,7 +1,7 @@
 package com.theone.tools.waterfall.entity;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * (RequirementTemplate)实体类
@@ -10,16 +10,17 @@ import java.io.Serializable;
  * @since 2021-03-14 17:43:12
  */
 public class RequirementTemplateEntity implements Serializable {
+
     private static final long serialVersionUID = -53569023524059716L;
-    
+
     private Integer id;
-    
+
     private String name;
-    
+
     private String templateDesc;
-    
+
     private LocalDateTime updateTime;
-    
+
     private LocalDateTime createTime;
 
 

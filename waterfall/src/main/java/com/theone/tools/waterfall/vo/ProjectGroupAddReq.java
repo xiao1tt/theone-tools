@@ -1,6 +1,7 @@
 package com.theone.tools.waterfall.vo;
 
 public class ProjectGroupAddReq {
+
     String name;
 
     public String getName() {

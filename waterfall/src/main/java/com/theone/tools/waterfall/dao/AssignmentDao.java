@@ -1,9 +1,8 @@
 package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.AssignmentEntity;
-import com.theone.tools.waterfall.model.assignment.Assignment;
-import org.apache.ibatis.annotations.Param;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * (Assignment)表数据库访问层

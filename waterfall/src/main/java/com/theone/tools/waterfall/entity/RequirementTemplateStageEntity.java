@@ -2,9 +2,8 @@ package com.theone.tools.waterfall.entity;
 
 import com.theone.tools.sso.client.UserGroup;
 import com.theone.tools.waterfall.model.requirement.StageType;
-
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * (RequirementTemplateStage)实体类
@@ -13,16 +12,17 @@ import java.io.Serializable;
  * @since 2021-03-14 17:43:12
  */
 public class RequirementTemplateStageEntity implements Serializable {
+
     private static final long serialVersionUID = 227857692434404572L;
-    
+
     private Integer id;
-    
+
     private Integer templateId;
-    
+
     private String name;
-    
+
     private String stageDesc;
-    
+
     private Integer stageOrder;
 
     private StageType stageType;
@@ -32,7 +32,7 @@ public class RequirementTemplateStageEntity implements Serializable {
     private String director;
 
     private LocalDateTime updateTime;
-    
+
     private LocalDateTime createTime;
 
 

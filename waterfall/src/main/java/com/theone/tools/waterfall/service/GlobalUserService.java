@@ -8,17 +8,17 @@ import com.theone.tools.waterfall.dao.UserDao;
 import com.theone.tools.waterfall.entity.UserEntity;
 import com.theone.tools.waterfall.model.user.Role;
 import com.theone.tools.waterfall.model.user.User;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 /**
  * @author chenxiaotong
  */
 @Service
-public class UserService {
+public class GlobalUserService {
+
     @Resource
     private UserDao userDao;
 

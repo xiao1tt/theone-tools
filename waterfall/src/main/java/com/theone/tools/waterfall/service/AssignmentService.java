@@ -4,9 +4,14 @@ import com.theone.tools.waterfall.dao.AssignmentDao;
 import com.theone.tools.waterfall.dao.AssignmentWorkerDao;
 import com.theone.tools.waterfall.entity.AssignmentEntity;
 import com.theone.tools.waterfall.entity.AssignmentWorkerEntity;
+import com.theone.tools.waterfall.entity.RequirementStageEntity;
 import com.theone.tools.waterfall.model.assignment.Assignment;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
+import com.theone.tools.waterfall.model.assignment.AssignmentStruct;
+import com.theone.tools.waterfall.model.assignment.AssignmentWorker;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +26,19 @@ public class AssignmentService {
     private AssignmentWorkerDao assignmentWorkerDao;
 
     public void add(Assignment assignment) {
+        assignmentDao.insert(adapt(assignment));
+    }
+
+    public void init(RequirementStageEntity stageEntity) {
+
+        Assignment assignment = new Assignment();
+        assignment.setProjectId(stageEntity.getProjectId());
+        assignment.setRequirementId(stageEntity.getRequirementId());
+        assignment.setStageId(stageEntity.getId());
+        assignment.setStageType(stageEntity.getType());
+        assignment.setName(stageEntity.getName());
+        assignment.setAssignmentDesc("默认任务");
+        assignment.setAssignmentStatus(AssignmentStatus.INIT);
         assignmentDao.insert(adapt(assignment));
     }
 
@@ -56,21 +74,22 @@ public class AssignmentService {
         assignment.setName(entity.getName());
         assignment.setAssignmentDesc(entity.getAssignmentDesc());
         assignment.setAssignmentStatus(entity.getAssignmentStatus());
+        assignment.setExpectTime(entity.getExpectTime());
         assignment.setUpdateTime(entity.getUpdateTime());
         assignment.setCreateTime(entity.getCreateTime());
 
         return assignment;
     }
 
-    public List<Assignment> list(String username) {
-        return this.list(null, username);
+    public List<Assignment> listByUser(String username) {
+        return this.listByProject(null, username);
     }
 
-    public List<Assignment> list(Integer projectId) {
-        return this.list(projectId, null);
+    public List<Assignment> listByProject(Integer projectId) {
+        return this.listByProject(projectId, null);
     }
 
-    public List<Assignment> list(Integer projectId, String username) {
+    public List<Assignment> listByProject(Integer projectId, String username) {
         AssignmentEntity query = new AssignmentEntity();
         query.setProjectId(projectId);
 
@@ -143,4 +162,51 @@ public class AssignmentService {
             assignmentWorkerDao.update(entity);
         }
     }
+
+    public List<AssignmentStruct> listStructByRequirement(Integer requirementId) {
+        AssignmentEntity assignmentQuery = new AssignmentEntity();
+        assignmentQuery.setRequirementId(requirementId);
+
+        List<AssignmentEntity> assignmentEntities = assignmentDao.queryAll(assignmentQuery);
+
+        AssignmentWorkerEntity workerQuery = new AssignmentWorkerEntity();
+        workerQuery.setRequirementId(requirementId);
+
+        List<AssignmentWorkerEntity> assignmentWorkerEntities = assignmentWorkerDao.queryAll(workerQuery);
+        Map<Integer, List<AssignmentWorkerEntity>> assignmentWorkerMap = assignmentWorkerEntities.stream()
+                .collect(Collectors.groupingBy(AssignmentWorkerEntity::getAssignmentId));
+
+        List<AssignmentStruct> result = new ArrayList<>();
+
+        for (AssignmentEntity assignmentEntity : assignmentEntities) {
+            AssignmentStruct struct = new AssignmentStruct();
+            struct.setAssignment(adapt(assignmentEntity));
+            struct.setWorkers(assignmentWorkerMap.get(assignmentEntity.getId()).stream().map(this::adapt)
+                    .collect(Collectors.toList()));
+        }
+
+        return result;
+    }
+
+    private AssignmentWorker adapt(AssignmentWorkerEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        AssignmentWorker worker = new AssignmentWorker();
+        worker.setId(entity.getId());
+        worker.setAssignmentId(entity.getAssignmentId());
+        worker.setStageId(entity.getStageId());
+        worker.setRequirementId(entity.getRequirementId());
+        worker.setProjectId(entity.getProjectId());
+        worker.setWorker(entity.getWorker());
+        worker.setWorkStatus(entity.getWorkStatus());
+        worker.setStartTime(entity.getStartTime());
+        worker.setCompleteTime(entity.getCompleteTime());
+        worker.setUpdateTime(entity.getUpdateTime());
+        worker.setCreateTime(entity.getCreateTime());
+
+        return worker;
+    }
+
 }

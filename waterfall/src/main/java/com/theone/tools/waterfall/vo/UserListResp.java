@@ -3,6 +3,7 @@ package com.theone.tools.waterfall.vo;
 import java.util.List;
 
 public class UserListResp {
+
     private int count;
     private List<UserInfoResp> list;
 

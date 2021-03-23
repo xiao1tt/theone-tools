@@ -1,9 +1,8 @@
 package com.theone.tools.waterfall.entity;
 
 import com.theone.tools.waterfall.model.requirement.AttachType;
-
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * (RequirementAttach)实体类
@@ -12,20 +11,21 @@ import java.io.Serializable;
  * @since 2021-03-14 19:32:37
  */
 public class RequirementAttachEntity implements Serializable {
+
     private static final long serialVersionUID = 468118672552457400L;
-    
+
     private Integer id;
-    
+
     private Integer requirementId;
-    
+
     private String name;
-    
+
     private String locate;
-    
+
     private AttachType attachType;
-    
+
     private LocalDateTime updateTime;
-    
+
     private LocalDateTime createTime;
 
 

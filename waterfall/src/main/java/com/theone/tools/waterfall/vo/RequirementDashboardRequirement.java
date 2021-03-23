@@ -2,13 +2,13 @@ package com.theone.tools.waterfall.vo;
 
 import com.theone.tools.waterfall.model.requirement.RequirementStatus;
 import com.theone.tools.waterfall.model.requirement.StageType;
-
 import java.util.List;
 
 /**
  * @author chenxiaotong
  */
 public class RequirementDashboardRequirement {
+
     private String name;
     private String desc;
 

@@ -5,13 +5,18 @@ import com.theone.tools.waterfall.model.project.Project;
 import com.theone.tools.waterfall.model.project.ProjectGroup;
 import com.theone.tools.waterfall.model.project.ProjectUser;
 import com.theone.tools.waterfall.model.user.Role;
+import com.theone.tools.waterfall.service.ProjectGroupService;
 import com.theone.tools.waterfall.service.ProjectService;
-import com.theone.tools.waterfall.vo.*;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
+import com.theone.tools.waterfall.service.ProjectUserService;
+import com.theone.tools.waterfall.vo.ProjectGroupInfoResp;
+import com.theone.tools.waterfall.vo.ProjectGroupListResp;
+import com.theone.tools.waterfall.vo.ProjectInfoResp;
+import com.theone.tools.waterfall.vo.ProjectUserInfoResp;
+import com.theone.tools.waterfall.vo.ProjectUserListResp;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 /**
  * @author chenxiaotong
@@ -21,18 +26,22 @@ public class ProjectBiz {
 
     @Resource
     private ProjectService projectService;
+    @Resource
+    private ProjectGroupService projectGroupService;
+    @Resource
+    private ProjectUserService projectUserService;
 
     public void addGroup(String name) {
-        projectService.groupAdd(name);
+        projectGroupService.groupAdd(name);
     }
 
     public ProjectGroupListResp listGroup(String username) {
-        List<ProjectGroup> projectGroups = projectService.groupList();
+        List<ProjectGroup> projectGroups = projectGroupService.groupList();
         return new ProjectGroupListResp(projectGroups.size(), null);
     }
 
     public ProjectGroupInfoResp groupInfo(int id) {
-        ProjectGroup projectGroup = projectService.groupInfo(id);
+        ProjectGroup projectGroup = projectGroupService.groupInfo(id);
         ProjectGroupInfoResp resp = new ProjectGroupInfoResp();
         resp.setId(projectGroup.getId());
         resp.setName(projectGroup.getName());
@@ -51,7 +60,7 @@ public class ProjectBiz {
         project.setDesc(desc);
 
         Project res = projectService.add(project, users);
-        ProjectGroup group = projectService.groupInfo(res.getGroupId());
+        ProjectGroup group = projectGroupService.groupInfo(res.getGroupId());
         return adapt(res, group);
     }
 
@@ -84,13 +93,14 @@ public class ProjectBiz {
         if (project == null) {
             throw new BizException("项目不存在，id:" + id);
         }
-        ProjectGroup group = projectService.groupInfo(project.getGroupId());
+        ProjectGroup group = projectGroupService.groupInfo(project.getGroupId());
         return adapt(project, group);
     }
 
     public ProjectGroupListResp groupList() {
-        List<ProjectGroup> groupList = projectService.groupList();
-        return new ProjectGroupListResp(groupList.size(), groupList.stream().map(this::adapt).collect(Collectors.toList()));
+        List<ProjectGroup> groupList = projectGroupService.groupList();
+        return new ProjectGroupListResp(groupList.size(),
+                groupList.stream().map(this::adapt).collect(Collectors.toList()));
     }
 
     private ProjectGroupInfoResp adapt(ProjectGroup group) {
@@ -106,7 +116,7 @@ public class ProjectBiz {
     }
 
     public void groupDelete(int id) {
-        projectService.groupDelete(id);
+        projectGroupService.groupDelete(id);
     }
 
     public ProjectGroupInfoResp groupUpdate(int id, String name) {
@@ -114,8 +124,8 @@ public class ProjectBiz {
         group.setId(id);
         group.setName(name);
 
-        projectService.groupUpdate(group);
-        return adapt(projectService.groupInfo(id));
+        projectGroupService.groupUpdate(group);
+        return adapt(projectGroupService.groupInfo(id));
     }
 
     public void delete(int id) {
@@ -123,8 +133,9 @@ public class ProjectBiz {
     }
 
     public ProjectUserListResp userList(int projectId) {
-        List<ProjectUser> projectUsers = projectService.userList(projectId);
-        return new ProjectUserListResp(projectUsers.size(), projectUsers.stream().map(this::adapt).collect(Collectors.toList()));
+        List<ProjectUser> projectUsers = projectUserService.userList(projectId);
+        return new ProjectUserListResp(projectUsers.size(),
+                projectUsers.stream().map(this::adapt).collect(Collectors.toList()));
     }
 
     private ProjectUserInfoResp adapt(ProjectUser user) {
@@ -146,12 +157,12 @@ public class ProjectBiz {
         user.setUsername(username);
         user.setUserRole(role);
 
-        projectService.userAdd(user);
+        projectUserService.userAdd(user);
         return this.userList(projectId);
     }
 
     public void userDelete(int projectId, String username) {
-        projectService.userDelete(projectId, username);
+        projectUserService.userDelete(projectId, username);
     }
 
     public ProjectUserListResp userUpdate(int projectId, String username, Role role) {
@@ -160,12 +171,12 @@ public class ProjectBiz {
         user.setUsername(username);
         user.setUserRole(role);
 
-        projectService.userUpdate(user);
+        projectUserService.userUpdate(user);
         return null;
     }
 
     public ProjectUserInfoResp userInfo(int projectId, String username) {
-        ProjectUser user = projectService.userInfo(projectId, username);
+        ProjectUser user = projectUserService.userInfo(projectId, username);
         return adapt(user);
     }
 }

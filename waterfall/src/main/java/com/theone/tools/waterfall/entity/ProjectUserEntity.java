@@ -1,7 +1,6 @@
 package com.theone.tools.waterfall.entity;
 
 import com.theone.tools.waterfall.model.user.Role;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -12,6 +11,7 @@ import java.time.LocalDateTime;
  * @since 2021-03-14 12:38:19
  */
 public class ProjectUserEntity implements Serializable {
+
     private static final long serialVersionUID = -72600845844837923L;
 
     private Integer id;

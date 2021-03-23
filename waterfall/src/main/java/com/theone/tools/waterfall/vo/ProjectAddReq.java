@@ -6,6 +6,7 @@ import java.util.List;
  * @author chenxiaotong
  */
 public class ProjectAddReq {
+
     private int groupId;
 
     private String name;

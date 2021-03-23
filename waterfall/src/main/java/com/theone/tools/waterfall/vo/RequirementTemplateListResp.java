@@ -7,6 +7,7 @@ import java.util.List;
  * @author chenxiaotong
  */
 public class RequirementTemplateListResp implements Serializable {
+
     private int count;
     private List<RequirementTemplateInfoResp> list;
 

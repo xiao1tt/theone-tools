@@ -1,18 +1,14 @@
-package com.theone.tools.waterfall.model.requirement;
+package com.theone.tools.waterfall.vo;
 
 import com.theone.tools.sso.client.UserGroup;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.theone.tools.waterfall.model.requirement.StageStatus;
+import com.theone.tools.waterfall.model.requirement.StageType;
+import java.util.List;
 
 /**
- * (RequirementStage)实体类
- *
- * @author makejava
- * @since 2021-03-14 19:32:37
+ * @author chenxiaotong
  */
-public class RequirementStage implements Serializable {
-
-    private static final long serialVersionUID = -66558812526794796L;
+public class RequirementStageInfoResp {
 
     private Integer id;
 
@@ -28,22 +24,23 @@ public class RequirementStage implements Serializable {
 
     private StageType type;
 
+    private String typeView;
+
     private String stageDesc;
 
     private Integer stageOrder;
 
     private UserGroup requiredGroup;
 
+    private String requiredGroupView;
+
     private String director;
 
     private StageStatus stageStatus;
 
-    private String template;
+    private String stageStatusView;
 
-    private LocalDateTime updateTime;
-
-    private LocalDateTime createTime;
-
+    private List<AssignmentInfoResp> assignmentList;
 
     public Integer getId() {
         return id;
@@ -101,6 +98,14 @@ public class RequirementStage implements Serializable {
         this.type = type;
     }
 
+    public String getTypeView() {
+        return typeView;
+    }
+
+    public void setTypeView(String typeView) {
+        this.typeView = typeView;
+    }
+
     public String getStageDesc() {
         return stageDesc;
     }
@@ -117,20 +122,28 @@ public class RequirementStage implements Serializable {
         this.stageOrder = stageOrder;
     }
 
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
     public UserGroup getRequiredGroup() {
         return requiredGroup;
     }
 
     public void setRequiredGroup(UserGroup requiredGroup) {
         this.requiredGroup = requiredGroup;
+    }
+
+    public String getRequiredGroupView() {
+        return requiredGroupView;
+    }
+
+    public void setRequiredGroupView(String requiredGroupView) {
+        this.requiredGroupView = requiredGroupView;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
     }
 
     public StageStatus getStageStatus() {
@@ -141,28 +154,19 @@ public class RequirementStage implements Serializable {
         this.stageStatus = stageStatus;
     }
 
-    public String getTemplate() {
-        return template;
+    public String getStageStatusView() {
+        return stageStatusView;
     }
 
-    public void setTemplate(String template) {
-        this.template = template;
+    public void setStageStatusView(String stageStatusView) {
+        this.stageStatusView = stageStatusView;
     }
 
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
+    public List<AssignmentInfoResp> getAssignmentList() {
+        return assignmentList;
     }
 
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
+    public void setAssignmentList(List<AssignmentInfoResp> assignmentList) {
+        this.assignmentList = assignmentList;
     }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
 }

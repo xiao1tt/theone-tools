@@ -6,149 +6,44 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.theone.common.base.utils.DateFormatter;
-import com.theone.tools.waterfall.dao.*;
+import com.theone.tools.waterfall.dao.RequirementDao;
 import com.theone.tools.waterfall.entity.RequirementEntity;
-import com.theone.tools.waterfall.entity.RequirementStageEntity;
-import com.theone.tools.waterfall.entity.RequirementTemplateEntity;
-import com.theone.tools.waterfall.entity.RequirementTemplateStageEntity;
 import com.theone.tools.waterfall.model.assignment.Assignment;
-import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import com.theone.tools.waterfall.model.project.Project;
-import com.theone.tools.waterfall.model.requirement.*;
+import com.theone.tools.waterfall.model.requirement.Requirement;
+import com.theone.tools.waterfall.model.requirement.RequirementStage;
+import com.theone.tools.waterfall.model.requirement.RequirementStatus;
+import com.theone.tools.waterfall.model.requirement.RequirementStruct;
+import com.theone.tools.waterfall.model.requirement.StageType;
 import com.theone.tools.waterfall.vo.RequirementDashboardProject;
 import com.theone.tools.waterfall.vo.RequirementDashboardRequirement;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
 
 /**
  * @author chenxiaotong
  */
 @Service
 public class RequirementService {
+
     @Resource
     private AssignmentService assignmentService;
     @Resource
-    private UserService userService;
-    @Resource
     private ProjectService projectService;
     @Resource
+    private RequirementAttachService requirementAttachService;
+    @Resource
+    private RequirementStageService requirementStageService;
+    @Resource
     private RequirementDao requirementDao;
-    @Resource
-    private RequirementStageDao stageDao;
-    @Resource
-    private RequirementAttachDao attachDao;
-    @Resource
-    private RequirementTemplateDao templateDao;
-    @Resource
-    private RequirementTemplateStageDao templateStageDao;
-
-    public void templateAdd(RequirementTemplate template) {
-        RequirementTemplateEntity insert = adapt(template);
-        templateDao.insert(insert);
-        templateStageDao.insertAll(insert.getId(), template.getStages().stream().map(this::adapt).collect(Collectors.toList()));
-    }
-
-    private RequirementTemplateEntity adapt(RequirementTemplate template) {
-        if (template == null) {
-            return null;
-        }
-
-        RequirementTemplateEntity entity = new RequirementTemplateEntity();
-        entity.setName(template.getName());
-        entity.setTemplateDesc(template.getDesc());
-
-        return entity;
-    }
-
-    private RequirementTemplateStageEntity adapt(TemplateStage stage) {
-        if (stage == null) {
-            return null;
-        }
-
-        RequirementTemplateStageEntity entity = new RequirementTemplateStageEntity();
-        entity.setId(stage.getId());
-        entity.setTemplateId(stage.getTemplateId());
-        entity.setName(stage.getName());
-        entity.setStageDesc(stage.getDesc());
-        entity.setStageOrder(stage.getOrder());
-        entity.setRequiredGroup(stage.getRequiredGroup());
-
-        return entity;
-    }
-
-    public void templateDelete(int templateId) {
-        templateDao.deleteById(templateId);
-        templateStageDao.deleteByTemplate(templateId);
-    }
-
-    public void templateUpdate(RequirementTemplate template) {
-        templateDao.update(adapt(template));
-        templateStageDao.deleteByTemplate(template.getId());
-        templateStageDao.insertAll(template.getId(), template.getStages().stream().map(this::adapt).collect(Collectors.toList()));
-    }
-
-    public RequirementTemplate templateInfo(int id) {
-        RequirementTemplateEntity entity = templateDao.queryById(id);
-        RequirementTemplateStageEntity query = new RequirementTemplateStageEntity();
-        query.setTemplateId(id);
-        List<RequirementTemplateStageEntity> stages = templateStageDao.queryAll(query);
-        return adapt(entity, stages);
-    }
-
-    private RequirementTemplate adapt(RequirementTemplateEntity entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        RequirementTemplate template = new RequirementTemplate();
-        template.setId(entity.getId());
-        template.setName(entity.getName());
-        template.setDesc(entity.getTemplateDesc());
-
-        return template;
-    }
-
-    private RequirementTemplate adapt(RequirementTemplateEntity entity, List<RequirementTemplateStageEntity> stages) {
-        if (entity == null) {
-            return null;
-        }
-
-        RequirementTemplate template = new RequirementTemplate();
-        template.setId(entity.getId());
-        template.setName(entity.getName());
-        template.setDesc(entity.getTemplateDesc());
-        template.setStages(stages.stream().map(this::adapt).collect(Collectors.toList()));
-
-        return template;
-    }
-
-    private TemplateStage adapt(RequirementTemplateStageEntity entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        TemplateStage stage = new TemplateStage();
-
-        stage.setId(entity.getId());
-        stage.setTemplateId(entity.getTemplateId());
-        stage.setName(entity.getName());
-        stage.setDesc(entity.getStageDesc());
-        stage.setRequiredGroup(entity.getRequiredGroup());
-        stage.setType(entity.getStageType());
-        stage.setDirector(entity.getDirector());
-        stage.setOrder(entity.getStageOrder());
-
-        return stage;
-    }
-
-    public List<RequirementTemplate> templateList() {
-        List<RequirementTemplateEntity> templateEntities = templateDao.queryAllByLimit(0, 100);
-        return templateEntities.stream().map(this::adapt).collect(Collectors.toList());
-    }
 
     public Requirement add(Requirement requirement) {
         RequirementEntity insert = adapt(requirement);
@@ -199,53 +94,11 @@ public class RequirementService {
         return entity;
     }
 
-    public void stageAdd(List<RequirementStage> stages) {
-        for (RequirementStage stage : stages) {
-            RequirementStageEntity entity = adapt(stage);
-            stageDao.insert(entity);
-
-            Assignment assignment = new Assignment();
-            assignment.setProjectId(entity.getProjectId());
-            assignment.setRequirementId(entity.getRequirementId());
-            assignment.setStageId(entity.getId());
-            assignment.setStageType(entity.getType());
-            assignment.setName(entity.getName());
-            assignment.setAssignmentDesc("默认任务");
-            assignment.setAssignmentStatus(AssignmentStatus.INIT);
-            assignmentService.add(assignment);
-        }
-    }
-
-    private RequirementStageEntity adapt(RequirementStage stage) {
-        if (stage == null) {
-            return null;
-        }
-
-        RequirementStageEntity entity = new RequirementStageEntity();
-
-        entity.setId(stage.getId());
-        entity.setProjectId(stage.getProjectId());
-        entity.setRequirementId(stage.getRequirementId());
-        entity.setTemplateId(stage.getTemplateId());
-        entity.setTemplateStageId(stage.getTemplateStageId());
-        entity.setName(stage.getName());
-        entity.setStageDesc(stage.getStageDesc());
-        entity.setType(stage.getType());
-        entity.setStageOrder(stage.getStageOrder());
-        entity.setRequiredGroup(stage.getRequiredGroup());
-        entity.setDirector(stage.getDirector());
-        entity.setInProcess(stage.getInProcess());
-        entity.setTemplate(stage.getTemplate());
-        entity.setUpdateTime(stage.getUpdateTime());
-        entity.setCreateTime(stage.getCreateTime());
-
-        return entity;
-    }
-
     public void delete(int id) {
         requirementDao.deleteById(id);
-        stageDao.deleteByRequirement(id);
-        attachDao.deleteByRequirement(id);
+
+        requirementStageService.deleteByRequirement(id);
+        requirementAttachService.deleteByRequirement(id);
     }
 
     public void update(Requirement requirement) {
@@ -257,8 +110,8 @@ public class RequirementService {
         return adapt(entity);
     }
 
-    public List<RequirementAssignments> list(Integer projectId, String username, RequirementStatus status) {
-        List<Assignment> assignments = assignmentService.list(projectId, username);
+    public List<RequirementStruct> listStruct(Integer projectId, String username, RequirementStatus status) {
+        List<Assignment> assignments = assignmentService.listByProject(projectId, username);
 
         Map<Integer, List<Assignment>> requirementAssignmentMap = assignments.stream()
                 .collect(Collectors.groupingBy(Assignment::getRequirementId));
@@ -268,10 +121,10 @@ public class RequirementService {
         Map<Integer, Requirement> requirementMap = requirements.stream()
                 .collect(Collectors.toMap(Requirement::getId, Function.identity()));
 
-        List<RequirementAssignments> result = new ArrayList<>();
+        List<RequirementStruct> result = new ArrayList<>();
 
         for (Integer id : requirementMap.keySet()) {
-            RequirementAssignments item = new RequirementAssignments();
+            RequirementStruct item = new RequirementStruct();
             item.setRequirement(requirementMap.get(id));
             item.setAssignments(requirementAssignmentMap.get(id));
             result.add(item);
@@ -285,25 +138,25 @@ public class RequirementService {
     }
 
     public Map<StageType, List<RequirementDashboardProject>> dashboard(String username, RequirementStatus status) {
-        List<RequirementAssignments> requirementAssignmentsList = this.list(null, username, status);
+        List<RequirementStruct> requirementStructList = this.listStruct(null, username, status);
 
         Set<Integer> projectIds = Sets.newHashSet();
 
-        List<RequirementAssignments> noStageRequirements = new ArrayList<>();
+        List<RequirementStruct> noStageRequirements = new ArrayList<>();
 
-        Multimap<StageType, RequirementAssignments> stageMultiMap = HashMultimap.create();
-        for (RequirementAssignments requirementAssignments : requirementAssignmentsList) {
-            Requirement requirementItem = requirementAssignments.getRequirement();
+        Multimap<StageType, RequirementStruct> stageMultiMap = HashMultimap.create();
+        for (RequirementStruct requirementStruct : requirementStructList) {
+            Requirement requirementItem = requirementStruct.getRequirement();
             projectIds.add(requirementItem.getProjectId());
 
             if (requirementItem.getCurrentStage() == null) {
-                noStageRequirements.add(requirementAssignments);
+                noStageRequirements.add(requirementStruct);
             } else {
-                stageMultiMap.put(requirementItem.getCurrentStage().getType(), requirementAssignments);
+                stageMultiMap.put(requirementItem.getCurrentStage().getType(), requirementStruct);
             }
         }
 
-        Map<StageType, Collection<RequirementAssignments>> stageMap = stageMultiMap.asMap();
+        Map<StageType, Collection<RequirementStruct>> stageMap = stageMultiMap.asMap();
 
         Map<Integer, Project> projectIdMap = projectService.listByIds(projectIds).stream()
                 .collect(Collectors.toMap(Project::getId, Function.identity()));
@@ -313,7 +166,8 @@ public class RequirementService {
         stageMap.forEach((stageType, stageRequirementsList) -> {
             List<RequirementDashboardProject> dashBoardProjects = new ArrayList<>();
 
-            Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = convertToDashboardRequirementMap(stageRequirementsList);
+            Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = convertToDashboardRequirementMap(
+                    stageRequirementsList);
 
             for (Integer projectId : dashboardRequirementMap.keySet()) {
                 Project project = projectIdMap.get(projectId);
@@ -331,7 +185,8 @@ public class RequirementService {
         });
 
         List<RequirementDashboardProject> dashBoardProjects = new ArrayList<>();
-        Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = convertToDashboardRequirementMap(noStageRequirements);
+        Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = convertToDashboardRequirementMap(
+                noStageRequirements);
 
         for (Integer projectId : dashboardRequirementMap.keySet()) {
             Project project = projectIdMap.get(projectId);
@@ -350,10 +205,11 @@ public class RequirementService {
         return result;
     }
 
-    private Multimap<Integer, RequirementDashboardRequirement> convertToDashboardRequirementMap(Collection<RequirementAssignments> stageRequirementsList) {
+    private Multimap<Integer, RequirementDashboardRequirement> convertToDashboardRequirementMap(
+            Collection<RequirementStruct> stageRequirementsList) {
         Multimap<Integer, RequirementDashboardRequirement> dashboardRequirementMap = HashMultimap.create();
 
-        for (RequirementAssignments stageRequirement : stageRequirementsList) {
+        for (RequirementStruct stageRequirement : stageRequirementsList) {
             Requirement requirement = stageRequirement.getRequirement();
             RequirementDashboardRequirement item = new RequirementDashboardRequirement();
             item.setName(requirement.getName());

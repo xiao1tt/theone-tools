@@ -1,12 +1,12 @@
-package com.theone.tools.waterfall.model.assignment;
+package com.theone.tools.waterfall.vo;
 
-import com.theone.tools.waterfall.model.requirement.StageType;
-import java.time.LocalDateTime;
+import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
+import java.util.List;
 
 /**
  * @author chenxiaotong
  */
-public class Assignment {
+public class AssignmentInfoResp {
 
     private Integer id;
 
@@ -16,19 +16,17 @@ public class Assignment {
 
     private Integer stageId;
 
-    private StageType stageType;
-
     private String name;
 
     private String assignmentDesc;
 
     private AssignmentStatus assignmentStatus;
 
-    private LocalDateTime expectTime;
+    private String assignmentStatusView;
 
-    private LocalDateTime updateTime;
+    private String expectTime;
 
-    private LocalDateTime createTime;
+    private List<AssignmentWorkerInfoResp> workerList;
 
     public Integer getId() {
         return id;
@@ -62,14 +60,6 @@ public class Assignment {
         this.stageId = stageId;
     }
 
-    public StageType getStageType() {
-        return stageType;
-    }
-
-    public void setStageType(StageType stageType) {
-        this.stageType = stageType;
-    }
-
     public String getName() {
         return name;
     }
@@ -94,27 +84,27 @@ public class Assignment {
         this.assignmentStatus = assignmentStatus;
     }
 
-    public LocalDateTime getExpectTime() {
+    public String getAssignmentStatusView() {
+        return assignmentStatusView;
+    }
+
+    public void setAssignmentStatusView(String assignmentStatusView) {
+        this.assignmentStatusView = assignmentStatusView;
+    }
+
+    public String getExpectTime() {
         return expectTime;
     }
 
-    public void setExpectTime(LocalDateTime expectTime) {
+    public void setExpectTime(String expectTime) {
         this.expectTime = expectTime;
     }
 
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
+    public List<AssignmentWorkerInfoResp> getWorkerList() {
+        return workerList;
     }
 
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
+    public void setWorkerList(List<AssignmentWorkerInfoResp> workerList) {
+        this.workerList = workerList;
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
  * @author chenxiaotong
  */
 public class RequirementTemplate implements Serializable {
+
     private int id;
     private String name;
     private String desc;

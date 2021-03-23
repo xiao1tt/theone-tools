@@ -6,6 +6,7 @@ import java.util.List;
  * @author chenxiaotong
  */
 public class RequirementDashboardResp {
+
     private List<RequirementDashboardGroup> groups;
 
     public List<RequirementDashboardGroup> getGroups() {

@@ -6,6 +6,7 @@ import java.util.List;
  * @author chenxiaotong
  */
 public class ProjectGroupListResp {
+
     private int count;
     private List<ProjectGroupInfoResp> list;
 

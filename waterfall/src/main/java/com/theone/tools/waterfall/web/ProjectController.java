@@ -1,13 +1,27 @@
 package com.theone.tools.waterfall.web;
 
 import com.theone.tools.waterfall.biz.ProjectBiz;
-import com.theone.tools.waterfall.vo.*;
-import org.springframework.web.bind.annotation.*;
-
+import com.theone.tools.waterfall.vo.ProjectAddReq;
+import com.theone.tools.waterfall.vo.ProjectGroupAddReq;
+import com.theone.tools.waterfall.vo.ProjectGroupInfoResp;
+import com.theone.tools.waterfall.vo.ProjectGroupListResp;
+import com.theone.tools.waterfall.vo.ProjectGroupUpdateReq;
+import com.theone.tools.waterfall.vo.ProjectInfoResp;
+import com.theone.tools.waterfall.vo.ProjectUpdateReq;
+import com.theone.tools.waterfall.vo.ProjectUserAddReq;
+import com.theone.tools.waterfall.vo.ProjectUserInfoResp;
+import com.theone.tools.waterfall.vo.ProjectUserListResp;
+import com.theone.tools.waterfall.vo.ProjectUserUpdateReq;
 import javax.annotation.Resource;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 项目管理
+ *
  * @author chenxiaotong
  */
 @RestController

@@ -10,5 +10,5 @@ public enum Role {
      */
     WORKER,
     MANAGER,
-    ADMIN;
+    ADMIN
 }

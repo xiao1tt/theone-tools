@@ -21,4 +21,8 @@ public enum AssignmentStatus {
     AssignmentStatus(String desc) {
         this.desc = desc;
     }
+
+    public String getDesc() {
+        return desc;
+    }
 }

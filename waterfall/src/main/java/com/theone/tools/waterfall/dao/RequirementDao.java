@@ -1,12 +1,10 @@
 package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.RequirementEntity;
-import com.theone.tools.waterfall.model.requirement.Requirement;
 import com.theone.tools.waterfall.model.requirement.RequirementStatus;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.Collection;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * (Requirement)表数据库访问层
@@ -66,5 +64,6 @@ public interface RequirementDao {
      */
     int deleteById(Integer id);
 
-    List<RequirementEntity> queryByIds(@Param("ids") Collection<Integer> ids, @Param("status") RequirementStatus status);
+    List<RequirementEntity> queryByIds(@Param("ids") Collection<Integer> ids,
+            @Param("status") RequirementStatus status);
 }

@@ -1,6 +1,7 @@
 package com.theone.tools.waterfall.vo;
 
 public class ProjectGroupUpdateReq {
+
     private int id;
 
     private String name;

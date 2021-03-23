@@ -1,7 +1,6 @@
 package com.theone.tools.waterfall.entity;
 
 import com.theone.tools.waterfall.model.requirement.RequirementStatus;
-
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +12,7 @@ import java.time.LocalDateTime;
  * @since 2021-03-14 18:36:30
  */
 public class RequirementEntity implements Serializable {
+
     private static final long serialVersionUID = -69957765904367413L;
 
     private Integer id;

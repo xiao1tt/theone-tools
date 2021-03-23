@@ -1,7 +1,6 @@
 package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.ProjectGroupEntity;
-import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**

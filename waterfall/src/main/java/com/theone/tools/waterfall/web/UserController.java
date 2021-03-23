@@ -5,16 +5,16 @@ import com.theone.tools.sso.client.SsoHelper;
 import com.theone.tools.waterfall.biz.UserBiz;
 import com.theone.tools.waterfall.vo.UserInfoResp;
 import com.theone.tools.waterfall.vo.UserListResp;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 用户
+ *
  * @author chenxiaotong
  */
 @RestController

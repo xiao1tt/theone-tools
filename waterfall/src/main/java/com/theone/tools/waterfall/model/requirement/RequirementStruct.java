@@ -1,10 +1,13 @@
 package com.theone.tools.waterfall.model.requirement;
 
 import com.theone.tools.waterfall.model.assignment.Assignment;
-
 import java.util.List;
 
-public class RequirementAssignments {
+/**
+ * @author chenxiaotong
+ */
+public class RequirementStruct {
+
     private Requirement requirement;
     private List<Assignment> assignments;
 

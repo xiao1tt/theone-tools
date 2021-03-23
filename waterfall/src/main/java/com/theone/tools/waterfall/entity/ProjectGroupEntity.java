@@ -1,7 +1,7 @@
 package com.theone.tools.waterfall.entity;
 
-import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * (ProjectGroup)实体类
@@ -10,14 +10,15 @@ import java.io.Serializable;
  * @since 2021-03-11 19:52:28
  */
 public class ProjectGroupEntity implements Serializable {
+
     private static final long serialVersionUID = -15681770246957181L;
-    
+
     private Integer id;
-    
+
     private String name;
-    
+
     private LocalDateTime updateTime;
-    
+
     private LocalDateTime createTime;
 
 

@@ -4,6 +4,7 @@ package com.theone.tools.waterfall.model.project;
  * @author chenxiaotong
  */
 public class ProjectGroup {
+
     private int id;
     private String name;
 

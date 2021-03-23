@@ -1,7 +1,6 @@
 package com.theone.tools.waterfall.model.requirement;
 
 import com.theone.tools.waterfall.model.assignment.Assignment;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
