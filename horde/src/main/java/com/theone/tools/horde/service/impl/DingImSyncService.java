@@ -12,27 +12,31 @@ import com.theone.tools.horde.service.UserService;
 import com.theone.tools.sso.client.UserGroup;
 import com.theone.tools.sso.client.UserLevel;
 import com.theone.tools.sso.client.UserStatus;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 /**
  * @author chenxiaotong
  */
 @Service
 public class DingImSyncService implements ImSyncService {
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     private ImRemoteService imRemoteService;
     @Resource
     private UserService userService;
+
+    @Value("${admin.phone.list}")
+    private List<String> adminPhoneList;
 
     @Override
     public void sync() {
@@ -57,7 +61,7 @@ public class DingImSyncService implements ImSyncService {
                 User insert = new User();
                 insert.setPhone(userInfo.getMobile());
                 insert.setGroup(UserGroup.UNKNOWN);
-                insert.setLevel(UserLevel.UNKNOWN);
+                insert.setLevel(adminPhoneList.contains(userInfo.getMobile()) ? UserLevel.DIRECTOR : UserLevel.UNKNOWN);
                 insert.setRealName(userInfo.getName());
                 insert.setAvatar(userInfo.getAvatar());
                 insert.setStatus(UserStatus.WAIT_COMPLETED);
