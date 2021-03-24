@@ -8,7 +8,7 @@ public enum StageStatus {
     /**
      *
      */
-    NOT_ACTIVE("未激活"),
+    NOT_ACTIVE("未开始"),
     WAITING("等待中"),
     DOING("进行中"),
     DONE("完成"),

@@ -164,7 +164,7 @@ public class AssignmentService {
         // TODO: 2021/3/24
     }
 
-    private Assignment info(Integer assignmentId) {
+    public Assignment info(Integer assignmentId) {
         return adapt(assignmentDao.queryById(assignmentId));
     }
 

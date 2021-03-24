@@ -84,7 +84,8 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, project_id, template_id, name, requirement_desc, expect_date,priority,requirement_status,requirement_owner,current_stage,
+        id, project_id, template_id, name, requirement_desc,
+        expect_date,priority,requirement_status,requirement_owner,current_stage,
         current_assignment,
         update_time,
         create_time
@@ -105,7 +106,7 @@
             <if test="requirementDesc != null and requirementDesc != ''">
                 and requirement_desc = #{requirementDesc}
             </if>
-            <if test="expectDate != null and expectDate != ''">
+            <if test="expectDate != null">
                 and expect_date = #{expectDate}
             </if>
             <if test="priority != null and priority != ''">
@@ -123,9 +124,9 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into waterfall.requirement(project_id, template_id, name, requirement_desc, expect_date, priority,
-                                          requirement_status,requirement_owner)
+                                          requirement_status, requirement_owner)
         values (#{projectId}, #{templateId}, #{name}, #{requirementDesc}, #{expectDate},
-                #{priority},#{requirementStatus}, #{requirementOwner})
+                #{priority}, #{requirementStatus}, #{requirementOwner})
     </insert>
 
     <!--通过主键修改数据-->
@@ -144,13 +145,13 @@
             <if test="requirementDesc != null and requirementDesc != ''">
                 requirement_desc = #{requirementDesc},
             </if>
-            <if test="expectDate != null and expectDate != ''">
+            <if test="expectDate != null">
                 expect_date = #{expectDate},
             </if>
             <if test="priority != null and priority != ''">
                 priority = #{priority},
             </if>
-            <if test="requirementStatus != null and requirementStatus != ''">
+            <if test="requirementStatus != null">
                 requirement_status = #{requirementStatus},
             </if>
             <if test="requirementOwner != null and requirementOwner != ''">

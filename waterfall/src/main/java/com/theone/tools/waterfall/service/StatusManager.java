@@ -1,11 +1,13 @@
 package com.theone.tools.waterfall.service;
 
+import com.alibaba.fastjson.JSON;
 import com.theone.tools.waterfall.dao.AssignmentDao;
 import com.theone.tools.waterfall.dao.AssignmentWorkerDao;
 import com.theone.tools.waterfall.dao.RequirementDao;
 import com.theone.tools.waterfall.dao.RequirementStageDao;
 import com.theone.tools.waterfall.entity.AssignmentEntity;
 import com.theone.tools.waterfall.entity.AssignmentWorkerEntity;
+import com.theone.tools.waterfall.entity.RequirementEntity;
 import com.theone.tools.waterfall.entity.RequirementStageEntity;
 import com.theone.tools.waterfall.model.assignment.Assignment;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
@@ -31,6 +33,8 @@ public class StatusManager {
     private RequirementDao requirementDao;
     @Resource
     private AssignmentService assignmentService;
+    @Resource
+    private RequirementStageService stageService;
 
     public void updateWorkerStatus(Integer assignmentId, String username, AssignmentStatus after) {
         assignmentWorkerDao.updateStatus(assignmentId, username, after);
@@ -75,6 +79,9 @@ public class StatusManager {
 
         if (after == AssignmentStatus.DOING) {
             this.updateStageStatus(assignmentEntity.getStageId(), StageStatus.DOING);
+            RequirementEntity requirementEntity = requirementDao.queryById(assignmentEntity.getRequirementId());
+            requirementEntity.setCurrentAssignment(JSON.toJSONString(assignmentService.info(assignmentEntity.getId())));
+            requirementDao.update(requirementEntity);
         }
 
         if (after == AssignmentStatus.DONE) {
@@ -100,6 +107,12 @@ public class StatusManager {
 
     private void afterStageStatusUpdate(Integer stageId, StageStatus before, StageStatus after) {
         RequirementStageEntity stageEntity = requirementStageDao.queryById(stageId);
+
+        if (after == StageStatus.WAITING) {
+            RequirementEntity requirementEntity = requirementDao.queryById(stageEntity.getRequirementId());
+            requirementEntity.setCurrentStage(JSON.toJSONString(stageService.info(stageEntity.getId())));
+            requirementDao.update(requirementEntity);
+        }
 
         if (after == StageStatus.DOING) {
             this.updateRequirementStatus(stageEntity.getRequirementId(), RequirementStatus.DOING);
