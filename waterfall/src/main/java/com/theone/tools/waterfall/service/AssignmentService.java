@@ -277,6 +277,11 @@ public class AssignmentService {
     }
 
     public void complete(Integer assignmentId, String username) {
-        statusManager.updateWorkerStatus(assignmentId, username, AssignmentStatus.DONE);
+        boolean change = statusManager.updateWorkerStatus(assignmentId, username, AssignmentStatus.DONE);
+        if (change) {
+            AssignmentWorkerEntity entity = assignmentWorkerDao.query(assignmentId, username);
+            entity.setCompleteTime(LocalDateTime.now());
+            assignmentWorkerDao.update(entity);
+        }
     }
 }
