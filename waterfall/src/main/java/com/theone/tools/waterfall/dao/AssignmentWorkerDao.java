@@ -1,6 +1,7 @@
 package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.AssignmentWorkerEntity;
+import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -65,4 +66,9 @@ public interface AssignmentWorkerDao {
     void insertList(List<AssignmentWorkerEntity> workers);
 
     void deleteByAssignment(Integer assignmentId);
+
+    AssignmentWorkerEntity query(Integer assignmentId, String username);
+
+    int updateStatus(@Param("assignmentId") Integer assignmentId, @Param("username") String username,
+            @Param("before") AssignmentStatus before, @Param("after") AssignmentStatus after);
 }

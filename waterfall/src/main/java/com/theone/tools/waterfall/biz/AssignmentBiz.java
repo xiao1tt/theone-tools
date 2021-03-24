@@ -51,7 +51,7 @@ public class AssignmentBiz {
         return resp;
     }
 
-    public void add(Integer stageId, String name, String desc, String expectTime) {
+    public void add(Integer stageId, String name, String desc, String expectDate) {
         RequirementStage stage = requirementStageService.info(stageId);
         Assignment assignment = new Assignment();
         assignment.setProjectId(stage.getProjectId());
@@ -61,7 +61,7 @@ public class AssignmentBiz {
         assignment.setName(name);
         assignment.setAssignmentDesc(desc);
         assignment.setAssignmentStatus(AssignmentStatus.WAIT_ALLOCATE);
-        assignment.setExpectTime(DateFormatter.parseDateTime(expectTime));
+        assignment.setExpectDate(DateFormatter.parseDate(expectDate));
 
         assignmentService.add(assignment);
     }
@@ -70,12 +70,12 @@ public class AssignmentBiz {
         assignmentService.delete(id);
     }
 
-    public void update(Integer id, String name, String desc, String expectTime) {
+    public void update(Integer id, String name, String desc, String expectDate) {
         Assignment assignment = new Assignment();
         assignment.setId(id);
         assignment.setName(name);
         assignment.setAssignmentDesc(desc);
-        assignment.setExpectTime(DateFormatter.parseDateTime(expectTime));
+        assignment.setExpectDate(DateFormatter.parseDate(expectDate));
 
         assignmentService.updateInfo(assignment);
     }
@@ -97,7 +97,7 @@ public class AssignmentBiz {
         assignmentInfoResp.setAssignmentDesc(assignment.getAssignmentDesc());
         assignmentInfoResp.setAssignmentStatus(assignment.getAssignmentStatus());
         assignmentInfoResp.setAssignmentStatusView(assignment.getAssignmentStatus().getDesc());
-        assignmentInfoResp.setExpectTime(DateFormatter.format(assignment.getExpectTime()));
+        assignmentInfoResp.setExpectTime(DateFormatter.format(assignment.getExpectDate()));
 
         List<AssignmentWorkerInfoResp> workerList = new ArrayList<>();
         for (AssignmentWorker worker : structWorkers) {
@@ -129,5 +129,9 @@ public class AssignmentBiz {
         resp.setList(list);
 
         return resp;
+    }
+
+    public void start(Integer assignmentId, String username) {
+        assignmentService.start(assignmentId, username);
     }
 }

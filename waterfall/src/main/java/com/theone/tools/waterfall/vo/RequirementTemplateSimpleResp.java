@@ -1,4 +1,4 @@
-package com.theone.tools.waterfall.model.requirement;
+package com.theone.tools.waterfall.vo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author chenxiaotong
  */
-public class RequirementTemplate implements Serializable {
+public class RequirementTemplateSimpleResp implements Serializable {
 
     private int id;
     private String name;

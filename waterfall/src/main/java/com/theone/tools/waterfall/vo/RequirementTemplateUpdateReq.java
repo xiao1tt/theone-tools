@@ -11,7 +11,7 @@ public class RequirementTemplateUpdateReq {
 
     private String name;
     private String desc;
-    private List<TemplateStage> stages;
+    private List<TemplateStageSaveReq> stages;
 
     public String getName() {
         return name;
@@ -29,11 +29,11 @@ public class RequirementTemplateUpdateReq {
         this.desc = desc;
     }
 
-    public List<TemplateStage> getStages() {
+    public List<TemplateStageSaveReq> getStages() {
         return stages;
     }
 
-    public void setStages(List<TemplateStage> stages) {
+    public void setStages(List<TemplateStageSaveReq> stages) {
         this.stages = stages;
     }
 }

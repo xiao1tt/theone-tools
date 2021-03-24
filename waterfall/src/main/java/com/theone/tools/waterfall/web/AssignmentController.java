@@ -27,12 +27,12 @@ public class AssignmentController {
 
     @PostMapping("/add")
     public void add(Integer stageId, @RequestBody AssignmentAddReq req) {
-        assignmentBiz.add(stageId, req.getName(), req.getDesc(), req.getExpectTime());
+        assignmentBiz.add(stageId, req.getName(), req.getDesc(), req.getExpectDate());
     }
 
     @PostMapping("/delete")
-    public void delete(Integer assignmentId) {
-        assignmentBiz.delete(assignmentId);
+    public void delete(Integer id) {
+        assignmentBiz.delete(id);
     }
 
     @PostMapping("/update")
@@ -51,13 +51,18 @@ public class AssignmentController {
     }
 
     @PostMapping("/distribute")
-    public void distribute(Integer assignmentId, @RequestBody AssignmentDistributeReq req) {
-        assignmentBiz.distribute(assignmentId, req.getUsers());
+    public void distribute(Integer id, @RequestBody AssignmentDistributeReq req) {
+        assignmentBiz.distribute(id, req.getUsers());
     }
 
     @PostMapping("/obtain")
-    public void obtain(Integer assignmentId) {
-        assignmentBiz.obtain(assignmentId, IUserContext.current().getUsername());
+    public void obtain(Integer id) {
+        assignmentBiz.obtain(id, IUserContext.current().getUsername());
+    }
+
+    @PostMapping("/start")
+    public void start(Integer id) {
+        assignmentBiz.start(id, IUserContext.current().getUsername());
     }
 
     @PostMapping("/complete")

@@ -6,7 +6,7 @@ public class AssignmentAddReq {
 
     private String desc;
 
-    private String expectTime;
+    private String expectDate;
 
     public String getName() {
         return name;
@@ -24,11 +24,11 @@ public class AssignmentAddReq {
         this.desc = desc;
     }
 
-    public String getExpectTime() {
-        return expectTime;
+    public String getExpectDate() {
+        return expectDate;
     }
 
-    public void setExpectTime(String expectTime) {
-        this.expectTime = expectTime;
+    public void setExpectDate(String expectDate) {
+        this.expectDate = expectDate;
     }
 }

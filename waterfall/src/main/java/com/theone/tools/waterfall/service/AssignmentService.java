@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,7 @@ public class AssignmentService {
         entity.setName(assignment.getName());
         entity.setAssignmentDesc(assignment.getAssignmentDesc());
         entity.setAssignmentStatus(assignment.getAssignmentStatus());
+        entity.setExpectDate(assignment.getExpectDate());
         return entity;
     }
 
@@ -74,7 +76,7 @@ public class AssignmentService {
         assignment.setName(entity.getName());
         assignment.setAssignmentDesc(entity.getAssignmentDesc());
         assignment.setAssignmentStatus(entity.getAssignmentStatus());
-        assignment.setExpectTime(entity.getExpectTime());
+        assignment.setExpectDate(entity.getExpectDate());
         assignment.setUpdateTime(entity.getUpdateTime());
         assignment.setCreateTime(entity.getCreateTime());
 
@@ -148,26 +150,29 @@ public class AssignmentService {
 
         assignmentWorkerDao.insertList(workerList);
 
+        this.afterAddWorker(assignmentId, users);
+    }
+
+    private void afterAddWorker(Integer assignmentId, List<String> users) {
+        updateStatus(assignmentId, AssignmentStatus.WAITING, AssignmentStatus.DOING);
+        notifyWorkers(users);
+    }
+
+    private void notifyWorkers(List<String> users) {
+        // TODO: 2021/3/24
+    }
+
+    private void updateStatus(Integer assignmentId, AssignmentStatus before, AssignmentStatus after) {
+        assignmentDao.updateStatus(assignmentId, before, after);
+    }
+
+    private void updateWorkerStatus(Integer assignmentId, String username,
+            AssignmentStatus before, AssignmentStatus after) {
+        assignmentWorkerDao.updateStatus(assignmentId, username, before, after);
     }
 
     private Assignment info(Integer assignmentId) {
         return adapt(assignmentDao.queryById(assignmentId));
-    }
-
-    public void updateStatus(Integer assignmentId, AssignmentStatus status) {
-
-    }
-
-    public void updateWorkerStatus(Integer assignmentId, String username, AssignmentStatus status) {
-        AssignmentWorkerEntity query = new AssignmentWorkerEntity();
-        query.setAssignmentId(assignmentId);
-        query.setWorker(username);
-
-        List<AssignmentWorkerEntity> list = assignmentWorkerDao.queryAll(query);
-        for (AssignmentWorkerEntity entity : list) {
-            entity.setWorkStatus(status);
-            assignmentWorkerDao.update(entity);
-        }
     }
 
     public List<AssignmentStruct> listStructByRequirement(Integer requirementId) {
@@ -222,7 +227,9 @@ public class AssignmentService {
             List<AssignmentWorkerEntity> workerEntities) {
         AssignmentStruct struct = new AssignmentStruct();
         struct.setAssignment(adapt(assignmentEntity));
-        struct.setWorkers(workerEntities.stream().map(this::adapt).collect(Collectors.toList()));
+        struct.setWorkers(workerEntities != null
+                ? workerEntities.stream().map(this::adapt).collect(Collectors.toList())
+                : Lists.newArrayList());
         return struct;
     }
 
@@ -264,4 +271,17 @@ public class AssignmentService {
         assignmentDao.update(adapt(assignment));
     }
 
+    public void start(Integer assignmentId, String username) {
+        AssignmentWorkerEntity entity = assignmentWorkerDao.query(assignmentId, username);
+        if (entity.getWorkStatus() == AssignmentStatus.WAITING) {
+            entity.setWorkStatus(AssignmentStatus.DOING);
+            assignmentWorkerDao.update(entity);
+        }
+
+        this.afterWorkerStart(assignmentId, username);
+    }
+
+    private void afterWorkerStart(Integer assignmentId, String username) {
+        this.updateWorkerStatus(assignmentId, username, AssignmentStatus.WAITING, AssignmentStatus.DOING);
+    }
 }

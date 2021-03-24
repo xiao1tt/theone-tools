@@ -3,14 +3,13 @@ package com.theone.tools.waterfall.biz;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.theone.common.base.utils.DateFormatter;
-import com.theone.tools.waterfall.model.assignment.Assignment;
 import com.theone.tools.waterfall.model.assignment.AssignmentStruct;
-import com.theone.tools.waterfall.model.assignment.AssignmentWorker;
 import com.theone.tools.waterfall.model.requirement.Requirement;
 import com.theone.tools.waterfall.model.requirement.RequirementStage;
 import com.theone.tools.waterfall.model.requirement.RequirementStatus;
 import com.theone.tools.waterfall.model.requirement.RequirementStruct;
 import com.theone.tools.waterfall.model.requirement.RequirementTemplate;
+import com.theone.tools.waterfall.model.requirement.RequirementTemplateStruct;
 import com.theone.tools.waterfall.model.requirement.StageStatus;
 import com.theone.tools.waterfall.model.requirement.StageType;
 import com.theone.tools.waterfall.model.requirement.TemplateStage;
@@ -19,7 +18,6 @@ import com.theone.tools.waterfall.service.RequirementService;
 import com.theone.tools.waterfall.service.RequirementStageService;
 import com.theone.tools.waterfall.service.RequirementTemplateService;
 import com.theone.tools.waterfall.vo.AssignmentInfoResp;
-import com.theone.tools.waterfall.vo.AssignmentWorkerInfoResp;
 import com.theone.tools.waterfall.vo.RequirementAddReq;
 import com.theone.tools.waterfall.vo.RequirementDashboardGroup;
 import com.theone.tools.waterfall.vo.RequirementDashboardProject;
@@ -30,8 +28,9 @@ import com.theone.tools.waterfall.vo.RequirementStageInfoResp;
 import com.theone.tools.waterfall.vo.RequirementStagesResp;
 import com.theone.tools.waterfall.vo.RequirementTemplateInfoResp;
 import com.theone.tools.waterfall.vo.RequirementTemplateListResp;
-import com.theone.tools.waterfall.vo.RequirementTemplateUpdateReq;
+import com.theone.tools.waterfall.vo.RequirementTemplateSimpleResp;
 import com.theone.tools.waterfall.vo.TemplateStageInfoResp;
+import com.theone.tools.waterfall.vo.TemplateStageSaveReq;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,47 +55,64 @@ public class RequirementBiz {
     @Resource
     private AssignmentService assignmentService;
 
-    public void templateAdd(String name, String desc, List<TemplateStage> stages) {
+    public void templateAdd(String name, String desc, List<TemplateStageSaveReq> stages) {
         RequirementTemplate template = new RequirementTemplate();
         template.setName(name);
         template.setDesc(desc);
-        template.setStages(stages);
 
-        requirementTemplateService.add(template);
+        List<TemplateStage> stageList = stages.stream().map(this::adapt).collect(Collectors.toList());
+
+        requirementTemplateService.add(template, stageList);
+    }
+
+    private TemplateStage adapt(TemplateStageSaveReq templateStageAddReq) {
+        TemplateStage stage = new TemplateStage();
+        stage.setName(templateStageAddReq.getName());
+        stage.setDesc(templateStageAddReq.getDesc());
+        stage.setRequiredGroup(templateStageAddReq.getRequiredGroup());
+        stage.setType(templateStageAddReq.getType());
+        stage.setDirector(templateStageAddReq.getDirector());
+        stage.setOrder(templateStageAddReq.getOrder());
+        return stage;
     }
 
     public void templateDelete(int templateId) {
         requirementTemplateService.delete(templateId);
     }
 
-    public void templateUpdate(int templateId, RequirementTemplateUpdateReq req) {
+    public void templateUpdate(Integer templateId, String name, String desc, List<TemplateStageSaveReq> stages) {
         RequirementTemplate template = new RequirementTemplate();
         template.setId(templateId);
-        template.setName(req.getName());
-        template.setDesc(req.getDesc());
-        template.setStages(req.getStages());
+        template.setName(name);
+        template.setDesc(desc);
 
-        requirementTemplateService.update(template);
+        List<TemplateStage> stageList = stages.stream().map(this::adapt).collect(Collectors.toList());
+
+        requirementTemplateService.update(template, stageList);
     }
 
     public RequirementTemplateInfoResp templateInfo(int id) {
-        RequirementTemplate template = requirementTemplateService.info(id);
-        return adapt(template);
+        RequirementTemplateStruct struct = requirementTemplateService.struct(id);
+        return adapt(struct);
     }
 
-    private RequirementTemplateInfoResp adapt(RequirementTemplate template) {
-        if (template == null) {
+    private RequirementTemplateInfoResp adapt(RequirementTemplateStruct struct) {
+        if (struct == null) {
             return null;
         }
+
+        RequirementTemplate template = struct.getTemplate();
+        List<TemplateStage> stages = struct.getStages();
 
         RequirementTemplateInfoResp resp = new RequirementTemplateInfoResp();
         resp.setId(template.getId());
         resp.setName(template.getName());
         resp.setDesc(template.getDesc());
-        resp.setStages(template.getStages().stream().map(this::adapt).collect(Collectors.toList()));
+        resp.setStages(stages.stream().map(this::adapt).collect(Collectors.toList()));
 
         return resp;
     }
+
 
     private TemplateStageInfoResp adapt(TemplateStage stage) {
         if (stage == null) {
@@ -104,21 +120,43 @@ public class RequirementBiz {
         }
 
         TemplateStageInfoResp resp = new TemplateStageInfoResp();
+
         resp.setId(stage.getId());
         resp.setTemplateId(stage.getTemplateId());
         resp.setName(stage.getName());
         resp.setDesc(stage.getDesc());
         resp.setRequiredGroup(stage.getRequiredGroup());
         resp.setRequiredGroupView(stage.getRequiredGroup().getDesc());
+        resp.setType(stage.getType());
+        resp.setTypeView(stage.getType().getDesc());
+        resp.setDirector(stage.getDirector());
         resp.setOrder(stage.getOrder());
 
         return resp;
     }
 
     public RequirementTemplateListResp templateList() {
-        List<RequirementTemplate> requirementTemplates = requirementTemplateService.list();
-        return new RequirementTemplateListResp(requirementTemplates.size(),
-                requirementTemplates.stream().map(this::adapt).collect(Collectors.toList()));
+        List<RequirementTemplate> templateList = requirementTemplateService.list();
+        List<RequirementTemplateSimpleResp> list = templateList.stream().map(this::adapt).collect(Collectors.toList());
+
+        RequirementTemplateListResp resp = new RequirementTemplateListResp();
+        resp.setCount(list.size());
+        resp.setList(list);
+
+        return resp;
+    }
+
+    private RequirementTemplateSimpleResp adapt(RequirementTemplate template) {
+        if (template == null) {
+            return null;
+        }
+
+        RequirementTemplateSimpleResp resp = new RequirementTemplateSimpleResp();
+        resp.setId(template.getId());
+        resp.setName(template.getName());
+        resp.setDesc(template.getDesc());
+
+        return resp;
     }
 
     public void add(RequirementAddReq req) {
@@ -133,8 +171,8 @@ public class RequirementBiz {
         add.setRequirementStatus(RequirementStatus.NOT_ACTIVE);
 
         Requirement requirement = requirementService.add(add);
-        RequirementTemplate template = requirementTemplateService.info(req.getTemplateId());
-        List<TemplateStage> templateStages = template.getStages();
+
+        List<TemplateStage> templateStages = requirementTemplateService.stageList(req.getTemplateId());
 
         List<RequirementStage> stages = Lists.newArrayList();
 
@@ -185,8 +223,7 @@ public class RequirementBiz {
         resp.setName(requirement.getName());
         resp.setDesc(requirement.getRequirementDesc());
         resp.setOwner(requirement.getRequirementOwner());
-        resp.setUpdateTime(requirement.getUpdateTime());
-        resp.setCreateTime(requirement.getCreateTime());
+        resp.setCreateTime(DateFormatter.format(requirement.getCreateTime()));
 
         return resp;
     }

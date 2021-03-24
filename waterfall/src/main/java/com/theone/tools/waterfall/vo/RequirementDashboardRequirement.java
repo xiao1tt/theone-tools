@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class RequirementDashboardRequirement {
 
+    private Integer id;
     private String name;
     private String desc;
 
@@ -23,6 +24,14 @@ public class RequirementDashboardRequirement {
     private String currentStageView;
 
     private List<String> currentWorker;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

@@ -44,16 +44,16 @@ public class RequirementController {
      * 删除需求模版
      */
     @GetMapping("/template/delete")
-    public void templateDelete(Integer templateId) {
-        requirementBiz.templateDelete(templateId);
+    public void templateDelete(Integer id) {
+        requirementBiz.templateDelete(id);
     }
 
     /**
      * 更新需求模版
      */
     @PostMapping("/template/update")
-    public void templateUpdate(Integer templateId, @RequestBody RequirementTemplateUpdateReq req) {
-        requirementBiz.templateUpdate(templateId, req);
+    public void templateUpdate(Integer id, @RequestBody RequirementTemplateUpdateReq req) {
+        requirementBiz.templateUpdate(id, req.getName(),req.getDesc(),req.getStages());
     }
 
     /**

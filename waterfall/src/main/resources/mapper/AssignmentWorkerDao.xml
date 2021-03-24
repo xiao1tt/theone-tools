@@ -34,6 +34,23 @@
         where id = #{id}
     </select>
 
+    <select id="query" resultMap="BaseResultMap">
+        select id,
+               assignment_id,
+               stage_id,
+               requirement_id,
+               project_id,
+               worker,
+               work_status,
+               start_time,
+               complete_time,
+               update_time,
+               create_time
+        from waterfall.assignment_worker
+        where assignment_id = #{assignmentId}
+          and worker = #{username}
+    </select>
+
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="BaseResultMap">
         select id,
@@ -136,6 +153,14 @@
             </if>
         </set>
         where id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        update waterfall.assignment_worker
+        set work_status = #{after}
+        where assignment_id = #{assignmentId}
+          and worker = #{username}
+          and work_status = #{before}
     </update>
 
     <!--通过主键删除-->

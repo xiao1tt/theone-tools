@@ -212,6 +212,7 @@ public class RequirementService {
         for (RequirementStruct stageRequirement : stageRequirementsList) {
             Requirement requirement = stageRequirement.getRequirement();
             RequirementDashboardRequirement item = new RequirementDashboardRequirement();
+            item.setId(requirement.getId());
             item.setName(requirement.getName());
             item.setDesc(requirement.getRequirementDesc());
             item.setPriority(requirement.getPriority());

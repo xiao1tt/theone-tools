@@ -6,43 +6,19 @@ import com.theone.tools.waterfall.model.requirement.StageType;
 /**
  * @author chenxiaotong
  */
-public class TemplateStageInfoResp {
-
-    private int id;
-
-    private int templateId;
+public class TemplateStageSaveReq {
 
     private String name;
 
     private String desc;
 
-    private UserGroup requiredGroup;
-
-    private String requiredGroupView;
-
     private StageType type;
 
-    private String typeView;
+    private UserGroup requiredGroup;
 
     private String director;
 
     private int order;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getTemplateId() {
-        return templateId;
-    }
-
-    public void setTemplateId(int templateId) {
-        this.templateId = templateId;
-    }
 
     public String getName() {
         return name;
@@ -68,22 +44,6 @@ public class TemplateStageInfoResp {
         this.requiredGroup = requiredGroup;
     }
 
-    public String getRequiredGroupView() {
-        return requiredGroupView;
-    }
-
-    public void setRequiredGroupView(String requiredGroupView) {
-        this.requiredGroupView = requiredGroupView;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public void setOrder(int order) {
-        this.order = order;
-    }
-
     public StageType getType() {
         return type;
     }
@@ -92,19 +52,19 @@ public class TemplateStageInfoResp {
         this.type = type;
     }
 
-    public String getTypeView() {
-        return typeView;
-    }
-
-    public void setTypeView(String typeView) {
-        this.typeView = typeView;
-    }
-
     public String getDirector() {
         return director;
     }
 
     public void setDirector(String director) {
         this.director = director;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
 }

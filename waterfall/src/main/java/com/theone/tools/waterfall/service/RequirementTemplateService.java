@@ -5,11 +5,15 @@ import com.theone.tools.waterfall.dao.RequirementTemplateStageDao;
 import com.theone.tools.waterfall.entity.RequirementTemplateEntity;
 import com.theone.tools.waterfall.entity.RequirementTemplateStageEntity;
 import com.theone.tools.waterfall.model.requirement.RequirementTemplate;
+import com.theone.tools.waterfall.model.requirement.RequirementTemplateStruct;
 import com.theone.tools.waterfall.model.requirement.TemplateStage;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author chenxiaotong
@@ -22,11 +26,11 @@ public class RequirementTemplateService {
     @Resource
     private RequirementTemplateStageDao templateStageDao;
 
-    public void add(RequirementTemplate template) {
+    @Transactional(rollbackFor = Throwable.class)
+    public void add(RequirementTemplate template, List<TemplateStage> stageList) {
         RequirementTemplateEntity insert = adapt(template);
         templateDao.insert(insert);
-        templateStageDao
-                .insertAll(insert.getId(), template.getStages().stream().map(this::adapt).collect(Collectors.toList()));
+        templateStageDao.insertAll(insert.getId(), stageList.stream().map(this::adapt).collect(Collectors.toList()));
     }
 
     private RequirementTemplateEntity adapt(RequirementTemplate template) {
@@ -47,34 +51,42 @@ public class RequirementTemplateService {
         }
 
         RequirementTemplateStageEntity entity = new RequirementTemplateStageEntity();
+
         entity.setId(stage.getId());
         entity.setTemplateId(stage.getTemplateId());
         entity.setName(stage.getName());
         entity.setStageDesc(stage.getDesc());
         entity.setStageOrder(stage.getOrder());
         entity.setRequiredGroup(stage.getRequiredGroup());
+        entity.setStageType(stage.getType());
+        entity.setDirector(stage.getDirector());
 
         return entity;
     }
 
+    @Transactional(rollbackFor = Throwable.class)
     public void delete(int templateId) {
         templateDao.deleteById(templateId);
         templateStageDao.deleteByTemplate(templateId);
     }
 
-    public void update(RequirementTemplate template) {
+    @Transactional(rollbackFor = Throwable.class)
+    public void update(RequirementTemplate template, List<TemplateStage> stageList) {
         templateDao.update(adapt(template));
         templateStageDao.deleteByTemplate(template.getId());
-        templateStageDao.insertAll(template.getId(),
-                template.getStages().stream().map(this::adapt).collect(Collectors.toList()));
+        templateStageDao.insertAll(template.getId(), stageList.stream().map(this::adapt).collect(Collectors.toList()));
     }
 
     public RequirementTemplate info(int id) {
         RequirementTemplateEntity entity = templateDao.queryById(id);
-        RequirementTemplateStageEntity query = new RequirementTemplateStageEntity();
-        query.setTemplateId(id);
-        List<RequirementTemplateStageEntity> stages = templateStageDao.queryAll(query);
-        return adapt(entity, stages);
+        return adapt(entity);
+    }
+
+    public RequirementTemplateStruct struct(int id) {
+        RequirementTemplate template = this.info(id);
+
+        List<TemplateStage> templateStages = this.stageList(id);
+        return assemble(template, templateStages);
     }
 
     private RequirementTemplate adapt(RequirementTemplateEntity entity) {
@@ -90,18 +102,16 @@ public class RequirementTemplateService {
         return template;
     }
 
-    private RequirementTemplate adapt(RequirementTemplateEntity entity, List<RequirementTemplateStageEntity> stages) {
-        if (entity == null) {
+    private RequirementTemplateStruct assemble(RequirementTemplate template, List<TemplateStage> stages) {
+        if (template == null) {
             return null;
         }
 
-        RequirementTemplate template = new RequirementTemplate();
-        template.setId(entity.getId());
-        template.setName(entity.getName());
-        template.setDesc(entity.getTemplateDesc());
-        template.setStages(stages.stream().map(this::adapt).collect(Collectors.toList()));
+        RequirementTemplateStruct struct = new RequirementTemplateStruct();
+        struct.setTemplate(template);
+        struct.setStages(stages);
 
-        return template;
+        return struct;
     }
 
     private TemplateStage adapt(RequirementTemplateStageEntity entity) {
@@ -124,7 +134,33 @@ public class RequirementTemplateService {
     }
 
     public List<RequirementTemplate> list() {
-        List<RequirementTemplateEntity> templateEntities = templateDao.queryAllByLimit(0, 100);
+        List<RequirementTemplateEntity> templateEntities = templateDao.queryAll(new RequirementTemplateEntity());
         return templateEntities.stream().map(this::adapt).collect(Collectors.toList());
+    }
+
+    public List<TemplateStage> stageList(int templateId) {
+        RequirementTemplateStageEntity query = new RequirementTemplateStageEntity();
+        query.setTemplateId(templateId);
+
+        List<RequirementTemplateStageEntity> stageEntities = templateStageDao.queryAll(query);
+        return stageEntities.stream().map(this::adapt).collect(Collectors.toList());
+    }
+
+    public List<RequirementTemplateStruct> listStruct() {
+        List<RequirementTemplateEntity> templateEntities = templateDao.queryAll(new RequirementTemplateEntity());
+        List<RequirementTemplate> templates = templateEntities.stream().map(this::adapt).collect(Collectors.toList());
+        List<RequirementTemplateStageEntity> stageEntities = templateStageDao
+                .queryAll(new RequirementTemplateStageEntity());
+        Map<Integer, List<TemplateStage>> templateStageMap = stageEntities.stream().map(this::adapt)
+                .collect(Collectors.groupingBy(TemplateStage::getTemplateId));
+
+        List<RequirementTemplateStruct> result = new ArrayList<>();
+        for (RequirementTemplate template : templates) {
+            RequirementTemplateStruct struct = new RequirementTemplateStruct();
+            struct.setTemplate(template);
+            struct.setStages(templateStageMap.get(template.getId()));
+            result.add(struct);
+        }
+        return result;
     }
 }

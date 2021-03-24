@@ -9,15 +9,7 @@ import java.util.List;
 public class RequirementTemplateListResp implements Serializable {
 
     private int count;
-    private List<RequirementTemplateInfoResp> list;
-
-    public RequirementTemplateListResp() {
-    }
-
-    public RequirementTemplateListResp(int count, List<RequirementTemplateInfoResp> list) {
-        this.count = count;
-        this.list = list;
-    }
+    private List<RequirementTemplateSimpleResp> list;
 
     public int getCount() {
         return count;
@@ -27,11 +19,11 @@ public class RequirementTemplateListResp implements Serializable {
         this.count = count;
     }
 
-    public List<RequirementTemplateInfoResp> getList() {
+    public List<RequirementTemplateSimpleResp> getList() {
         return list;
     }
 
-    public void setList(List<RequirementTemplateInfoResp> list) {
+    public void setList(List<RequirementTemplateSimpleResp> list) {
         this.list = list;
     }
 }

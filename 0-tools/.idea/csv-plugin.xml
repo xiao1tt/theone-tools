@@ -38,6 +38,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/AssignmentAddReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/AssignmentDistributeReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/AssignmentUpdateReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/ProjectAddReq.java">
           <value>
             <Attribute>
@@ -46,6 +67,27 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/ProjectGroupAddReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/RequirementAddReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/RequirementTemplateAddReq.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/RequirementTemplateUpdateReq.java">
           <value>
             <Attribute>
               <option name="separator" value=";" />

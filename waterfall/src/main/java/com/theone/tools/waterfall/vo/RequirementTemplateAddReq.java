@@ -1,7 +1,6 @@
 package com.theone.tools.waterfall.vo;
 
 
-import com.theone.tools.waterfall.model.requirement.TemplateStage;
 import java.util.List;
 
 /**
@@ -11,7 +10,7 @@ public class RequirementTemplateAddReq {
 
     private String name;
     private String desc;
-    private List<TemplateStage> stages;
+    private List<TemplateStageSaveReq> stages;
 
     public String getName() {
         return name;
@@ -29,11 +28,11 @@ public class RequirementTemplateAddReq {
         this.desc = desc;
     }
 
-    public List<TemplateStage> getStages() {
+    public List<TemplateStageSaveReq> getStages() {
         return stages;
     }
 
-    public void setStages(List<TemplateStage> stages) {
+    public void setStages(List<TemplateStageSaveReq> stages) {
         this.stages = stages;
     }
 }

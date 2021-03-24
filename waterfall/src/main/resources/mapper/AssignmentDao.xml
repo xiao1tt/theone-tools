@@ -12,7 +12,7 @@
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="assignmentDesc" column="assignment_desc" jdbcType="VARCHAR"/>
         <result property="assignmentStatus" column="assignment_status"/>
-        <result property="expectTime" column="expect_time" jdbcType="TIMESTAMP"/>
+        <result property="expectDate" column="expect_date" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -27,7 +27,7 @@
                name,
                assignment_desc,
                assignment_status,
-               expect_time,
+               expect_date,
                update_time,
                create_time
         from waterfall.assignment
@@ -44,7 +44,7 @@
                name,
                assignment_desc,
                assignment_status,
-               expect_time,
+               expect_date,
                update_time,
                create_time
         from waterfall.assignment
@@ -53,7 +53,7 @@
 
     <select id="queryByIds" resultMap="BaseResultMap">
         select
-        id, project_id, requirement_id, stage_id,stage_type, name, assignment_desc, assignment_status,expect_time,
+        id, project_id, requirement_id, stage_id,stage_type, name, assignment_desc, assignment_status,expect_date,
         update_time,create_time
         from waterfall.assignment
         where id in
@@ -65,7 +65,8 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="BaseResultMap">
         select
-        id, project_id, requirement_id, stage_id,stage_type, name, assignment_desc, assignment_status, expect_time, update_time,
+        id, project_id, requirement_id, stage_id,stage_type, name, assignment_desc, assignment_status, expect_date,
+        update_time,
         create_time
         from waterfall.assignment
         <where>
@@ -99,9 +100,9 @@
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
         insert into waterfall.assignment(project_id, requirement_id, stage_id, stage_type, name, assignment_desc,
-                                         assignment_status,expect_time)
+                                         assignment_status, expect_date)
         values (#{projectId}, #{requirementId}, #{stageId}, #{stageType}, #{name}, #{assignmentDesc},
-                #{assignmentStatus},#{expectTime})
+                #{assignmentStatus}, #{expectDate})
     </insert>
 
     <!--通过主键修改数据-->
@@ -129,11 +130,18 @@
             <if test="assignmentStatus != null and assignmentStatus != ''">
                 assignment_status = #{assignmentStatus},
             </if>
-            <if test="expectTime != null">
-                expect_time = #{expectTime},
+            <if test="expectDate != null">
+                expect_date = #{expectDate},
             </if>
         </set>
         where id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        update waterfall.assignment
+        set assignment_status = #{after}
+        where id = #{id}
+          and assignment_status = #{before}
     </update>
 
     <!--通过主键删除-->

@@ -91,14 +91,14 @@
         insert into waterfall.requirement_template_stage(template_id, name, stage_desc,stage_type, stage_order,
         required_group,director)
         values
-        <foreach open="(" close=")" collection="stages" item="stage" index="index" separator=",">
-            #{templateId},
+        <foreach collection="stages" item="stage" index="index" separator=",">
+            (#{templateId},
             #{stage.name},
             #{stage.stageDesc},
             #{stage.stageType},
             #{stage.stageOrder},
             #{stage.requiredGroup},
-            #{stage.director}
+            #{stage.director})
         </foreach>
     </insert>
 

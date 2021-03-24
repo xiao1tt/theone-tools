@@ -3,6 +3,7 @@ package com.theone.tools.waterfall.entity;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import com.theone.tools.waterfall.model.requirement.StageType;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -31,7 +32,7 @@ public class AssignmentEntity implements Serializable {
 
     private AssignmentStatus assignmentStatus;
 
-    private LocalDateTime expectTime;
+    private LocalDate expectDate;
 
     private LocalDateTime updateTime;
 
@@ -102,12 +103,12 @@ public class AssignmentEntity implements Serializable {
         this.assignmentStatus = assignmentStatus;
     }
 
-    public LocalDateTime getExpectTime() {
-        return expectTime;
+    public LocalDate getExpectDate() {
+        return expectDate;
     }
 
-    public void setExpectTime(LocalDateTime expectTime) {
-        this.expectTime = expectTime;
+    public void setExpectDate(LocalDate expectDate) {
+        this.expectDate = expectDate;
     }
 
     public LocalDateTime getUpdateTime() {

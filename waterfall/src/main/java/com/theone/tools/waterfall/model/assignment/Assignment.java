@@ -1,6 +1,7 @@
 package com.theone.tools.waterfall.model.assignment;
 
 import com.theone.tools.waterfall.model.requirement.StageType;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -24,7 +25,7 @@ public class Assignment {
 
     private AssignmentStatus assignmentStatus;
 
-    private LocalDateTime expectTime;
+    private LocalDate expectDate;
 
     private LocalDateTime updateTime;
 
@@ -94,12 +95,12 @@ public class Assignment {
         this.assignmentStatus = assignmentStatus;
     }
 
-    public LocalDateTime getExpectTime() {
-        return expectTime;
+    public LocalDate getExpectDate() {
+        return expectDate;
     }
 
-    public void setExpectTime(LocalDateTime expectTime) {
-        this.expectTime = expectTime;
+    public void setExpectDate(LocalDate expectDate) {
+        this.expectDate = expectDate;
     }
 
     public LocalDateTime getUpdateTime() {

@@ -1,7 +1,5 @@
 package com.theone.tools.waterfall.vo;
 
-import java.time.LocalDateTime;
-
 public class RequirementInfoResp {
 
     private Integer id;
@@ -16,9 +14,7 @@ public class RequirementInfoResp {
 
     private String owner;
 
-    private LocalDateTime updateTime;
-
-    private LocalDateTime createTime;
+    private String createTime;
 
     public Integer getId() {
         return id;
@@ -68,19 +64,11 @@ public class RequirementInfoResp {
         this.owner = owner;
     }
 
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public LocalDateTime getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }
