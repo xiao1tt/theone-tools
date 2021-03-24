@@ -69,6 +69,9 @@ public interface AssignmentWorkerDao {
 
     AssignmentWorkerEntity query(Integer assignmentId, String username);
 
-    int updateStatus(@Param("assignmentId") Integer assignmentId, @Param("username") String username,
+    int compareAndUpdateStatus(@Param("assignmentId") Integer assignmentId, @Param("username") String username,
             @Param("before") AssignmentStatus before, @Param("after") AssignmentStatus after);
+
+    void updateStatus(@Param("assignmentId") Integer assignmentId, @Param("username") String username,
+            @Param("after") AssignmentStatus after);
 }

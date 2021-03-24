@@ -65,6 +65,8 @@ public interface AssignmentDao {
 
     List<AssignmentEntity> queryByIds(List<Integer> ids);
 
-    int updateStatus(@Param("id") Integer id, @Param("before") AssignmentStatus before,
+    int compareAndUpdateStatus(@Param("id") Integer id, @Param("before") AssignmentStatus before,
             @Param("after") AssignmentStatus after);
+
+    int updateStatus(@Param("id") Integer id, @Param("after") AssignmentStatus after);
 }

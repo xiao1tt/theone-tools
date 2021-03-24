@@ -9,6 +9,7 @@ import com.theone.tools.waterfall.model.assignment.AssignmentWorker;
 import com.theone.tools.waterfall.model.requirement.RequirementStage;
 import com.theone.tools.waterfall.service.AssignmentService;
 import com.theone.tools.waterfall.service.RequirementStageService;
+import com.theone.tools.waterfall.service.StatusManager;
 import com.theone.tools.waterfall.vo.AssignmentInfoResp;
 import com.theone.tools.waterfall.vo.AssignmentListResp;
 import com.theone.tools.waterfall.vo.AssignmentWorkerInfoResp;
@@ -29,6 +30,8 @@ public class AssignmentBiz {
     private AssignmentService assignmentService;
     @Resource
     private RequirementStageService requirementStageService;
+    @Resource
+    private StatusManager statusManager;
 
     public void distribute(Integer assignmentId, List<String> username) {
         assignmentService.addWorker(assignmentId, username);
@@ -39,7 +42,7 @@ public class AssignmentBiz {
     }
 
     public void complete(Integer assignmentId, String username) {
-        assignmentService.updateWorkerStatus(assignmentId, username, AssignmentStatus.DONE);
+        statusManager.updateWorkerStatus(assignmentId, username, AssignmentStatus.DONE);
     }
 
     public AssignmentWorkersResp workers(Integer assignmentId) {

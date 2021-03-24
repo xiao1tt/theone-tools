@@ -25,6 +25,8 @@ public class AssignmentService {
     private AssignmentDao assignmentDao;
     @Resource
     private AssignmentWorkerDao assignmentWorkerDao;
+    @Resource
+    private StatusManager statusManager;
 
     public void add(Assignment assignment) {
         assignmentDao.insert(adapt(assignment));
@@ -154,21 +156,12 @@ public class AssignmentService {
     }
 
     private void afterAddWorker(Integer assignmentId, List<String> users) {
-        updateStatus(assignmentId, AssignmentStatus.WAITING, AssignmentStatus.DOING);
+        statusManager.updateAssignmentStatus(assignmentId, AssignmentStatus.WAIT_ALLOCATE, AssignmentStatus.WAITING);
         notifyWorkers(users);
     }
 
     private void notifyWorkers(List<String> users) {
         // TODO: 2021/3/24
-    }
-
-    private void updateStatus(Integer assignmentId, AssignmentStatus before, AssignmentStatus after) {
-        assignmentDao.updateStatus(assignmentId, before, after);
-    }
-
-    private void updateWorkerStatus(Integer assignmentId, String username,
-            AssignmentStatus before, AssignmentStatus after) {
-        assignmentWorkerDao.updateStatus(assignmentId, username, before, after);
     }
 
     private Assignment info(Integer assignmentId) {
@@ -282,6 +275,6 @@ public class AssignmentService {
     }
 
     private void afterWorkerStart(Integer assignmentId, String username) {
-        this.updateWorkerStatus(assignmentId, username, AssignmentStatus.WAITING, AssignmentStatus.DOING);
+        statusManager.updateWorkerStatus(assignmentId, username, AssignmentStatus.WAITING, AssignmentStatus.DOING);
     }
 }

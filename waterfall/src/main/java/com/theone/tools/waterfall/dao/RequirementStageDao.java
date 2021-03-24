@@ -1,6 +1,7 @@
 package com.theone.tools.waterfall.dao;
 
 import com.theone.tools.waterfall.entity.RequirementStageEntity;
+import com.theone.tools.waterfall.model.requirement.StageStatus;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -65,4 +66,9 @@ public interface RequirementStageDao {
     int deleteById(Integer id);
 
     void deleteByRequirement(int requirementId);
+
+    int updateStatus(@Param("id") Integer id, @Param("after") StageStatus after);
+
+    int compareAndUpdateStatus(@Param("id") Integer id, @Param("before") StageStatus before,
+            @Param("after") StageStatus after);
 }

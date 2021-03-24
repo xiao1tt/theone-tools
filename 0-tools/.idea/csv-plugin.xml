@@ -38,6 +38,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/service/StatusManager.java">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../waterfall/src/main/java/com/theone/tools/waterfall/vo/AssignmentAddReq.java">
           <value>
             <Attribute>

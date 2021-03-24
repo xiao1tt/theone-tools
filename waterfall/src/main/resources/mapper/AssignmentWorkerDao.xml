@@ -155,12 +155,19 @@
         where id = #{id}
     </update>
 
-    <update id="updateStatus">
+    <update id="compareAndUpdateStatus">
         update waterfall.assignment_worker
         set work_status = #{after}
         where assignment_id = #{assignmentId}
           and worker = #{username}
           and work_status = #{before}
+    </update>
+
+    <update id="updateStatus">
+        update waterfall.assignment_worker
+        set work_status = #{after}
+        where assignment_id = #{assignmentId}
+          and worker = #{username}
     </update>
 
     <!--通过主键删除-->

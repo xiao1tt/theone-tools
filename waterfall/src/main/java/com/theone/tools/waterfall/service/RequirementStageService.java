@@ -3,6 +3,7 @@ package com.theone.tools.waterfall.service;
 import com.theone.tools.waterfall.dao.RequirementStageDao;
 import com.theone.tools.waterfall.entity.RequirementStageEntity;
 import com.theone.tools.waterfall.model.requirement.RequirementStage;
+import com.theone.tools.waterfall.model.requirement.StageStatus;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -18,13 +19,18 @@ public class RequirementStageService {
     private AssignmentService assignmentService;
     @Resource
     private RequirementStageDao stageDao;
+    @Resource
+    private StatusManager statusManager;
 
     public void add(List<RequirementStage> stages) {
         for (RequirementStage stage : stages) {
             RequirementStageEntity entity = adapt(stage);
             stageDao.insert(entity);
-
             assignmentService.init(entity);
+
+            if (entity.getStageOrder() == 1) {
+                statusManager.updateStageStatus(entity.getId(), StageStatus.WAITING);
+            }
         }
     }
 
