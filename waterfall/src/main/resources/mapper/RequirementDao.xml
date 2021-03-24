@@ -167,6 +167,15 @@
         where id = #{id}
     </update>
 
+    <update id="updateStatus">
+        update waterfall.requirement
+        set requirement_status = #{after}
+        where id = #{id}
+        <if test="before != null">
+            requirement_status = #{before},
+        </if>
+    </update>
+
     <!--通过主键删除-->
     <delete id="deleteById">
         delete

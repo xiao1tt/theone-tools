@@ -67,8 +67,6 @@ public interface RequirementStageDao {
 
     void deleteByRequirement(int requirementId);
 
-    int updateStatus(@Param("id") Integer id, @Param("after") StageStatus after);
-
-    int compareAndUpdateStatus(@Param("id") Integer id, @Param("before") StageStatus before,
+    int updateStatus(@Param("id") Integer id, @Param("before") StageStatus before,
             @Param("after") StageStatus after);
 }

@@ -155,19 +155,14 @@
         where id = #{id}
     </update>
 
-    <update id="compareAndUpdateStatus">
-        update waterfall.assignment_worker
-        set work_status = #{after}
-        where assignment_id = #{assignmentId}
-          and worker = #{username}
-          and work_status = #{before}
-    </update>
-
     <update id="updateStatus">
         update waterfall.assignment_worker
         set work_status = #{after}
         where assignment_id = #{assignmentId}
-          and worker = #{username}
+        and worker = #{username}
+        <if test="before != null">
+            and work_status = #{before}
+        </if>
     </update>
 
     <!--通过主键删除-->
@@ -176,6 +171,7 @@
         from waterfall.assignment_worker
         where id = #{id}
     </delete>
+
     <delete id="deleteByAssignment">
         delete
         from waterfall.assignment_worker

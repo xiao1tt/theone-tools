@@ -190,13 +190,9 @@
         update waterfall.requirement_stage
         set stage_status = #{after}
         where id = #{id}
-    </update>
-
-    <update id="compareAndUpdateStatus">
-        update waterfall.requirement_stage
-        set stage_status = #{after}
-        where id = #{id}
-          and stage_status = #{before}
+        <if test="before != null">
+            and stage_status = #{before}
+        </if>
     </update>
 
     <!--通过主键删除-->

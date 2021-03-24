@@ -9,6 +9,7 @@ import com.theone.tools.waterfall.model.assignment.Assignment;
 import com.theone.tools.waterfall.model.assignment.AssignmentStatus;
 import com.theone.tools.waterfall.model.assignment.AssignmentStruct;
 import com.theone.tools.waterfall.model.assignment.AssignmentWorker;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -265,16 +266,17 @@ public class AssignmentService {
     }
 
     public void start(Integer assignmentId, String username) {
-        AssignmentWorkerEntity entity = assignmentWorkerDao.query(assignmentId, username);
-        if (entity.getWorkStatus() == AssignmentStatus.WAITING) {
-            entity.setWorkStatus(AssignmentStatus.DOING);
+        boolean change = statusManager
+                .updateWorkerStatus(assignmentId, username, AssignmentStatus.WAITING, AssignmentStatus.DOING);
+
+        if (change) {
+            AssignmentWorkerEntity entity = assignmentWorkerDao.query(assignmentId, username);
+            entity.setStartTime(LocalDateTime.now());
             assignmentWorkerDao.update(entity);
         }
-
-        this.afterWorkerStart(assignmentId, username);
     }
 
-    private void afterWorkerStart(Integer assignmentId, String username) {
-        statusManager.updateWorkerStatus(assignmentId, username, AssignmentStatus.WAITING, AssignmentStatus.DOING);
+    public void complete(Integer assignmentId, String username) {
+        statusManager.updateWorkerStatus(assignmentId, username, AssignmentStatus.DONE);
     }
 }

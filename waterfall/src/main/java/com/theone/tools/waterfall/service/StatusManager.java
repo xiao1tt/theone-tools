@@ -36,15 +36,18 @@ public class StatusManager {
     @Resource
     private RequirementStageService stageService;
 
-    public void updateWorkerStatus(Integer assignmentId, String username, AssignmentStatus after) {
-        assignmentWorkerDao.updateStatus(assignmentId, username, after);
-        afterWorkerStatusUpdate(assignmentId, username, null, after);
+    public boolean updateWorkerStatus(Integer assignmentId, String username, AssignmentStatus after) {
+        return this.updateWorkerStatus(assignmentId, username, null, after);
     }
 
-    public void updateWorkerStatus(Integer assignmentId, String username,
+    public boolean updateWorkerStatus(Integer assignmentId, String username,
             AssignmentStatus before, AssignmentStatus after) {
-        assignmentWorkerDao.compareAndUpdateStatus(assignmentId, username, before, after);
-        afterWorkerStatusUpdate(assignmentId, username, before, after);
+        int i = assignmentWorkerDao.updateStatus(assignmentId, username, before, after);
+        if (i > 0) {
+            afterWorkerStatusUpdate(assignmentId, username, before, after);
+            return true;
+        }
+        return false;
     }
 
     private void afterWorkerStatusUpdate(Integer assignmentId, String username, AssignmentStatus before,
@@ -64,14 +67,18 @@ public class StatusManager {
         }
     }
 
-    public void updateAssignmentStatus(Integer assignmentId, AssignmentStatus before, AssignmentStatus after) {
-        assignmentDao.compareAndUpdateStatus(assignmentId, before, after);
-        afterAssignmentStatusUpdate(assignmentId, before, after);
+    public boolean updateAssignmentStatus(Integer assignmentId, AssignmentStatus after) {
+        return this.updateAssignmentStatus(assignmentId, null, after);
     }
 
-    public void updateAssignmentStatus(Integer assignmentId, AssignmentStatus after) {
-        assignmentDao.updateStatus(assignmentId, after);
-        afterAssignmentStatusUpdate(assignmentId, null, after);
+    public boolean updateAssignmentStatus(Integer assignmentId, AssignmentStatus before, AssignmentStatus after) {
+        int i = assignmentDao.updateStatus(assignmentId, before, after);
+        if (i > 0) {
+            afterAssignmentStatusUpdate(assignmentId, before, after);
+            return true;
+        }
+
+        return false;
     }
 
     private void afterAssignmentStatusUpdate(Integer assignmentId, AssignmentStatus before, AssignmentStatus after) {
@@ -95,14 +102,17 @@ public class StatusManager {
         }
     }
 
-    public void updateStageStatus(Integer stageId, StageStatus before, StageStatus after) {
-        requirementStageDao.compareAndUpdateStatus(stageId, before, after);
-        afterStageStatusUpdate(stageId, before, after);
+    public boolean updateStageStatus(Integer stageId, StageStatus after) {
+        return this.updateStageStatus(stageId, null, after);
     }
 
-    public void updateStageStatus(Integer stageId, StageStatus after) {
-        requirementStageDao.updateStatus(stageId, after);
-        afterStageStatusUpdate(stageId, null, after);
+    public boolean updateStageStatus(Integer stageId, StageStatus before, StageStatus after) {
+        int i = requirementStageDao.updateStatus(stageId, before, after);
+        if (i > 0) {
+            afterStageStatusUpdate(stageId, before, after);
+            return true;
+        }
+        return false;
     }
 
     private void afterStageStatusUpdate(Integer stageId, StageStatus before, StageStatus after) {
@@ -146,15 +156,19 @@ public class StatusManager {
         }
     }
 
-    public void updateRequirementStatus(Integer requirementId, RequirementStatus before, RequirementStatus after) {
-        requirementDao.compareAndUpdateStatus(requirementId, before, after);
-        afterRequirementStatusUpdate(requirementId, before, after);
+    public boolean updateRequirementStatus(Integer requirementId, RequirementStatus after) {
+        return this.updateRequirementStatus(requirementId, null, after);
     }
 
-    public void updateRequirementStatus(Integer requirementId, RequirementStatus after) {
-        requirementDao.updateStatus(requirementId, after);
-        afterRequirementStatusUpdate(requirementId, null, after);
+    public boolean updateRequirementStatus(Integer requirementId, RequirementStatus before, RequirementStatus after) {
+        int i = requirementDao.updateStatus(requirementId, before, after);
+        if (i > 0) {
+            afterRequirementStatusUpdate(requirementId, before, after);
+            return true;
+        }
+        return false;
     }
+
 
     private void afterRequirementStatusUpdate(Integer requirementId, RequirementStatus before,
             RequirementStatus after) {

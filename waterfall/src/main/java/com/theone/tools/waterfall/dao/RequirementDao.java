@@ -67,8 +67,6 @@ public interface RequirementDao {
     List<RequirementEntity> queryByIds(@Param("ids") Collection<Integer> ids,
             @Param("status") RequirementStatus status);
 
-    void updateStatus(@Param("id") Integer id, @Param("after") RequirementStatus after);
-
-    void compareAndUpdateStatus(@Param("id") Integer id, @Param("before") RequirementStatus before,
+    int updateStatus(@Param("id") Integer id,  @Param("before") RequirementStatus before,
             @Param("after") RequirementStatus after);
 }

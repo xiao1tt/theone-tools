@@ -30,8 +30,6 @@ public class AssignmentBiz {
     private AssignmentService assignmentService;
     @Resource
     private RequirementStageService requirementStageService;
-    @Resource
-    private StatusManager statusManager;
 
     public void distribute(Integer assignmentId, List<String> username) {
         assignmentService.addWorker(assignmentId, username);
@@ -42,7 +40,7 @@ public class AssignmentBiz {
     }
 
     public void complete(Integer assignmentId, String username) {
-        statusManager.updateWorkerStatus(assignmentId, username, AssignmentStatus.DONE);
+        assignmentService.complete(assignmentId, username);
     }
 
     public AssignmentWorkersResp workers(Integer assignmentId) {
