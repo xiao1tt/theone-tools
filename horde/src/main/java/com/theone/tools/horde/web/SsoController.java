@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author chenxiaotong
  */
 @RestController
-@RequestMapping("/sso")
+@RequestMapping("/horde/sso")
 public class SsoController {
 
     @Resource

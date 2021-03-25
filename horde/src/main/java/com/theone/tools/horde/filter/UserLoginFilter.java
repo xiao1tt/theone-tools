@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author chenxiaotong
  */
-@WebFilter(filterName = "userLoginFilter", urlPatterns = {"/user/*"})
+@WebFilter(filterName = "userLoginFilter", urlPatterns = {"/horde/user/*"})
 public class UserLoginFilter extends BaseSsoFilter {
 
     @Override

@@ -13,6 +13,8 @@ import com.theone.tools.sso.client.UserGroup;
 import com.theone.tools.sso.client.UserLevel;
 import com.theone.tools.sso.client.UserStatus;
 import javax.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,11 +28,25 @@ import org.springframework.web.bind.annotation.RestController;
  * @author chenxiaotong
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/horde/user")
 public class UserController {
 
     @Resource
     private UserBiz userBiz;
+
+    @Resource
+    private RedisTemplate<String, String> redisTemplate;
+
+    @GetMapping("/test")
+    public String test(String key) {
+        ValueOperations<String, String> operations = redisTemplate.opsForValue();
+        String cache = operations.get(key);
+        if (cache == null) {
+            operations.set(key, key + "-v");
+        }
+
+        return operations.get(key);
+    }
 
     /**
      * 用户列表
