@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author chenxiaotong
  */
 @RestController
-@RequestMapping("/requirement")
+@RequestMapping("/waterfall/requirement")
 public class RequirementController {
 
     @Resource

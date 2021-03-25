@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author chenxiaotong
  */
 @RestController
-@RequestMapping(("/user"))
+@RequestMapping(("/waterfall/user"))
 public class UserController {
 
     @Resource

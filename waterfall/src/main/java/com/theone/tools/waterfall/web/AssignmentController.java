@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author chenxiaotong
  */
 @RestController
-@RequestMapping("/assignment")
+@RequestMapping("/waterfall/assignment")
 public class AssignmentController {
 
     @Resource
